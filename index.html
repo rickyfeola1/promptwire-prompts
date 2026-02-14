@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Prompt Template Library - PromptWire AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'Futura'; src: local('Futura Extra Bold'); font-weight: 800; font-style: italic; }
+        
+        :root {
+            --white: #ffffff;
+            --black: #000000;
+            --blue: #1292eb;
+            --blue-light: #e8f4fd;
+            --blue-hover: #0d7fd4;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success-color: #10b981;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--gray-900); line-height: 1.6; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+
+        /* Header */
+        .header { text-align: center; margin-bottom: 48px; }
+        .header-icon { display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; background: var(--blue-light); border-radius: var(--radius-lg); font-size: 36px; margin-bottom: 20px; }
+        .header h1 { font-family: 'Futura', 'Trebuchet MS', sans-serif; font-size: clamp(32px, 5vw, 48px); font-weight: 800; font-style: italic; margin-bottom: 12px; }
+        .header h1 span { color: var(--blue); }
+        .header p { font-size: 17px; color: var(--gray-500); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+        /* Section Headers */
+        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .section-badge { padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .section-badge.free { background: var(--success-color); color: white; }
+        .section-badge.pro { background: var(--blue); color: white; }
+        .section-title { font-size: 20px; font-weight: 700; color: var(--gray-900); }
+
+        /* Prompt Grid */
+        .prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-bottom: 48px; }
+
+        /* Prompt Card */
+        .prompt-card { background: var(--white); border: 2px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; }
+        .prompt-card:hover { border-color: var(--blue); box-shadow: 0 8px 30px rgba(18, 146, 235, 0.12); transform: translateY(-2px); }
+        .prompt-card.locked { opacity: 0.7; }
+        .prompt-card.locked:hover { border-color: var(--gray-300); box-shadow: none; transform: none; }
+        
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+        .card-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 12px; border-radius: 100px; }
+        .card-badge { padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+        .card-badge.free { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .card-badge.pro { background: var(--gray-100); color: var(--gray-500); }
+        
+        .card-icon { width: 56px; height: 56px; background: var(--gray-100); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 28px; }
+        .card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--gray-900); }
+        .card-description { font-size: 14px; color: var(--gray-500); margin-bottom: 20px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .card-tag { padding: 6px 12px; font-size: 12px; font-weight: 500; background: var(--gray-100); border-radius: 100px; color: var(--gray-600); }
+
+        .lock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.6); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+        .prompt-card.locked:hover .lock-overlay { opacity: 1; }
+        .lock-icon { width: 48px; height: 48px; background: var(--gray-800); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+
+        /* Pro CTA Section */
+        .pro-cta-banner { background: var(--gray-900); border-radius: var(--radius-xl); padding: 40px; margin: 48px 0; text-align: center; color: white; }
+        .pro-cta-banner .social-proof { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .pro-cta-banner .social-proof .dot { width: 8px; height: 8px; background: var(--success-color); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .pro-cta-banner h3 { font-family: 'Futura', sans-serif; font-size: 28px; font-weight: 800; font-style: italic; margin-bottom: 12px; }
+        .pro-cta-banner h3 span { color: var(--blue); }
+        .pro-cta-banner > p { font-size: 15px; color: #a1a1a1; max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
+        .pro-cta-banner .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--blue); border: none; border-radius: 100px; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
+        .pro-cta-banner .cta-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
+        .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
+
+        /* Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .modal { background: white; border-radius: var(--radius-xl); max-width: 480px; width: 100%; padding: 32px; position: relative; animation: modalSlide 0.3s ease; }
+        @keyframes modalSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; }
+        .modal-close:hover { background: var(--gray-200); }
+        
+        .modal-icon { width: 64px; height: 64px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
+        .modal-title { font-family: 'Futura', sans-serif; font-size: 24px; font-weight: 800; font-style: italic; text-align: center; margin-bottom: 8px; }
+        .modal-title span { color: var(--blue); }
+        .modal-subtitle { font-size: 15px; color: var(--gray-500); text-align: center; margin-bottom: 24px; line-height: 1.6; }
+        
+        .modal-input { width: 100%; padding: 14px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-md); font-family: inherit; font-size: 15px; margin-bottom: 16px; transition: border-color 0.3s; }
+        .modal-input:focus { outline: none; border-color: var(--blue); }
+        .modal-input.error { border-color: #dc2626; }
+        
+        .modal-btn { width: 100%; padding: 14px; background: var(--blue); border: none; border-radius: var(--radius-md); font-family: inherit; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
+        .modal-btn:hover { background: var(--blue-hover); }
+        .modal-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .modal-footer { margin-top: 16px; font-size: 13px; color: var(--gray-400); text-align: center; }
+
+        /* Email Modal Specific */
+        .tools-replaced { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .tool-tag { padding: 6px 12px; background: var(--gray-100); border-radius: 100px; font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 6px; }
+        .tool-tag .strike { text-decoration: line-through; color: var(--gray-400); }
+        .tool-tag .arrow { color: var(--blue); }
+
+        /* Upgrade Modal */
+        .upgrade-modal .modal { max-width: 560px; background: var(--gray-900); color: white; }
+        .upgrade-modal .modal-close { background: rgba(255,255,255,0.1); color: white; }
+        .upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.2); }
+        .upgrade-modal .modal-icon { background: var(--blue); }
+        .upgrade-modal .modal-title { color: white; }
+        .upgrade-modal .modal-subtitle { color: #a1a1a1; }
+        
+        .benefits-list { margin-bottom: 28px; }
+        .benefit-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .benefit-item:last-child { border-bottom: none; }
+        .benefit-icon { width: 36px; height: 36px; background: rgba(18, 146, 235, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+        .benefit-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .benefit-content p { font-size: 13px; color: #a1a1a1; line-height: 1.5; }
+        
+        .pricing-section { text-align: center; padding: 24px; background: rgba(255,255,255,0.05); border-radius: var(--radius-lg); margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .pricing-label { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 8px; }
+        .pricing-amount { font-size: 48px; font-weight: 800; }
+        .pricing-amount span { font-size: 18px; font-weight: 400; color: #a1a1a1; }
+        .pricing-note { font-size: 13px; color: #717171; margin-top: 4px; }
+        
+        .upgrade-btn { width: 100%; padding: 16px; background: var(--blue); border: none; border-radius: var(--radius-md); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
+        .upgrade-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
+        
+        .upgrade-modal .modal-footer { color: #717171; }
+
+        /* Prompt Modal */
+        .prompt-modal .modal { max-width: 800px; padding: 0; overflow: hidden; }
+        .prompt-modal-header { padding: 32px 32px 24px; border-bottom: 2px solid var(--gray-100); position: relative; }
+        .prompt-modal-close { position: absolute; top: 24px; right: 24px; width: 40px; height: 40px; background: var(--gray-100); border: none; border-radius: 10px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
+        .prompt-modal-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 14px; border-radius: 100px; display: inline-block; margin-bottom: 16px; }
+        .prompt-modal-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .prompt-modal-icon { font-size: 28px; }
+        .prompt-modal-title { font-size: 28px; font-weight: 800; color: var(--gray-900); }
+        .prompt-modal-subtitle { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
+        
+        .prompt-modal-body { padding: 32px; }
+        .prompt-modal-section { margin-bottom: 28px; }
+        .prompt-modal-section:last-child { margin-bottom: 0; }
+        .prompt-modal-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .prompt-modal-section-title svg { width: 16px; height: 16px; color: var(--blue); }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .info-item { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; }
+        .info-item-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 8px; }
+        .info-item-value { font-size: 14px; color: var(--gray-700); line-height: 1.5; }
+        
+        .prompt-box { background: var(--gray-900); border-radius: 16px; overflow: hidden; }
+        .prompt-box-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--black); border-bottom: 1px solid var(--gray-800); }
+        .prompt-box-title { font-size: 13px; font-weight: 600; color: var(--gray-400); display: flex; align-items: center; gap: 8px; }
+        .prompt-box-title svg { color: var(--blue); }
+        .copy-prompt-btn { display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; background: var(--blue); border: none; border-radius: 10px; color: var(--white); cursor: pointer; transition: all 0.2s ease; }
+        .copy-prompt-btn:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(18, 146, 235, 0.4); }
+        .copy-prompt-btn.copied { background: var(--success-color); }
+        
+        .prompt-content { padding: 20px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--gray-300); white-space: pre-wrap; max-height: 350px; overflow-y: auto; }
+        .prompt-content::-webkit-scrollbar { width: 8px; }
+        .prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
+        .prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
+        
+        .prompt-modal-footer { padding: 20px 32px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); }
+        .prompt-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        @media (max-width: 768px) {
+            .prompt-grid { grid-template-columns: 1fr; }
+            .modal { padding: 24px; }
+            .prompt-modal-body { padding: 24px; }
+            .prompt-modal-header { padding: 24px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .prompt-box-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .copy-prompt-btn { width: 100%; justify-content: center; }
+            .prompt-modal-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="header-icon">📝</div>
+        <h1>Prompt Template <span>Library</span></h1>
+        <p>Ready-to-use prompt agents that handle real work. Pre-built roles you can run inside ChatGPT or Claude to plan, write, analyse, and automate work without setting anything up.</p>
+    </header>
+
+    <!-- Free Prompts Section -->
+    <div class="section-header">
+        <span class="section-badge free">Free</span>
+        <h2 class="section-title">Starter Prompts</h2>
+    </div>
+    <div class="prompt-grid" id="freePromptsGrid"></div>
+
+    <!-- Pro CTA Banner -->
+    <div class="pro-cta-banner">
+        <div class="social-proof">
+            <span class="dot"></span>
+            New prompts added every week
+        </div>
+        <h3>Unlock The Full <span>Library</span></h3>
+        <p>Get access to 20+ advanced prompt templates, weekly automation workflows, and implementation guides that turn AI into real productivity gains.</p>
+        <button class="cta-btn" onclick="showUpgradeModal()">
+            Upgrade to Pro → $5 first month
+        </button>
+        <div class="cta-subtext">Then $27/month. Cancel anytime.</div>
+    </div>
+
+    <!-- Pro Prompts Section -->
+    <div class="section-header">
+        <span class="section-badge pro">Pro</span>
+        <h2 class="section-title">Advanced Prompts</h2>
+    </div>
+    <div class="prompt-grid" id="proPromptsGrid"></div>
+</div>
+
+<!-- Email Gate Modal -->
+<div class="modal-overlay" id="emailModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeEmailModal()">×</button>
+        <div class="modal-icon">✉️</div>
+        <h2 class="modal-title">One Prompt. <span>Endless Uses.</span></h2>
+        <p class="modal-subtitle">Enter your email to copy this prompt and get weekly AI tips that save you hours.</p>
+        
+        <div class="tools-replaced">
+            <div class="tool-tag"><span class="strike">Consultant</span> <span class="arrow">→</span> Free</div>
+            <div class="tool-tag"><span class="strike">Writer</span> <span class="arrow">→</span> Free</div>
+            <div class="tool-tag"><span class="strike">Analyst</span> <span class="arrow">→</span> Free</div>
+        </div>
+        
+        <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com">
+        <button class="modal-btn" id="emailSubmitBtn" onclick="submitEmail()">
+            Get Free Access →
+        </button>
+        <p class="modal-footer">No spam. Unsubscribe anytime.</p>
+    </div>
+</div>
+
+<!-- Upgrade Modal -->
+<div class="modal-overlay upgrade-modal" id="upgradeModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeUpgradeModal()">×</button>
+        
+        <div class="modal-icon">🚀</div>
+        <h2 class="modal-title">Unlock <span>Pro</span> Access</h2>
+        <p class="modal-subtitle">New prompts added weekly. Get the full library plus automation workflows.</p>
+        
+        <div class="benefits-list">
+            <div class="benefit-item">
+                <div class="benefit-icon">⚡</div>
+                <div class="benefit-content">
+                    <h4>Weekly Deployable Automation</h4>
+                    <p>A complete AI workflow you can install into your routine. Structured prompts, setup guidance, and real examples included.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">🧠</div>
+                <div class="benefit-content">
+                    <h4>Advanced Prompt Systems</h4>
+                    <p>Reusable prompt frameworks for operations, content, research, and lead follow-up — built to save hours, not just generate text.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📡</div>
+                <div class="benefit-content">
+                    <h4>Major AI Shifts, Interpreted</h4>
+                    <p>When AI changes, you'll know what it means for your work and how to position yourself ahead.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">✅</div>
+                <div class="benefit-content">
+                    <h4>Implementation Checklists</h4>
+                    <p>Clear action steps so each issue turns into execution, not just reading.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📚</div>
+                <div class="benefit-content">
+                    <h4>Full Prompt Library Access</h4>
+                    <p>20+ prompts now, with new ones added weekly. Never run out of AI workflows.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pricing-section">
+            <div class="pricing-label">🔥 First month only</div>
+            <div class="pricing-amount">$5 <span>/ month</span></div>
+            <div class="pricing-note">Then $27/month. Cancel anytime.</div>
+        </div>
+        
+        <button class="upgrade-btn" onclick="upgradeToPro()">
+            Upgrade to Pro →
+        </button>
+        <p class="modal-footer">Secure payment via Stripe</p>
+    </div>
+</div>
+
+<!-- Prompt Detail Modal -->
+<div class="modal-overlay prompt-modal" id="promptModal">
+    <div class="modal">
+        <button class="prompt-modal-close" onclick="closePromptModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="prompt-modal-header">
+            <span class="prompt-modal-category" id="promptModalCategory"></span>
+            <div class="prompt-modal-title-row">
+                <span class="prompt-modal-icon" id="promptModalIcon"></span>
+                <h2 class="prompt-modal-title" id="promptModalTitle"></h2>
+            </div>
+            <p class="prompt-modal-subtitle" id="promptModalSubtitle"></p>
+        </div>
+        <div class="prompt-modal-body">
+            <div class="prompt-modal-section">
+                <h3 class="prompt-modal-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    Quick Info
+                </h3>
+                <div class="info-grid" id="promptModalInfoGrid"></div>
+            </div>
+            <div class="prompt-modal-section">
+                <h3 class="prompt-modal-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    The Prompt
+                </h3>
+                <div class="prompt-box">
+                    <div class="prompt-box-header">
+                        <span class="prompt-box-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Copy & paste into Claude or ChatGPT
+                        </span>
+                        <button class="copy-prompt-btn" id="copyPromptBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            Copy Prompt
+                        </button>
+                    </div>
+                    <pre class="prompt-content" id="promptModalContent"></pre>
+                </div>
+            </div>
+        </div>
+        <div class="prompt-modal-footer">
+            <div class="prompt-modal-tags" id="promptModalTags"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================
+// CONFIGURATION
+// ============================================
+const CONFIG = {
+    STRIPE_LINK: 'https://buy.stripe.com/YOUR_STRIPE_LINK_HERE',
+    API_URL: '/api/subscribe'
+};
+
+// ============================================
+// PROMPTS DATA
+// ============================================
+const freePrompts = [
+    {
+        id: 1,
+        title: "Business Idea Generator",
+        description: "Analyze, cross-compare, and identify profitable online business niches based on market signals, competition, and your skills.",
+        category: "business",
+        tags: ["niche research", "validation", "strategy"],
+        icon: "💡",
+        whatItDoes: "Finds and validates profitable niche business ideas tailored to your skills and budget",
+        bestFor: "Entrepreneurs, side hustlers, anyone exploring new business ventures",
+        inputsNeeded: "Skills, interests, time availability, investment budget",
+        prompt: `You are a niche research and validation assistant. Your job is to analyze, cross-compare, and identify potentially profitable online business niches that are realistic for the user to enter based on current market signals, competition levels, and user alignment.
+
+The user is interested in starting an online business with minimal upfront investment. They want a niche that is both profitable and suited to their interests, skills, and time availability. Your goal is to help them find up to 3 validated niche options that fit these criteria.
+
+Instructions:
+1. Use deep research techniques to extract people's recurring pain points from real communities like Reddit, Quora, G2, and ProductHunt.
+2. Identify and summarize these pain points with supporting examples.
+3. Validate the niche by analyzing: Demand Strength, Competition Intensity, Monetization Potential.
+4. Cross-reference with the user's personal input to determine feasibility.
+5. Rank each validated niche idea using a scoring system from 1–10.
+6. Provide an action path for each niche.
+
+Reply with: "Please enter your online business background, skills, interests, time availability, and how much you're willing to invest, and I will start the process."`
+    },
+    {
+        id: 2,
+        title: "Blog Post Writer",
+        description: "Transform any topic into an engaging, SEO-friendly blog post with proper structure and compelling hooks.",
+        category: "content",
+        tags: ["blogging", "SEO", "writing"],
+        icon: "✍️",
+        whatItDoes: "Creates well-structured blog posts with intro hooks and CTAs",
+        bestFor: "Content marketers, bloggers, SEO specialists",
+        inputsNeeded: "Topic, target audience, desired length, key points",
+        prompt: `You are a professional blog writer. Create an engaging blog post following this structure:
+
+Topic: [Insert topic]
+Target audience: [Who is reading this]
+Tone: [Professional/Casual/Educational/Entertaining]
+Length: [Word count target]
+
+Requirements:
+1. Hook — Start with a compelling opening that addresses a pain point or curiosity
+2. Promise — Tell the reader what they'll learn or gain
+3. Body — Break into 3-5 scannable sections with H2 headings
+4. Each section should have a clear point, supporting evidence, and practical takeaway
+5. Conclusion — Summarize key points and include a clear CTA
+6. Meta description — Write a 155-character SEO description
+
+Write in active voice. Use short paragraphs. Include transition sentences between sections.`
+    },
+    {
+        id: 3,
+        title: "Meeting Notes Processor",
+        description: "Convert raw meeting notes into organized summaries with decisions, action items, and follow-ups.",
+        category: "productivity",
+        tags: ["meetings", "notes", "action items"],
+        icon: "📝",
+        whatItDoes: "Structures messy meeting notes into clear summaries",
+        bestFor: "Project managers, team leads, anyone running meetings",
+        inputsNeeded: "Raw meeting notes or transcript",
+        prompt: `You are a meeting documentation specialist. Process these meeting notes into an organized summary.
+
+Meeting notes: [Paste raw notes here]
+Meeting type: [Team sync/Client call/Planning/Review]
+Attendees: [If known]
+Date: [If known]
+
+Create a structured summary:
+
+1. MEETING OVERVIEW
+- Date & time
+- Attendees
+- Meeting purpose
+- Duration
+
+2. KEY DISCUSSION POINTS
+For each topic discussed:
+- Topic name
+- Summary of discussion
+- Decisions made
+- Open questions
+
+3. DECISIONS MADE
+- Decision
+- Rationale (if discussed)
+- Owner (if assigned)
+
+4. ACTION ITEMS
+For each action:
+- [ ] Task description
+- Owner: [Name]
+- Deadline: [Date]
+- Priority: [High/Medium/Low]
+- Dependencies: [If any]
+
+5. PARKING LOT
+- Items tabled for later
+- Topics needing more research
+
+6. NEXT STEPS
+- Follow-up meeting needed?
+- Pre-work for next meeting
+
+Format as a shareable document ready to send to attendees.`
+    },
+    {
+        id: 4,
+        title: "Ask-First Brainstorm Partner",
+        description: "A strategic thinking partner that pulls ideas from your head through sharp questions, then helps organize them.",
+        category: "creative",
+        tags: ["ideation", "thinking partner", "strategy"],
+        icon: "🧠",
+        whatItDoes: "Uses targeted questions to extract and structure your ideas",
+        bestFor: "Strategists, writers, anyone developing complex ideas",
+        inputsNeeded: "Your topic or challenge to brainstorm",
+        prompt: `You are my Ask-First Brainstorm Partner. Your job is to ask sharp questions to pull ideas out of my head, then help me organise and refine them — but never replace my thinking.
+
+Operating Rules:
+• One question per turn
+• Use my words only — no examples unless I say "expand"
+• Keep bullets, not prose
+• Mirror and label my ideas using my language
+
+Commands:
+• reset — return to current phase
+• skip — move to next phase
+• expand <tag> — generate 2–3 options/metaphors for that tag
+• map it — produce an outline
+• draft — turn the outline into prose
+
+Stay modular. Don't over-structure too soon.`
+    }
+];
+
+const proPrompts = [
+    {
+        id: 101,
+        title: "Market Research Agent",
+        description: "Conduct detailed market research using public data, search behavior, and competitor patterns to validate your idea.",
+        category: "research",
+        tags: ["validation", "competitor analysis", "market gaps"],
+        icon: "🔬"
+    },
+    {
+        id: 102,
+        title: "Background Business Operator",
+        description: "Your silent business assistant that summarizes, prioritizes, and suggests next steps for emails, notes, and messages.",
+        category: "productivity",
+        tags: ["automation", "task management", "email"],
+        icon: "⚙️"
+    },
+    {
+        id: 103,
+        title: "Social Media Content Pack",
+        description: "Generate a week's worth of social media posts across platforms from a single content piece or topic.",
+        category: "marketing",
+        tags: ["social media", "repurposing", "content calendar"],
+        icon: "📱"
+    },
+    {
+        id: 104,
+        title: "Email Sequence Builder",
+        description: "Create a complete email sequence for launches, nurturing, or sales with subject lines and CTAs.",
+        category: "marketing",
+        tags: ["email marketing", "sequences", "copywriting"],
+        icon: "📧"
+    },
+    {
+        id: 105,
+        title: "Video Script Writer",
+        description: "Transform topics into engaging video scripts with hooks, retention techniques, and clear structure.",
+        category: "content",
+        tags: ["YouTube", "video", "scriptwriting"],
+        icon: "🎬"
+    },
+    {
+        id: 106,
+        title: "Sales Copy Converter",
+        description: "Transform features into benefit-driven sales copy that converts using proven persuasion frameworks.",
+        category: "marketing",
+        tags: ["copywriting", "sales", "conversion"],
+        icon: "💰"
+    },
+    {
+        id: 107,
+        title: "SOP Creator",
+        description: "Build clear, step-by-step Standard Operating Procedures for any business process.",
+        category: "productivity",
+        tags: ["documentation", "processes", "operations"],
+        icon: "📑"
+    },
+    {
+        id: 108,
+        title: "Research Summary Agent",
+        description: "Transform lengthy documents, articles, or research into actionable summaries with key insights.",
+        category: "research",
+        tags: ["analysis", "summaries", "insights"],
+        icon: "📊"
+    },
+    {
+        id: 109,
+        title: "Content Repurposing Engine",
+        description: "Transform one piece of content into 10+ formats for maximum reach across platforms.",
+        category: "content",
+        tags: ["repurposing", "multi-platform", "efficiency"],
+        icon: "♻️"
+    },
+    {
+        id: 110,
+        title: "Prompt Generator",
+        description: "Meta-prompt that creates custom AI prompts optimized for your specific use case.",
+        category: "productivity",
+        tags: ["meta", "prompt engineering", "AI"],
+        icon: "🔧"
+    },
+    {
+        id: 111,
+        title: "Lead Magnet Creator",
+        description: "Design high-converting lead magnets with titles, outlines, and promotional copy.",
+        category: "marketing",
+        tags: ["lead generation", "email list", "content"],
+        icon: "🧲"
+    },
+    {
+        id: 112,
+        title: "Customer Support Agent",
+        description: "Handle customer inquiries with empathy, clarity, and efficient problem resolution.",
+        category: "business",
+        tags: ["support", "customer service", "communication"],
+        icon: "💬"
+    }
+];
+
+// ============================================
+// STATE
+// ============================================
+let currentPromptId = null;
+let pendingCopyPromptId = null;
+
+// ============================================
+// USER STATE
+// ============================================
+function getUserState() {
+    const stored = localStorage.getItem('promptwire_user');
+    return stored ? JSON.parse(stored) : null;
+}
+
+function saveUserState(email) {
+    const state = {
+        email: email,
+        createdAt: new Date().toISOString()
+    };
+    localStorage.setItem('promptwire_user', JSON.stringify(state));
+    return state;
+}
+
+function isLoggedIn() {
+    return getUserState() !== null;
+}
+
+// ============================================
+// RENDER FUNCTIONS
+// ============================================
+function renderFreePrompts() {
+    const grid = document.getElementById('freePromptsGrid');
+    grid.innerHTML = freePrompts.map(p => `
+        <div class="prompt-card" onclick="openPromptModal(${p.id})">
+            <div class="card-header">
+                <span class="card-category">${p.category}</span>
+                <span class="card-badge free">Free</span>
+            </div>
+            <div class="card-icon">${p.icon}</div>
+            <h3 class="card-title">${p.title}</h3>
+            <p class="card-description">${p.description}</p>
+            <div class="card-tags">
+                ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderProPrompts() {
+    const grid = document.getElementById('proPromptsGrid');
+    grid.innerHTML = proPrompts.map(p => `
+        <div class="prompt-card locked" onclick="showUpgradeModal()">
+            <div class="card-header">
+                <span class="card-category">${p.category}</span>
+                <span class="card-badge pro">Pro</span>
+            </div>
+            <div class="card-icon">${p.icon}</div>
+            <h3 class="card-title">${p.title}</h3>
+            <p class="card-description">${p.description}</p>
+            <div class="card-tags">
+                ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+            </div>
+            <div class="lock-overlay">
+                <div class="lock-icon">🔒</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// MODAL FUNCTIONS
+// ============================================
+function openPromptModal(id) {
+    const prompt = freePrompts.find(p => p.id === id);
+    if (!prompt) return;
+    
+    currentPromptId = id;
+    
+    document.getElementById('promptModalCategory').textContent = prompt.category;
+    document.getElementById('promptModalIcon').textContent = prompt.icon;
+    document.getElementById('promptModalTitle').textContent = prompt.title;
+    document.getElementById('promptModalSubtitle').textContent = prompt.description;
+    document.getElementById('promptModalInfoGrid').innerHTML = `
+        <div class="info-item">
+            <div class="info-item-label">What it does</div>
+            <div class="info-item-value">${prompt.whatItDoes}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-item-label">Best for</div>
+            <div class="info-item-value">${prompt.bestFor}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-item-label">Inputs needed</div>
+            <div class="info-item-value">${prompt.inputsNeeded}</div>
+        </div>
+    `;
+    document.getElementById('promptModalContent').textContent = prompt.prompt;
+    document.getElementById('promptModalTags').innerHTML = prompt.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
+    
+    const copyBtn = document.getElementById('copyPromptBtn');
+    copyBtn.onclick = function() { handleCopyPrompt(id); };
+    copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
+    copyBtn.classList.remove('copied');
+    
+    document.getElementById('promptModal').classList.add('show');
+}
+
+function closePromptModal() {
+    document.getElementById('promptModal').classList.remove('show');
+    currentPromptId = null;
+}
+
+function showEmailModal(promptId) {
+    pendingCopyPromptId = promptId;
+    document.getElementById('emailModal').classList.add('show');
+    document.getElementById('emailInput').focus();
+}
+
+function closeEmailModal() {
+    document.getElementById('emailModal').classList.remove('show');
+    pendingCopyPromptId = null;
+}
+
+function showUpgradeModal() {
+    document.getElementById('upgradeModal').classList.add('show');
+}
+
+function closeUpgradeModal() {
+    document.getElementById('upgradeModal').classList.remove('show');
+}
+
+// ============================================
+// COPY & EMAIL FUNCTIONS
+// ============================================
+function handleCopyPrompt(id) {
+    if (!isLoggedIn()) {
+        showEmailModal(id);
+        return;
+    }
+    
+    copyPromptToClipboard(id);
+}
+
+async function copyPromptToClipboard(id) {
+    const prompt = freePrompts.find(p => p.id === id);
+    if (!prompt) return;
+    
+    try {
+        await navigator.clipboard.writeText(prompt.prompt);
+        
+        const btn = document.getElementById('copyPromptBtn');
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
+            btn.classList.remove('copied');
+        }, 2000);
+    } catch (err) {
+        console.error('Failed to copy:', err);
+    }
+}
+
+async function submitEmail() {
+    const emailInput = document.getElementById('emailInput');
+    const email = emailInput.value.trim();
+    const btn = document.getElementById('emailSubmitBtn');
+    
+    if (!email || !email.includes('@')) {
+        emailInput.classList.add('error');
+        return;
+    }
+    
+    emailInput.classList.remove('error');
+    btn.disabled = true;
+    btn.textContent = 'Please wait...';
+    
+    try {
+        await fetch(CONFIG.API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+    } catch (err) {
+        console.error('Email subscribe error:', err);
+    }
+    
+    // Save user state regardless of API success
+    saveUserState(email);
+    
+    // Reset button
+    btn.disabled = false;
+    btn.textContent = 'Get Free Access →';
+    
+    // Close email modal
+    closeEmailModal();
+    
+    // Copy the prompt if there was a pending copy
+    if (pendingCopyPromptId) {
+        copyPromptToClipboard(pendingCopyPromptId);
+        pendingCopyPromptId = null;
+    }
+}
+
+function upgradeToPro() {
+    window.open(CONFIG.STRIPE_LINK, '_blank');
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+document.getElementById('emailInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') submitEmail();
+});
+
+document.getElementById('emailInput').addEventListener('input', (e) => {
+    e.target.classList.remove('error');
+});
+
+// Close modals on overlay click
+document.getElementById('emailModal').addEventListener('click', (e) => {
+    if (e.target.id === 'emailModal') closeEmailModal();
+});
+
+document.getElementById('upgradeModal').addEventListener('click', (e) => {
+    if (e.target.id === 'upgradeModal') closeUpgradeModal();
+});
+
+document.getElementById('promptModal').addEventListener('click', (e) => {
+    if (e.target.id === 'promptModal') closePromptModal();
+});
+
+// Close modals on Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeEmailModal();
+        closeUpgradeModal();
+        closePromptModal();
+    }
+});
+
+// ============================================
+// INITIALIZE
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    renderFreePrompts();
+    renderProPrompts();
+});
+</script>
+</body>
+</html>
