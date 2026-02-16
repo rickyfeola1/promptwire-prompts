@@ -76,6 +76,14 @@
 
         /* Pro CTA Section */
         .pro-cta-banner { background: var(--gray-900); border-radius: var(--radius-xl); padding: 40px; margin: 48px 0; text-align: center; color: white; }
+
+        /* More Prompts Section */
+        .more-prompts-section { text-align: center; padding: 60px 24px; border: 2px dashed var(--gray-300); border-radius: var(--radius-xl); margin-top: 24px; background: var(--gray-50); }
+        .more-prompts-icon { font-size: 48px; margin-bottom: 16px; }
+        .more-prompts-section h3 { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+        .more-prompts-section p { font-size: 15px; color: var(--gray-500); margin-bottom: 24px; }
+        .more-prompts-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--blue); border: none; border-radius: 100px; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
+        .more-prompts-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
         .pro-cta-banner .social-proof { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .pro-cta-banner .social-proof .dot { width: 8px; height: 8px; background: var(--success-color); border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
@@ -87,12 +95,10 @@
         .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
 
         /* Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(4px); overflow-y: auto; }
-        .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; padding: 40px 24px; }
+        .modal-overlay.show { display: flex; }
         
-        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; animation: modalSlide 0.3s ease; max-height: 90vh; overflow-y: auto; margin: auto; }
-        @keyframes modalSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); height: fit-content; }
         .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; z-index: 10; }
         .modal-close:hover { background: var(--gray-200); }
         
@@ -121,7 +127,7 @@
         .tool-tag .arrow { color: var(--blue); }
 
         /* Upgrade Modal */
-        .upgrade-modal .modal { max-width: 480px; background: var(--gray-900); color: white; max-height: 90vh; overflow-y: auto; }
+        .upgrade-modal .modal { max-width: 480px; background: var(--gray-900); color: white; }
         .upgrade-modal .modal-close { background: rgba(255,255,255,0.1); color: white; z-index: 10; }
         .upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.2); }
         .upgrade-modal .modal-icon { background: var(--blue); }
@@ -147,17 +153,17 @@
         .upgrade-modal .modal-footer { color: #717171; }
 
         /* Prompt Modal */
-        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; position: relative; }
-        .prompt-modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
+        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; position: relative; height: fit-content; }
+        .prompt-modal-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
         .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
-        .prompt-modal-header { padding: 24px 60px 20px 24px; border-bottom: 2px solid var(--gray-100); flex-shrink: 0; }
+        .prompt-modal-header { padding: 24px 60px 20px 24px; border-bottom: 2px solid var(--gray-100); }
         .prompt-modal-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 14px; border-radius: 100px; display: inline-block; margin-bottom: 16px; }
         .prompt-modal-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .prompt-modal-icon { font-size: 28px; }
         .prompt-modal-title { font-size: 22px; font-weight: 800; color: var(--gray-900); }
         .prompt-modal-subtitle { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
         
-        .prompt-modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+        .prompt-modal-body { padding: 24px; }
         .prompt-modal-section { margin-bottom: 28px; }
         .prompt-modal-section:last-child { margin-bottom: 0; }
         .prompt-modal-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -181,7 +187,7 @@
         .prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
         .prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
         
-        .prompt-modal-footer { padding: 16px 24px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); flex-shrink: 0; }
+        .prompt-modal-footer { padding: 16px 24px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); }
         .prompt-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 
         @media (max-width: 768px) {
@@ -231,127 +237,135 @@
         <h2 class="section-title">Advanced Prompts</h2>
     </div>
     <div class="prompt-grid" id="proPromptsGrid"></div>
-</div>
-
-<!-- Email Gate Modal -->
-<div class="modal-overlay" id="emailModal">
-    <div class="modal">
-        <button class="modal-close" onclick="closeEmailModal()">×</button>
-        <div class="modal-icon">✉️</div>
-        <h2 class="modal-title">One Prompt. <span>Endless Uses.</span></h2>
-        <p class="modal-subtitle">Enter your email to copy this prompt and get weekly AI tips that save you hours.</p>
-        
-        <div class="tools-replaced">
-            <div class="tool-tag"><span class="strike">Consultant</span> <span class="arrow">→</span> Free</div>
-            <div class="tool-tag"><span class="strike">Writer</span> <span class="arrow">→</span> Free</div>
-            <div class="tool-tag"><span class="strike">Analyst</span> <span class="arrow">→</span> Free</div>
-        </div>
-        
-        <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com">
-        <button class="modal-btn" id="emailSubmitBtn" onclick="submitEmail()">
-            Get Free Access →
-        </button>
-        <p class="modal-footer">No spam. Unsubscribe anytime.</p>
+    
+    <!-- More Prompts Coming -->
+    <div class="more-prompts-section">
+        <div class="more-prompts-icon">✨</div>
+        <h3>+ More Prompts Added Weekly</h3>
+        <p>New prompt templates drop every week. Pro members get instant access.</p>
+        <button class="more-prompts-btn" onclick="showUpgradeModal()">Get Pro Access →</button>
     </div>
-</div>
 
-<!-- Upgrade Modal -->
-<div class="modal-overlay upgrade-modal" id="upgradeModal">
-    <div class="modal">
-        <button class="modal-close" onclick="closeUpgradeModal()">×</button>
-        
-        <div class="modal-icon">🚀</div>
-        <h2 class="modal-title">Become The <span>Operator</span></h2>
-        <p class="modal-subtitle">AI is reshaping every industry. The people who learn to operate it now will run things later.</p>
-        
-        <div class="benefits-list">
-            <div class="benefit-item">
-                <div class="benefit-icon">⚡</div>
-                <div class="benefit-content">
-                    <h4>Weekly AI Automation (Ready to Deploy)</h4>
-                    <p>Each week: one complete workflow you can copy into your tools and start using immediately. No setup required.</p>
-                </div>
+    <!-- Email Gate Modal -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeEmailModal()">×</button>
+            <div class="modal-icon">✉️</div>
+            <h2 class="modal-title">One Prompt. <span>Endless Uses.</span></h2>
+            <p class="modal-subtitle">Enter your email to copy this prompt and get weekly AI tips that save you hours.</p>
+            
+            <div class="tools-replaced">
+                <div class="tool-tag"><span class="strike">Consultant</span> <span class="arrow">→</span> Free</div>
+                <div class="tool-tag"><span class="strike">Writer</span> <span class="arrow">→</span> Free</div>
+                <div class="tool-tag"><span class="strike">Analyst</span> <span class="arrow">→</span> Free</div>
             </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">📚</div>
-                <div class="benefit-content">
-                    <h4>Full Prompt Library (New Prompts Weekly)</h4>
-                    <p>20+ battle-tested prompts for content, research, operations, and sales. New ones added every week.</p>
-                </div>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">📡</div>
-                <div class="benefit-content">
-                    <h4>AI Industry Briefings</h4>
-                    <p>When something big shifts in AI, you'll know what it means and exactly how to use it before everyone else.</p>
-                </div>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">🎓</div>
-                <div class="benefit-content">
-                    <h4>Tutorials + Implementation Guides</h4>
-                    <p>Step-by-step breakdowns that turn each tool into actual results. Not theory — execution.</p>
-                </div>
-            </div>
+            
+            <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com">
+            <button class="modal-btn" id="emailSubmitBtn" onclick="submitEmail()">
+                Get Free Access →
+            </button>
+            <p class="modal-footer">No spam. Unsubscribe anytime.</p>
         </div>
-        
-        <div class="pricing-section">
-            <div class="pricing-label">🔥 Limited: First month</div>
-            <div class="pricing-amount">$5 <span>/ month</span></div>
-            <div class="pricing-note">Then $20/month. Cancel anytime.</div>
-        </div>
-        
-        <button class="upgrade-btn" onclick="upgradeToPro()">
-            Get Pro Access →
-        </button>
-        <p class="modal-footer">Join 500+ operators already inside</p>
     </div>
-</div>
 
-<!-- Prompt Detail Modal -->
-<div class="modal-overlay prompt-modal" id="promptModal">
-    <div class="modal">
-        <button class="prompt-modal-close" id="promptModalClose">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-        <div class="prompt-modal-header">
-            <span class="prompt-modal-category" id="promptModalCategory"></span>
-            <div class="prompt-modal-title-row">
-                <span class="prompt-modal-icon" id="promptModalIcon"></span>
-                <h2 class="prompt-modal-title" id="promptModalTitle"></h2>
-            </div>
-            <p class="prompt-modal-subtitle" id="promptModalSubtitle"></p>
-        </div>
-        <div class="prompt-modal-body">
-            <div class="prompt-modal-section">
-                <h3 class="prompt-modal-section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                    Quick Info
-                </h3>
-                <div class="info-grid" id="promptModalInfoGrid"></div>
-            </div>
-            <div class="prompt-modal-section">
-                <h3 class="prompt-modal-section-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-                    The Prompt
-                </h3>
-                <div class="prompt-box">
-                    <div class="prompt-box-header">
-                        <span class="prompt-box-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            Copy & paste into Claude or ChatGPT
-                        </span>
-                        <button class="copy-prompt-btn" id="copyPromptBtn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                            Copy Prompt
-                        </button>
+    <!-- Upgrade Modal -->
+    <div class="modal-overlay upgrade-modal" id="upgradeModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeUpgradeModal()">×</button>
+            
+            <div class="modal-icon">🚀</div>
+            <h2 class="modal-title">Become The <span>Operator</span></h2>
+            <p class="modal-subtitle">AI is reshaping every industry. The people who learn to operate it now will run things later.</p>
+            
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-content">
+                        <h4>Weekly AI Automation (Ready to Deploy)</h4>
+                        <p>Each week: one complete workflow you can copy into your tools and start using immediately. No setup required.</p>
                     </div>
-                    <pre class="prompt-content" id="promptModalContent"></pre>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📚</div>
+                    <div class="benefit-content">
+                        <h4>Full Prompt Library (New Prompts Weekly)</h4>
+                        <p>20+ battle-tested prompts for content, research, operations, and sales. New ones added every week.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📡</div>
+                    <div class="benefit-content">
+                        <h4>AI Industry Briefings</h4>
+                        <p>When something big shifts in AI, you'll know what it means and exactly how to use it before everyone else.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎓</div>
+                    <div class="benefit-content">
+                        <h4>Tutorials + Implementation Guides</h4>
+                        <p>Step-by-step breakdowns that turn each tool into actual results. Not theory — execution.</p>
+                    </div>
                 </div>
             </div>
+            
+            <div class="pricing-section">
+                <div class="pricing-label">🔥 Limited: First month</div>
+                <div class="pricing-amount">$5 <span>/ month</span></div>
+                <div class="pricing-note">Then $20/month. Cancel anytime.</div>
+            </div>
+            
+            <button class="upgrade-btn" onclick="upgradeToPro()">
+                Get Pro Access →
+            </button>
+            <p class="modal-footer">Join 500+ operators already inside</p>
         </div>
-        <div class="prompt-modal-footer">
-            <div class="prompt-modal-tags" id="promptModalTags"></div>
+    </div>
+
+    <!-- Prompt Detail Modal -->
+    <div class="modal-overlay prompt-modal" id="promptModal">
+        <div class="modal">
+            <button class="prompt-modal-close" id="promptModalClose">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="prompt-modal-header">
+                <span class="prompt-modal-category" id="promptModalCategory"></span>
+                <div class="prompt-modal-title-row">
+                    <span class="prompt-modal-icon" id="promptModalIcon"></span>
+                    <h2 class="prompt-modal-title" id="promptModalTitle"></h2>
+                </div>
+                <p class="prompt-modal-subtitle" id="promptModalSubtitle"></p>
+            </div>
+            <div class="prompt-modal-body">
+                <div class="prompt-modal-section">
+                    <h3 class="prompt-modal-section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        Quick Info
+                    </h3>
+                    <div class="info-grid" id="promptModalInfoGrid"></div>
+                </div>
+                <div class="prompt-modal-section">
+                    <h3 class="prompt-modal-section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                        The Prompt
+                    </h3>
+                    <div class="prompt-box">
+                        <div class="prompt-box-header">
+                            <span class="prompt-box-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                Copy & paste into Claude or ChatGPT
+                            </span>
+                            <button class="copy-prompt-btn" id="copyPromptBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                Copy Prompt
+                            </button>
+                        </div>
+                        <pre class="prompt-content" id="promptModalContent"></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="prompt-modal-footer">
+                <div class="prompt-modal-tags" id="promptModalTags"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -771,10 +785,11 @@ function openPromptModal(id) {
     copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
     copyBtn.classList.remove('copied');
     
-    document.getElementById('promptModal').classList.add('show');
+    var overlay = document.getElementById('promptModal');
+    overlay.classList.add('show');
     
     setTimeout(function() {
-        document.getElementById('promptModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        overlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
 }
 
@@ -785,11 +800,12 @@ function closePromptModal() {
 
 function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
-    document.getElementById('emailModal').classList.add('show');
+    var overlay = document.getElementById('emailModal');
+    overlay.classList.add('show');
     document.getElementById('emailInput').focus();
     
     setTimeout(function() {
-        document.getElementById('emailModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        overlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
 }
 
@@ -799,10 +815,11 @@ function closeEmailModal() {
 }
 
 function showUpgradeModal() {
-    document.getElementById('upgradeModal').classList.add('show');
+    var overlay = document.getElementById('upgradeModal');
+    overlay.classList.add('show');
     
     setTimeout(function() {
-        document.getElementById('upgradeModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        overlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
 }
 
