@@ -600,6 +600,70 @@ const proPrompts = [
         category: "business",
         tags: ["support", "customer service", "communication"],
         icon: "💬"
+    },
+    {
+        id: 113,
+        title: "Competitor Content Analyzer",
+        description: "Analyze competitor content to identify gaps, opportunities, and winning strategies to apply.",
+        category: "research",
+        tags: ["competitive analysis", "content strategy", "gaps"],
+        icon: "🔍"
+    },
+    {
+        id: 114,
+        title: "YouTube to Blog Converter",
+        description: "Transform YouTube transcripts into polished, SEO-optimized blog posts while preserving key insights.",
+        category: "content",
+        tags: ["repurposing", "transcription", "blogging"],
+        icon: "🔄"
+    },
+    {
+        id: 115,
+        title: "Logo Concept Generator",
+        description: "Create detailed logo briefs for AI image generators with brand identity, style direction, and emotional tone.",
+        category: "creative",
+        tags: ["branding", "design", "image generation"],
+        icon: "🎨"
+    },
+    {
+        id: 116,
+        title: "Business Plan Builder",
+        description: "Create a clear, structured business plan with problem statement, target customer, USP, revenue model, and competitive analysis.",
+        category: "business",
+        tags: ["planning", "strategy", "startup"],
+        icon: "📋"
+    },
+    {
+        id: 117,
+        title: "Cold Email Writer",
+        description: "Craft personalized cold emails that get responses using proven outreach frameworks and personalization.",
+        category: "marketing",
+        tags: ["outreach", "sales", "personalization"],
+        icon: "✉️"
+    },
+    {
+        id: 118,
+        title: "Product Description Writer",
+        description: "Write compelling product descriptions that highlight benefits, overcome objections, and drive purchases.",
+        category: "content",
+        tags: ["ecommerce", "copywriting", "conversion"],
+        icon: "🛍️"
+    },
+    {
+        id: 119,
+        title: "Interview Prep Coach",
+        description: "Prepare for job interviews with tailored questions, STAR method responses, and company-specific insights.",
+        category: "productivity",
+        tags: ["career", "interviews", "preparation"],
+        icon: "🎯"
+    },
+    {
+        id: 120,
+        title: "Weekly Review System",
+        description: "Structure your weekly reviews to reflect on wins, identify patterns, and set focused priorities.",
+        category: "productivity",
+        tags: ["reflection", "planning", "habits"],
+        icon: "📅"
     }
 ];
 
@@ -708,6 +772,10 @@ function openPromptModal(id) {
     copyBtn.classList.remove('copied');
     
     document.getElementById('promptModal').classList.add('show');
+    
+    setTimeout(function() {
+        document.getElementById('promptModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
 }
 
 function closePromptModal() {
@@ -719,6 +787,10 @@ function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
     document.getElementById('emailModal').classList.add('show');
     document.getElementById('emailInput').focus();
+    
+    setTimeout(function() {
+        document.getElementById('emailModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
 }
 
 function closeEmailModal() {
@@ -728,6 +800,10 @@ function closeEmailModal() {
 
 function showUpgradeModal() {
     document.getElementById('upgradeModal').classList.add('show');
+    
+    setTimeout(function() {
+        document.getElementById('upgradeModal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
 }
 
 function closeUpgradeModal() {
