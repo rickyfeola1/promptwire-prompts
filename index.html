@@ -87,13 +87,13 @@
         .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
 
         /* Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(4px); overflow-y: auto; }
         .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .modal { background: white; border-radius: var(--radius-xl); max-width: 480px; width: 100%; padding: 32px; position: relative; animation: modalSlide 0.3s ease; }
+        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; animation: modalSlide 0.3s ease; max-height: 90vh; overflow-y: auto; margin: auto; }
         @keyframes modalSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; }
+        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; z-index: 10; }
         .modal-close:hover { background: var(--gray-200); }
         
         .modal-icon { width: 64px; height: 64px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
@@ -111,6 +111,9 @@
         
         .modal-footer { margin-top: 16px; font-size: 13px; color: var(--gray-400); text-align: center; }
 
+        /* Email Modal - Higher z-index to appear above prompt modal */
+        #emailModal { z-index: 1100; }
+        
         /* Email Modal Specific */
         .tools-replaced { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
         .tool-tag { padding: 6px 12px; background: var(--gray-100); border-radius: 100px; font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 6px; }
@@ -118,8 +121,8 @@
         .tool-tag .arrow { color: var(--blue); }
 
         /* Upgrade Modal */
-        .upgrade-modal .modal { max-width: 560px; background: var(--gray-900); color: white; }
-        .upgrade-modal .modal-close { background: rgba(255,255,255,0.1); color: white; }
+        .upgrade-modal .modal { max-width: 480px; background: var(--gray-900); color: white; max-height: 90vh; overflow-y: auto; }
+        .upgrade-modal .modal-close { background: rgba(255,255,255,0.1); color: white; z-index: 10; }
         .upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.2); }
         .upgrade-modal .modal-icon { background: var(--blue); }
         .upgrade-modal .modal-title { color: white; }
@@ -144,17 +147,17 @@
         .upgrade-modal .modal-footer { color: #717171; }
 
         /* Prompt Modal */
-        .prompt-modal .modal { max-width: 800px; padding: 0; overflow: hidden; }
-        .prompt-modal-header { padding: 32px 32px 24px; border-bottom: 2px solid var(--gray-100); position: relative; }
-        .prompt-modal-close { position: absolute; top: 24px; right: 24px; width: 40px; height: 40px; background: var(--gray-100); border: none; border-radius: 10px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; position: relative; }
+        .prompt-modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
         .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
+        .prompt-modal-header { padding: 24px 60px 20px 24px; border-bottom: 2px solid var(--gray-100); flex-shrink: 0; }
         .prompt-modal-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 14px; border-radius: 100px; display: inline-block; margin-bottom: 16px; }
         .prompt-modal-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .prompt-modal-icon { font-size: 28px; }
-        .prompt-modal-title { font-size: 28px; font-weight: 800; color: var(--gray-900); }
+        .prompt-modal-title { font-size: 22px; font-weight: 800; color: var(--gray-900); }
         .prompt-modal-subtitle { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
         
-        .prompt-modal-body { padding: 32px; }
+        .prompt-modal-body { padding: 24px; overflow-y: auto; flex: 1; }
         .prompt-modal-section { margin-bottom: 28px; }
         .prompt-modal-section:last-child { margin-bottom: 0; }
         .prompt-modal-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -178,7 +181,7 @@
         .prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
         .prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
         
-        .prompt-modal-footer { padding: 20px 32px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); }
+        .prompt-modal-footer { padding: 16px 24px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); flex-shrink: 0; }
         .prompt-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 
         @media (max-width: 768px) {
@@ -212,14 +215,14 @@
     <div class="pro-cta-banner">
         <div class="social-proof">
             <span class="dot"></span>
-            New prompts added every week
+            New automations + prompts added weekly
         </div>
-        <h3>Unlock The Full <span>Library</span></h3>
-        <p>Get access to 20+ advanced prompt templates, weekly automation workflows, and implementation guides that turn AI into real productivity gains.</p>
+        <h3>Become The <span>Operator</span></h3>
+        <p>AI is reshaping every industry. Get weekly workflows, exclusive briefings, and the full prompt library to stay ahead.</p>
         <button class="cta-btn" onclick="showUpgradeModal()">
-            Upgrade to Pro → $5 first month
+            Get Pro Access → $5 first month
         </button>
-        <div class="cta-subtext">Then $27/month. Cancel anytime.</div>
+        <div class="cta-subtext">Then $20/month. Cancel anytime.</div>
     </div>
 
     <!-- Pro Prompts Section -->
@@ -258,64 +261,57 @@
         <button class="modal-close" onclick="closeUpgradeModal()">×</button>
         
         <div class="modal-icon">🚀</div>
-        <h2 class="modal-title">Unlock <span>Pro</span> Access</h2>
-        <p class="modal-subtitle">New prompts added weekly. Get the full library plus automation workflows.</p>
+        <h2 class="modal-title">Become The <span>Operator</span></h2>
+        <p class="modal-subtitle">AI is reshaping every industry. The people who learn to operate it now will run things later.</p>
         
         <div class="benefits-list">
             <div class="benefit-item">
                 <div class="benefit-icon">⚡</div>
                 <div class="benefit-content">
-                    <h4>Weekly Deployable Automation</h4>
-                    <p>A complete AI workflow you can install into your routine. Structured prompts, setup guidance, and real examples included.</p>
-                </div>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">🧠</div>
-                <div class="benefit-content">
-                    <h4>Advanced Prompt Systems</h4>
-                    <p>Reusable prompt frameworks for operations, content, research, and lead follow-up — built to save hours, not just generate text.</p>
-                </div>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">📡</div>
-                <div class="benefit-content">
-                    <h4>Major AI Shifts, Interpreted</h4>
-                    <p>When AI changes, you'll know what it means for your work and how to position yourself ahead.</p>
-                </div>
-            </div>
-            <div class="benefit-item">
-                <div class="benefit-icon">✅</div>
-                <div class="benefit-content">
-                    <h4>Implementation Checklists</h4>
-                    <p>Clear action steps so each issue turns into execution, not just reading.</p>
+                    <h4>Weekly AI Automation (Ready to Deploy)</h4>
+                    <p>Each week: one complete workflow you can copy into your tools and start using immediately. No setup required.</p>
                 </div>
             </div>
             <div class="benefit-item">
                 <div class="benefit-icon">📚</div>
                 <div class="benefit-content">
-                    <h4>Full Prompt Library Access</h4>
-                    <p>20+ prompts now, with new ones added weekly. Never run out of AI workflows.</p>
+                    <h4>Full Prompt Library (New Prompts Weekly)</h4>
+                    <p>20+ battle-tested prompts for content, research, operations, and sales. New ones added every week.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📡</div>
+                <div class="benefit-content">
+                    <h4>AI Industry Briefings</h4>
+                    <p>When something big shifts in AI, you'll know what it means and exactly how to use it before everyone else.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">🎓</div>
+                <div class="benefit-content">
+                    <h4>Tutorials + Implementation Guides</h4>
+                    <p>Step-by-step breakdowns that turn each tool into actual results. Not theory — execution.</p>
                 </div>
             </div>
         </div>
         
         <div class="pricing-section">
-            <div class="pricing-label">🔥 First month only</div>
+            <div class="pricing-label">🔥 Limited: First month</div>
             <div class="pricing-amount">$5 <span>/ month</span></div>
-            <div class="pricing-note">Then $27/month. Cancel anytime.</div>
+            <div class="pricing-note">Then $20/month. Cancel anytime.</div>
         </div>
         
         <button class="upgrade-btn" onclick="upgradeToPro()">
-            Upgrade to Pro →
+            Get Pro Access →
         </button>
-        <p class="modal-footer">Secure payment via Stripe</p>
+        <p class="modal-footer">Join 500+ operators already inside</p>
     </div>
 </div>
 
 <!-- Prompt Detail Modal -->
 <div class="modal-overlay prompt-modal" id="promptModal">
     <div class="modal">
-        <button class="prompt-modal-close" onclick="closePromptModal()">
+        <button class="prompt-modal-close" id="promptModalClose">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </button>
         <div class="prompt-modal-header">
@@ -847,6 +843,9 @@ document.addEventListener('keydown', (e) => {
         closePromptModal();
     }
 });
+
+// Prompt modal close button
+document.getElementById('promptModalClose').addEventListener('click', closePromptModal);
 
 // ============================================
 // INITIALIZE
