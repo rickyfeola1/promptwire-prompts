@@ -947,17 +947,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFreePrompts();
     renderProPrompts();
 });
-    function sendHeightToParent() {
-    var container = document.querySelector('.container');
-    if (container) {
-        var height = container.offsetHeight + 120;
-        window.parent.postMessage({ type: 'setHeight', height: height }, '*');
-    }
-}
-setTimeout(sendHeightToParent, 500);
-window.addEventListener('resize', function() {
-    setTimeout(sendHeightToParent, 100);
-});
 </script>
 </body>
 </html>
