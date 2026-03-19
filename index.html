@@ -18,118 +18,61 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
         }
         .pw-lib-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 60px 60px;
             -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
             mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
             pointer-events: none;
         }
-        .pw-lib-inner {
-            position: relative;
-            z-index: 2;
-            max-width: 760px;
-            margin: 0 auto;
-        }
-        .pw-lib-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50px;
-            padding: 12px 28px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 32px;
-        }
-        .pw-lib-title {
-            font-size: clamp(42px, 6vw, 64px);
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-            color: #fff;
-            margin-bottom: 12px;
-        }
+        .pw-lib-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+        .pw-lib-badge { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 32px; }
+        .pw-lib-title { font-size: clamp(42px, 6vw, 64px); font-weight: 700; line-height: 1.1; letter-spacing: -0.5px; color: #fff; margin-bottom: 12px; }
         .pw-lib-title span { color: #ffffff; }
-        .pw-lib-tagline {
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 16px;
-        }
-        .pw-lib-sub {
-            font-size: 20px;
-            color: rgba(255,255,255,0.88);
-            max-width: 520px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
+        .pw-lib-tagline { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 16px; }
+        .pw-lib-sub { font-size: 20px; color: rgba(255,255,255,0.88); max-width: 520px; margin: 0 auto; line-height: 1.6; }
         @media (max-width: 600px) {
             .pw-lib-hero { padding: 72px 20px; }
             .pw-lib-title { font-size: 36px; }
             .pw-lib-sub { font-size: 17px; }
         }
 
-        /* Page wrapper — modals anchor from bottom of hero */
-        .page-wrap { position: relative; }
-
         :root {
-            --white: #ffffff;
-            --black: #000000;
-            --blue: #1292eb;
-            --blue-light: #e8f4fd;
-            --blue-dim: rgba(18,146,235,0.12);
-            --blue-hover: #0d7fd4;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
+            --white: #ffffff; --black: #000000;
+            --blue: #1292eb; --blue-light: #e8f4fd; --blue-hover: #0d7fd4;
+            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+            --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
+            --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
             --success-color: #10b981;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
+            --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--gray-900); line-height: 1.6; }
 
+        /* page-wrap is position:relative so absolute-positioned modals are contained within it */
+        .page-wrap { position: relative; }
+
         .container { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
 
-        /* Section Headers */
         .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
         .section-badge { padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        /* Free badge is now blue, not green */
         .section-badge.free { background: var(--blue); color: white; }
-        .section-badge.pro { background: var(--blue); color: white; }
+        .section-badge.pro  { background: var(--blue); color: white; }
         .section-title { font-size: 20px; font-weight: 700; color: var(--gray-900); }
 
-        /* Prompt Grid */
         .prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-bottom: 48px; }
 
-        /* Prompt Card */
         .prompt-card { background: var(--white); border: 2px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; }
-        .prompt-card:hover { border-color: var(--blue); box-shadow: 0 8px 30px rgba(18, 146, 235, 0.12); transform: translateY(-2px); }
+        .prompt-card:hover { border-color: var(--blue); box-shadow: 0 8px 30px rgba(18,146,235,0.12); transform: translateY(-2px); }
         .prompt-card.locked { opacity: 0.7; }
         .prompt-card.locked:hover { border-color: var(--gray-300); box-shadow: none; transform: none; }
 
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
         .card-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 12px; border-radius: 100px; }
         .card-badge { padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; }
-        /* Free card badge is now blue */
         .card-badge.free { background: var(--blue-light); color: var(--blue); }
-        .card-badge.pro { background: var(--blue-light); color: var(--blue); }
+        .card-badge.pro  { background: var(--blue-light); color: var(--blue); }
 
         .card-icon { width: 56px; height: 56px; background: var(--gray-100); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 28px; }
         .card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--gray-900); }
@@ -141,10 +84,7 @@
         .prompt-card.locked:hover .lock-overlay { opacity: 1; }
         .lock-icon { width: 48px; height: 48px; background: var(--gray-800); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
 
-        /* Pro CTA Section */
         .pro-cta-banner { background: var(--gray-900); border-radius: var(--radius-xl); padding: 40px; margin: 48px 0; text-align: center; color: white; }
-
-        /* More Prompts Section */
         .more-prompts-section { text-align: center; padding: 60px 24px; border: 2px dashed var(--gray-300); border-radius: var(--radius-xl); margin-top: 24px; background: var(--gray-50); }
         .more-prompts-icon { font-size: 48px; margin-bottom: 16px; }
         .more-prompts-section h3 { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
@@ -161,41 +101,26 @@
         .pro-cta-banner .cta-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
         .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
 
-        /* Modal Overlay — anchored to .page-wrap so it starts at hero bottom */
+        /* ── Modals: position absolute inside .page-wrap ──
+           scrollIntoView({block:'start'}) scrolls the overlay to the top of the viewport,
+           which lands exactly at the hero bottom since the overlay starts right after the hero. */
         .modal-overlay {
             position: absolute;
-            top: var(--hero-height, 340px);
+            top: 0;
             left: 0;
             width: 100%;
-            min-height: calc(100% - var(--hero-height, 340px));
+            min-height: 100%;
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             z-index: 1000;
             display: none;
             justify-content: center;
-            align-items: flex-start;
             padding: 40px 24px 60px;
         }
         .modal-overlay.show { display: flex; }
 
-        /* Modal rises in from below */
-        .modal {
-            background: white;
-            border-radius: var(--radius-xl);
-            max-width: 440px;
-            width: 100%;
-            padding: 32px;
-            position: relative;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-            height: fit-content;
-            margin: 0 auto;
-            animation: riseUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-        @keyframes riseUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.3); height: fit-content; }
         .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; z-index: 10; }
         .modal-close:hover { background: var(--gray-200); }
 
@@ -219,14 +144,7 @@
         .tool-tag .strike { text-decoration: line-through; color: var(--gray-400); }
         .tool-tag .arrow { color: var(--blue); }
 
-        /* ---- UPGRADE MODAL ---- */
-        .upgrade-modal .modal {
-            max-width: 480px;
-            background: #0d1117;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(18,146,235,0.1);
-        }
+        .upgrade-modal .modal { max-width: 480px; background: #0d1117; color: white; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(18,146,235,0.1); }
         .upgrade-modal .modal-close { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
         .upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.12); color: white; }
 
@@ -257,15 +175,10 @@
         .pricing-amount .per { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.4); }
         .pricing-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 5px; }
 
-        .um-scarcity { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
-        .um-scarcity-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
-        .um-scarcity-text { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); }
-
         .upgrade-btn { width: 100%; padding: 15px; background: var(--blue); border: none; border-radius: var(--radius-md); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: white; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.3px; }
         .upgrade-btn:hover { background: var(--blue-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(18,146,235,0.4); }
         .upgrade-modal .modal-footer { color: rgba(255,255,255,0.2); margin-top: 8px; }
 
-        /* Prompt Modal */
         .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; position: relative; height: fit-content; }
         .prompt-modal-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
         .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
@@ -289,9 +202,9 @@
         .prompt-box-title { font-size: 13px; font-weight: 600; color: var(--gray-400); display: flex; align-items: center; gap: 8px; }
         .prompt-box-title svg { color: var(--blue); }
         .copy-prompt-btn { display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; background: var(--blue); border: none; border-radius: 10px; color: var(--white); cursor: pointer; transition: all 0.2s ease; }
-        .copy-prompt-btn:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(18, 146, 235, 0.4); }
+        .copy-prompt-btn:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(18,146,235,0.4); }
         .copy-prompt-btn.copied { background: var(--success-color); }
-        .prompt-content { padding: 20px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--gray-300); white-space: pre-wrap; max-height: 350px; overflow-y: auto; }
+        .prompt-content { padding: 20px; font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; font-size: 13px; line-height: 1.7; color: var(--gray-300); white-space: pre-wrap; max-height: 350px; overflow-y: auto; }
         .prompt-content::-webkit-scrollbar { width: 8px; }
         .prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
         .prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
@@ -313,47 +226,50 @@
 <body>
 
 <div class="page-wrap">
-<!-- Hero -->
-<div class="pw-lib-hero" id="pwHero">
-    <div class="pw-lib-grid"></div>
-    <div class="pw-lib-inner">
-        <div class="pw-lib-badge">📝 Prompt Library</div>
-        <h1 class="pw-lib-title">Prompt Template <span>Library</span></h1>
-        <p class="pw-lib-tagline">Ready to use. Updated weekly.</p>
-        <p class="pw-lib-sub">Pre-built prompt agents that handle real work — copy, paste, and run inside ChatGPT or Claude. No setup required.</p>
-    </div>
-</div>
 
-<div class="container">
-    <div class="section-header" style="margin-top: 0;">
-        <span class="section-badge free">Free</span>
-        <h2 class="section-title">Starter Prompts</h2>
-    </div>
-    <div class="prompt-grid" id="freePromptsGrid"></div>
-
-    <div class="pro-cta-banner">
-        <div class="social-proof">
-            <span class="dot"></span>
-            New automations + prompts added weekly
+    <!-- Hero sits outside .container so modals (position:absolute in .page-wrap) start right below it -->
+    <div class="pw-lib-hero">
+        <div class="pw-lib-grid"></div>
+        <div class="pw-lib-inner">
+            <div class="pw-lib-badge">📝 Prompt Library</div>
+            <h1 class="pw-lib-title">Prompt Template <span>Library</span></h1>
+            <p class="pw-lib-tagline">Ready to use. Updated weekly.</p>
+            <p class="pw-lib-sub">Pre-built prompt agents that handle real work — copy, paste, and run inside ChatGPT or Claude. No setup required.</p>
         </div>
-        <h3>Become The <span>Operator</span></h3>
-        <p>AI is reshaping every industry. Get weekly workflows, exclusive briefings, and the full prompt library to stay ahead.</p>
-        <button class="cta-btn" onclick="showUpgradeModal()">Get Pro Access — $9 first month</button>
-        <div class="cta-subtext">Then $17.99/month. Cancel anytime.</div>
     </div>
 
-    <div class="section-header">
-        <span class="section-badge pro">Pro</span>
-        <h2 class="section-title">Advanced Prompts</h2>
-    </div>
-    <div class="prompt-grid" id="proPromptsGrid"></div>
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge free">Free</span>
+            <h2 class="section-title">Starter Prompts</h2>
+        </div>
+        <div class="prompt-grid" id="freePromptsGrid"></div>
 
-    <div class="more-prompts-section">
-        <div class="more-prompts-icon">✨</div>
-        <h3>+ More Prompts Added Weekly</h3>
-        <p>New prompt templates drop every week. Pro members get instant access.</p>
-        <button class="more-prompts-btn" onclick="showUpgradeModal()">Get Pro Access →</button>
+        <div class="pro-cta-banner">
+            <div class="social-proof"><span class="dot"></span>New automations + prompts added weekly</div>
+            <h3>Become The <span>Operator</span></h3>
+            <p>AI is reshaping every industry. Get weekly workflows, exclusive briefings, and the full prompt library to stay ahead.</p>
+            <button class="cta-btn" onclick="showUpgradeModal()">Get Pro Access — $9 first month</button>
+            <div class="cta-subtext">Then $17.99/month. Cancel anytime.</div>
+        </div>
+
+        <div class="section-header">
+            <span class="section-badge pro">Pro</span>
+            <h2 class="section-title">Advanced Prompts</h2>
+        </div>
+        <div class="prompt-grid" id="proPromptsGrid"></div>
+
+        <div class="more-prompts-section">
+            <div class="more-prompts-icon">✨</div>
+            <h3>+ More Prompts Added Weekly</h3>
+            <p>New prompt templates drop every week. Pro members get instant access.</p>
+            <button class="more-prompts-btn" onclick="showUpgradeModal()">Get Pro Access →</button>
+        </div>
     </div>
+
+    <!-- All modals are position:absolute inside .page-wrap.
+         overlay.scrollIntoView({behavior:'smooth', block:'start'}) scrolls them into view
+         starting from the top of the overlay, which sits right below the hero. -->
 
     <!-- Email Gate Modal -->
     <div class="modal-overlay" id="emailModal">
@@ -391,26 +307,11 @@
             <h2 class="um-title" style="text-align:center;">Everything you need to <span>work with AI properly.</span></h2>
             <p class="um-sub" style="text-align:center;">One subscription. Weekly workflows, a full prompt library, and plain-English briefings on what actually matters in AI.</p>
             <div class="benefits-list">
-                <div class="benefit-item">
-                    <div class="benefit-icon">⚡</div>
-                    <div class="benefit-content"><h4>One ready-to-deploy workflow every week</h4><p>Copy it into your tools and use it that day. No setup, no theory — just results.</p></div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">📚</div>
-                    <div class="benefit-content"><h4>Full prompt library, updated weekly</h4><p>Content, research, ops, sales — structured prompts that do the work you're currently doing manually.</p></div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">📡</div>
-                    <div class="benefit-content"><h4>Weekly AI briefings — what shifted and what to do</h4><p>When something changes in AI, you'll know what it means and exactly how to use it before everyone else.</p></div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">🎁</div>
-                    <div class="benefit-content"><h4>Pro resources and guides — included every month</h4><p>New resource drops added monthly. Toolkits, swipe files, and guides you'd otherwise pay for separately.</p></div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">🗂️</div>
-                    <div class="benefit-content"><h4>Full access to all past archives from day one</h4><p>Every issue, workflow, prompt, and resource — all of it available the moment you join.</p></div>
-                </div>
+                <div class="benefit-item"><div class="benefit-icon">⚡</div><div class="benefit-content"><h4>One ready-to-deploy workflow every week</h4><p>Copy it into your tools and use it that day. No setup, no theory — just results.</p></div></div>
+                <div class="benefit-item"><div class="benefit-icon">📚</div><div class="benefit-content"><h4>Full prompt library, updated weekly</h4><p>Content, research, ops, sales — structured prompts that do the work you're currently doing manually.</p></div></div>
+                <div class="benefit-item"><div class="benefit-icon">📡</div><div class="benefit-content"><h4>Weekly AI briefings — what shifted and what to do</h4><p>When something changes in AI, you'll know what it means and exactly how to use it before everyone else.</p></div></div>
+                <div class="benefit-item"><div class="benefit-icon">🎁</div><div class="benefit-content"><h4>Pro resources and guides — included every month</h4><p>New resource drops added monthly. Toolkits, swipe files, and guides you'd otherwise pay for separately.</p></div></div>
+                <div class="benefit-item"><div class="benefit-icon">🗂️</div><div class="benefit-content"><h4>Full access to all past archives from day one</h4><p>Every issue, workflow, prompt, and resource — all of it available the moment you join.</p></div></div>
             </div>
             <div class="pricing-section">
                 <div class="pricing-label">⚡ Founding Member Price</div>
@@ -453,7 +354,7 @@
                         <div class="prompt-box-header">
                             <span class="prompt-box-title">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                Copy & paste into Claude or ChatGPT
+                                Copy &amp; paste into Claude or ChatGPT
                             </span>
                             <button class="copy-prompt-btn" id="copyPromptBtn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -469,7 +370,7 @@
             </div>
         </div>
     </div>
-</div><!-- /.container -->
+
 </div><!-- /.page-wrap -->
 
 <script>
@@ -661,32 +562,28 @@ function openPromptModal(id) {
     copyBtn.onclick = function() { handleCopyPrompt(id); };
     copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
     copyBtn.classList.remove('copied');
-    document.getElementById('promptModal').classList.add('show');
-    scrollToHero();
+    const overlay = document.getElementById('promptModal');
+    overlay.classList.add('show');
+    setTimeout(() => overlay.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
 function closePromptModal() { document.getElementById('promptModal').classList.remove('show'); currentPromptId = null; }
 
 function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
-    document.getElementById('emailModal').classList.add('show');
+    const overlay = document.getElementById('emailModal');
+    overlay.classList.add('show');
     document.getElementById('emailInput').focus();
-    scrollToHero();
+    setTimeout(() => overlay.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 function closeEmailModal() { document.getElementById('emailModal').classList.remove('show'); pendingCopyPromptId = null; }
 
 function showUpgradeModal() {
-    document.getElementById('upgradeModal').classList.add('show');
-    scrollToHero();
+    const overlay = document.getElementById('upgradeModal');
+    overlay.classList.add('show');
+    setTimeout(() => overlay.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 function closeUpgradeModal() { document.getElementById('upgradeModal').classList.remove('show'); }
-
-function scrollToHero() {
-    const hero = document.getElementById('pwHero');
-    if (!hero) return;
-    const heroBottom = hero.offsetTop + hero.offsetHeight;
-    window.scrollTo({ top: heroBottom, behavior: 'smooth' });
-}
 
 function handleCopyPrompt(id) {
     if (!isLoggedIn()) { showEmailModal(id); return; }
@@ -736,20 +633,7 @@ document.getElementById('promptModal').addEventListener('click', e => { if (e.ta
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEmailModal(); closeUpgradeModal(); closePromptModal(); } });
 document.getElementById('promptModalClose').addEventListener('click', closePromptModal);
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderFreePrompts();
-    renderProPrompts();
-
-    // Set hero height CSS variable so modals anchor from below the hero
-    function setHeroHeight() {
-        const hero = document.getElementById('pwHero');
-        if (hero) {
-            document.querySelector('.page-wrap').style.setProperty('--hero-height', hero.offsetHeight + 'px');
-        }
-    }
-    setHeroHeight();
-    window.addEventListener('resize', setHeroHeight);
-});
+document.addEventListener('DOMContentLoaded', () => { renderFreePrompts(); renderProPrompts(); });
 </script>
 </body>
 </html>
