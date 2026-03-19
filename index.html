@@ -106,10 +106,10 @@
            which lands exactly at the hero bottom since the overlay starts right after the hero. */
         .modal-overlay {
             position: absolute;
-            top: 0;
+            top: var(--hero-h, 0px);
             left: 0;
             width: 100%;
-            min-height: 100%;
+            min-height: calc(100% - var(--hero-h, 0px));
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -633,7 +633,19 @@ document.getElementById('promptModal').addEventListener('click', e => { if (e.ta
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEmailModal(); closeUpgradeModal(); closePromptModal(); } });
 document.getElementById('promptModalClose').addEventListener('click', closePromptModal);
 
-document.addEventListener('DOMContentLoaded', () => { renderFreePrompts(); renderProPrompts(); });
+document.addEventListener('DOMContentLoaded', () => {
+    renderFreePrompts();
+    renderProPrompts();
+
+    function setHeroHeight() {
+        const hero = document.querySelector('.pw-lib-hero');
+        if (hero) {
+            document.querySelector('.page-wrap').style.setProperty('--hero-h', hero.offsetHeight + 'px');
+        }
+    }
+    setHeroHeight();
+    window.addEventListener('resize', setHeroHeight);
+});
 </script>
 </body>
 </html>
