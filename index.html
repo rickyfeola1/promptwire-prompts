@@ -684,8 +684,8 @@ function closeUpgradeModal() { document.getElementById('upgradeModal').classList
 function scrollToHero() {
     const hero = document.getElementById('pwHero');
     if (!hero) return;
-    const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
-    window.scrollTo({ top: heroBottom - window.innerHeight * 0.05, behavior: 'smooth' });
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    window.scrollTo({ top: heroBottom, behavior: 'smooth' });
 }
 
 function handleCopyPrompt(id) {
