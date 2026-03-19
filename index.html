@@ -662,6 +662,7 @@ function openPromptModal(id) {
     copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
     copyBtn.classList.remove('copied');
     document.getElementById('promptModal').classList.add('show');
+    scrollToHero();
 }
 
 function closePromptModal() { document.getElementById('promptModal').classList.remove('show'); currentPromptId = null; }
@@ -670,11 +671,22 @@ function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
     document.getElementById('emailModal').classList.add('show');
     document.getElementById('emailInput').focus();
+    scrollToHero();
 }
 function closeEmailModal() { document.getElementById('emailModal').classList.remove('show'); pendingCopyPromptId = null; }
 
-function showUpgradeModal() { document.getElementById('upgradeModal').classList.add('show'); }
+function showUpgradeModal() {
+    document.getElementById('upgradeModal').classList.add('show');
+    scrollToHero();
+}
 function closeUpgradeModal() { document.getElementById('upgradeModal').classList.remove('show'); }
+
+function scrollToHero() {
+    const hero = document.getElementById('pwHero');
+    if (!hero) return;
+    const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+    window.scrollTo({ top: heroBottom - window.innerHeight * 0.05, behavior: 'smooth' });
+}
 
 function handleCopyPrompt(id) {
     if (!isLoggedIn()) { showEmailModal(id); return; }
