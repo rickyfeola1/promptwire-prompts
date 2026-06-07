@@ -122,7 +122,6 @@
         .modal-footer { margin-top: 16px; font-size: 13px; color: var(--gray-400); text-align: center; }
 
         /* Email Modal - Higher z-index to appear above prompt modal */
-        #emailModal { z-index: 1100; }
         
         /* Email Modal Specific */
         .tools-replaced { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
@@ -268,27 +267,6 @@
         <button class="more-prompts-btn" onclick="showUpgradeModal()">Get Pro Access →</button>
     </div>
 
-    <!-- Email Gate Modal -->
-    <div class="modal-overlay" id="emailModal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeEmailModal()">×</button>
-            <div class="modal-icon">✉️</div>
-            <h2 class="modal-title">One Prompt. <span>Endless Uses.</span></h2>
-            <p class="modal-subtitle">Enter your email to copy this prompt and get weekly AI tips that save you hours.</p>
-            
-            <div class="tools-replaced">
-                <div class="tool-tag"><span class="strike">Consultant</span> <span class="arrow">→</span> Free</div>
-                <div class="tool-tag"><span class="strike">Writer</span> <span class="arrow">→</span> Free</div>
-                <div class="tool-tag"><span class="strike">Analyst</span> <span class="arrow">→</span> Free</div>
-            </div>
-            
-            <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com">
-            <button class="modal-btn" id="emailSubmitBtn" onclick="submitEmail()">
-                Get Free Access →
-            </button>
-            <p class="modal-footer">No spam. Unsubscribe anytime.</p>
-        </div>
-    </div>
 
     <!-- Upgrade Modal -->
     <div class="modal-overlay upgrade-modal" id="upgradeModal">
@@ -837,28 +815,6 @@ const proPrompts = [
 // STATE
 // ============================================
 let currentPromptId = null;
-let pendingCopyPromptId = null;
-
-// ============================================
-// USER STATE
-// ============================================
-function getUserState() {
-    const stored = localStorage.getItem('promptwire_user');
-    return stored ? JSON.parse(stored) : null;
-}
-
-function saveUserState(email) {
-    const state = {
-        email: email,
-        createdAt: new Date().toISOString()
-    };
-    localStorage.setItem('promptwire_user', JSON.stringify(state));
-    return state;
-}
-
-function isLoggedIn() {
-    return getUserState() !== null;
-}
 
 // ============================================
 // RENDER FUNCTIONS
@@ -968,7 +924,7 @@ function closeUpgradeModal() {
 }
 
 function scrollToModal() {
-    var overlays = ['promptModal', 'emailModal', 'upgradeModal'];
+    var overlays = ['promptModal', 'upgradeModal'];
     for (var i = 0; i < overlays.length; i++) {
         var el = document.getElementById(overlays[i]);
         if (el && el.classList.contains('show')) {
@@ -978,39 +934,10 @@ function scrollToModal() {
     }
 }
 
-var _savedScrollY = 0;
-
-function lockScroll() {
-    _savedScrollY = window.scrollY;
-    document.body.style.top = '-' + _savedScrollY + 'px';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    try {
-        var iframeTop = window.frameElement
-            ? window.frameElement.getBoundingClientRect().top + window.parent.scrollY
-            : 0;
-        window.parent.scrollTo({ top: iframeTop, behavior: 'smooth' });
-    } catch(e) {
-        window.parent.postMessage({ type: 'promptwire-modal-open' }, '*');
-    }
-}
-
-function unlockScroll() {
-    document.body.style.position = '';
-    document.body.style.width = '';
-    document.body.style.top = '';
-    window.scrollTo(0, _savedScrollY);
-}
-
 // ============================================
-// COPY & EMAIL FUNCTIONS
+// COPY FUNCTIONS
 // ============================================
 function handleCopyPrompt(id) {
-    if (!isLoggedIn()) {
-        showEmailModal(id);
-        return;
-    }
-    
     copyPromptToClipboard(id);
 }
 
@@ -1034,47 +961,6 @@ async function copyPromptToClipboard(id) {
     }
 }
 
-async function submitEmail() {
-    const emailInput = document.getElementById('emailInput');
-    const email = emailInput.value.trim();
-    const btn = document.getElementById('emailSubmitBtn');
-    
-    if (!email || !email.includes('@')) {
-        emailInput.classList.add('error');
-        return;
-    }
-    
-    emailInput.classList.remove('error');
-    btn.disabled = true;
-    btn.textContent = 'Please wait...';
-    
-    try {
-        await fetch(CONFIG.API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
-    } catch (err) {
-        console.error('Email subscribe error:', err);
-    }
-    
-    // Save user state regardless of API success
-    saveUserState(email);
-    
-    // Reset button
-    btn.disabled = false;
-    btn.textContent = 'Get Free Access →';
-    
-    // Close email modal
-    closeEmailModal();
-    
-    // Copy the prompt if there was a pending copy
-    if (pendingCopyPromptId) {
-        copyPromptToClipboard(pendingCopyPromptId);
-        pendingCopyPromptId = null;
-    }
-}
-
 function upgradeToPro() {
     window.open(CONFIG.STRIPE_LINK, '_blank');
 }
@@ -1082,19 +968,8 @@ function upgradeToPro() {
 // ============================================
 // EVENT LISTENERS
 // ============================================
-document.getElementById('emailInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') submitEmail();
-});
-
-document.getElementById('emailInput').addEventListener('input', (e) => {
-    e.target.classList.remove('error');
-});
 
 // Close modals on overlay click
-document.getElementById('emailModal').addEventListener('click', (e) => {
-    if (e.target.id === 'emailModal') closeEmailModal();
-});
-
 document.getElementById('upgradeModal').addEventListener('click', (e) => {
     if (e.target.id === 'upgradeModal') closeUpgradeModal();
 });
@@ -1106,7 +981,6 @@ document.getElementById('promptModal').addEventListener('click', (e) => {
 // Close modals on Escape
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        closeEmailModal();
         closeUpgradeModal();
         closePromptModal();
     }
