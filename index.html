@@ -99,10 +99,10 @@
         .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
 
         /* Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 24px; }
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; padding: 40px 24px; }
         .modal-overlay.show { display: flex; }
         
-        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); max-height: 90vh; overflow-y: auto; }
+        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); height: fit-content; margin: 0 auto; }
         .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; z-index: 10; }
         .modal-close:hover { background: var(--gray-200); }
         
@@ -167,7 +167,7 @@
         .upgrade-modal .modal-footer { color: rgba(255,255,255,0.2); margin-top: 8px; }
 
         /* Prompt Modal */
-        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; position: relative; max-height: 90vh; display: flex; flex-direction: column; }
+        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; position: relative; height: fit-content; }
         .prompt-modal-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
         .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
         .prompt-modal-header { padding: 24px 60px 20px 24px; border-bottom: 2px solid var(--gray-100); }
@@ -217,6 +217,7 @@
     </style>
 </head>
 <body>
+
 <div class="pw-hero">
     <div class="pw-hero-grid"></div>
     <div class="pw-hero-inner">
@@ -226,6 +227,8 @@
         <p class="pw-hero-sub">Pre-built prompt agents that handle real work. Copy, paste, and run inside ChatGPT or Claude. No setup required.</p>
     </div>
 </div>
+
+<div class="page-wrap" style="position: relative;">
 
 <div class="container">
 
@@ -935,12 +938,11 @@ function openPromptModal(id) {
     copyBtn.classList.remove('copied');
     
     document.getElementById('promptModal').classList.add('show');
-    lockScroll();
+    setTimeout(function() { scrollToModal(); }, 50);
 }
 
 function closePromptModal() {
     document.getElementById('promptModal').classList.remove('show');
-    unlockScroll();
     currentPromptId = null;
 }
 
@@ -948,27 +950,34 @@ function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
     document.getElementById('emailModal').classList.add('show');
     document.getElementById('emailInput').focus();
-    lockScroll();
+    setTimeout(function() { scrollToModal(); }, 50);
 }
 
 function closeEmailModal() {
     document.getElementById('emailModal').classList.remove('show');
-    unlockScroll();
     pendingCopyPromptId = null;
 }
 
 function showUpgradeModal() {
     document.getElementById('upgradeModal').classList.add('show');
-    lockScroll();
+    setTimeout(function() { scrollToModal(); }, 50);
 }
 
 function closeUpgradeModal() {
     document.getElementById('upgradeModal').classList.remove('show');
-    unlockScroll();
 }
 
-// Scroll lock: saves position, fixes body, and tells parent page to scroll
-// the iframe to the top of its viewport so the fixed modal is visible
+function scrollToModal() {
+    var overlays = ['promptModal', 'emailModal', 'upgradeModal'];
+    for (var i = 0; i < overlays.length; i++) {
+        var el = document.getElementById(overlays[i]);
+        if (el && el.classList.contains('show')) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            break;
+        }
+    }
+}
+
 var _savedScrollY = 0;
 
 function lockScroll() {
@@ -976,14 +985,12 @@ function lockScroll() {
     document.body.style.top = '-' + _savedScrollY + 'px';
     document.body.style.position = 'fixed';
     document.body.style.width = '100%';
-    // Tell the parent page to scroll so the top of this iframe is visible
     try {
         var iframeTop = window.frameElement
             ? window.frameElement.getBoundingClientRect().top + window.parent.scrollY
             : 0;
         window.parent.scrollTo({ top: iframeTop, behavior: 'smooth' });
     } catch(e) {
-        // cross-origin fallback: postMessage
         window.parent.postMessage({ type: 'promptwire-modal-open' }, '*');
     }
 }
@@ -1131,5 +1138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProPrompts();
 });
 </script>
+</div><!-- /.page-wrap -->
 </body>
 </html>
