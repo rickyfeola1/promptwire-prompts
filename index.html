@@ -935,18 +935,12 @@ function openPromptModal(id) {
     copyBtn.classList.remove('copied');
     
     document.getElementById('promptModal').classList.add('show');
-    document.body.style.top = '-' + window.scrollY + 'px';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
+    lockScroll();
 }
 
 function closePromptModal() {
     document.getElementById('promptModal').classList.remove('show');
-    var scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.width = '';
-    document.body.style.top = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    unlockScroll();
     currentPromptId = null;
 }
 
@@ -954,35 +948,51 @@ function showEmailModal(promptId) {
     pendingCopyPromptId = promptId;
     document.getElementById('emailModal').classList.add('show');
     document.getElementById('emailInput').focus();
-    document.body.style.top = '-' + window.scrollY + 'px';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
+    lockScroll();
 }
 
 function closeEmailModal() {
     document.getElementById('emailModal').classList.remove('show');
-    var scrollY = document.body.style.top;
-    document.body.style.position = '';
-    document.body.style.width = '';
-    document.body.style.top = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    unlockScroll();
     pendingCopyPromptId = null;
 }
 
 function showUpgradeModal() {
     document.getElementById('upgradeModal').classList.add('show');
-    document.body.style.top = '-' + window.scrollY + 'px';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
+    lockScroll();
 }
 
 function closeUpgradeModal() {
     document.getElementById('upgradeModal').classList.remove('show');
-    var scrollY = document.body.style.top;
+    unlockScroll();
+}
+
+// Scroll lock: saves position, fixes body, and tells parent page to scroll
+// the iframe to the top of its viewport so the fixed modal is visible
+var _savedScrollY = 0;
+
+function lockScroll() {
+    _savedScrollY = window.scrollY;
+    document.body.style.top = '-' + _savedScrollY + 'px';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    // Tell the parent page to scroll so the top of this iframe is visible
+    try {
+        var iframeTop = window.frameElement
+            ? window.frameElement.getBoundingClientRect().top + window.parent.scrollY
+            : 0;
+        window.parent.scrollTo({ top: iframeTop, behavior: 'smooth' });
+    } catch(e) {
+        // cross-origin fallback: postMessage
+        window.parent.postMessage({ type: 'promptwire-modal-open' }, '*');
+    }
+}
+
+function unlockScroll() {
     document.body.style.position = '';
     document.body.style.width = '';
     document.body.style.top = '';
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    window.scrollTo(0, _savedScrollY);
 }
 
 // ============================================
