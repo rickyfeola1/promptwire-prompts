@@ -902,18 +902,6 @@ function closePromptModal() {
     currentPromptId = null;
 }
 
-function showEmailModal(promptId) {
-    pendingCopyPromptId = promptId;
-    document.getElementById('emailModal').classList.add('show');
-    document.getElementById('emailInput').focus();
-    setTimeout(function() { scrollToModal(); }, 50);
-}
-
-function closeEmailModal() {
-    document.getElementById('emailModal').classList.remove('show');
-    pendingCopyPromptId = null;
-}
-
 function showUpgradeModal() {
     document.getElementById('upgradeModal').classList.add('show');
     setTimeout(function() { scrollToModal(); }, 50);
@@ -944,20 +932,38 @@ function handleCopyPrompt(id) {
 async function copyPromptToClipboard(id) {
     const prompt = freePrompts.find(p => p.id === id);
     if (!prompt) return;
-    
+
+    const btn = document.getElementById('copyPromptBtn');
+
+    // Try modern clipboard API first, fall back to execCommand for iframes
+    let success = false;
     try {
         await navigator.clipboard.writeText(prompt.prompt);
-        
-        const btn = document.getElementById('copyPromptBtn');
+        success = true;
+    } catch (err) {
+        // Fallback for iframe/non-secure contexts
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = prompt.prompt;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            success = document.execCommand('copy');
+            document.body.removeChild(textarea);
+        } catch (e) {
+            console.error('Copy failed:', e);
+        }
+    }
+
+    if (success) {
         btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
         btn.classList.add('copied');
-        
         setTimeout(() => {
             btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
             btn.classList.remove('copied');
         }, 2000);
-    } catch (err) {
-        console.error('Failed to copy:', err);
     }
 }
 
