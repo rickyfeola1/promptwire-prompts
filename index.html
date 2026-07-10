@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Prompt Template Library - PromptWire AI</title>
+    <title>Workflow Template Library - PromptWire AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         @font-face { font-family: 'Futura'; src: local('Futura Extra Bold'); font-weight: 800; font-style: italic; }
@@ -220,11 +220,10 @@
 <div class="pw-hero">
     <div class="pw-hero-grid"></div>
     <div class="pw-hero-inner">
-        <div class="pw-hero-badge">📝 Prompt Library</div>
-        <h1 class="pw-hero-title">Prompt Template <span>Library</span></h1>
-        <p class="pw-hero-tagline">Ready to use. Updated weekly.</p>
-        <p class="pw-hero-sub">Ready-to-run workflows covering the tasks you are still 
-doing manually. Replaces paid AI tools doing one job each.</p>
+        <div class="pw-hero-badge">📝 Workflow Library</div>
+        <h1 class="pw-hero-title">Workflow Template <span>Library</span></h1>
+        <p class="pw-hero-tagline">Ready to run. Updated Weekly.</p>
+        <p class="pw-hero-sub">Ready-to-run workflows & agents covering the tasks you are still doing manually. Replaces paid AI tools doing one job each.</p>
     </div>
 </div>
 
@@ -235,20 +234,16 @@ doing manually. Replaces paid AI tools doing one job each.</p>
     <!-- Free Prompts Section -->
     <div class="section-header">
         <span class="section-badge free">Free</span>
-        <h2 class="section-title">Starter Prompts</h2>
+        <h2 class="section-title">Starter Workflows</h2>
     </div>
     <div class="prompt-grid" id="freePromptsGrid"></div>
 
     <!-- Pro CTA Banner -->
     <div class="pro-cta-banner">
-        <div class="social-proof">
-            <span class="dot"></span>
-            New automations + prompts added weekly
-        </div>
         <h3>Stop Paying For Tools That Do <span>One Thing</span></h3>
         <p>Jasper, Surfer, Copy.ai, and a dozen other tools charge $50 to $150 a month each. Pro gives you the same outputs, plus weekly workflows and AI briefings, for less than the cost of one of them.</p>
         <button class="cta-btn" onclick="showUpgradeModal()">
-            Get Pro Access, $9 first month
+            Try Pro free for 7 days
         </button>
         <div class="cta-subtext">Then $17.99/month. Cancel anytime.</div>
     </div>
@@ -256,16 +251,16 @@ doing manually. Replaces paid AI tools doing one job each.</p>
     <!-- Pro Prompts Section -->
     <div class="section-header">
         <span class="section-badge pro">Pro</span>
-        <h2 class="section-title">Advanced Prompts</h2>
+        <h2 class="section-title">Advanced Workflows</h2>
     </div>
     <div class="prompt-grid" id="proPromptsGrid"></div>
     
     <!-- More Prompts Coming -->
     <div class="more-prompts-section">
         <div class="more-prompts-icon">✨</div>
-        <h3>+ More Prompts Added Weekly</h3>
-        <p>New prompt templates drop every week. Pro members get instant access.</p>
-        <button class="more-prompts-btn" onclick="showUpgradeModal()">Get Pro Access →</button>
+        <h3>More in the Pro Library</h3>
+        <p>A new workflow is added to the Pro library every Thursday. Pro members get instant access to all of them.</p>
+        <button class="more-prompts-btn" onclick="showUpgradeModal()">Try Pro free for 7 days →</button>
     </div>
 
 
@@ -281,8 +276,8 @@ doing manually. Replaces paid AI tools doing one job each.</p>
                 </div>
                 <div class="vr-arrow">&#8594;</div>
                 <div class="vr-right">
-                    <div class="vr-price">$9</div>
-                    <div class="vr-price-sub">first month</div>
+                    <div class="vr-price">$0</div>
+                    <div class="vr-price-sub">for 7 days</div>
                 </div>
             </div>
 
@@ -328,15 +323,15 @@ doing manually. Replaces paid AI tools doing one job each.</p>
             </div>
 
             <div class="pricing-section">
-                <div class="pricing-label">&#9889; Founding Member Price</div>
-                <div class="pricing-amount"><sup>$</sup>9 <span class="per">/ first month</span></div>
+                <div class="pricing-label">&#9889; 7 Day Free Trial</div>
+                <div class="pricing-amount"><sup>$</sup>0 <span class="per">/ for 7 days</span></div>
                 <div class="pricing-note">Then $17.99/month. Cancel anytime from your account settings.</div>
             </div>
 
             <button class="upgrade-btn" onclick="upgradeToPro()">
-                Get Pro Access, $9 First Month &#8594;
+                Try Pro Free for 7 Days &#8594;
             </button>
-            <p class="modal-footer">Instant access. Cancel anytime.</p>
+            <p class="modal-footer">No charge today. Cancel before day 7 and pay nothing.</p>
         </div>
     </div>
 
@@ -394,7 +389,7 @@ doing manually. Replaces paid AI tools doing one job each.</p>
 // CONFIGURATION
 // ============================================
 const CONFIG = {
-    STRIPE_LINK: 'https://www.promptwireai.com/upgrade?offer_id=59db772f-7f31-4459-9fa2-adc360246dc1',
+    STRIPE_LINK: 'https://www.promptwireai.com/upgrade?offer_id=053e320d-8698-4148-bf12-bdd8e740ebb3',
     API_URL: '/api/subscribe'
 };
 
@@ -534,10 +529,126 @@ Commands:
 • draft — turn the outline into prose
 
 Stay modular. Don't over-structure too soon.`
+    },
+    {
+        id: 5,
+        title: "Client Proposal Builder",
+        description: "Turn a project brief into a structured proposal with scope, timeline, pricing rationale, and a covering email ready to send.",
+        category: "sales",
+        tags: ["proposals", "client work", "sales"],
+        icon: "📄",
+        whatItDoes: "Builds a complete client proposal and covering email from your project brief",
+        bestFor: "Consultants, freelancers, agencies, service providers",
+        inputsNeeded: "Project brief, client details, budget range, timeline",
+        prompt: `You are a senior consultant writing a client proposal.
+
+Project brief: [DESCRIBE THE PROJECT]
+Client: [CLIENT NAME AND INDUSTRY]
+Budget range: [BUDGET]
+Timeline: [DESIRED TIMELINE]
+
+Write a professional proposal including:
+1. Executive summary (3 sentences)
+2. Scope of work (bullet points)
+3. Timeline with milestones
+4. Investment breakdown with rationale
+5. Next steps
+
+Then write a short covering email to send it.
+Professional and confident. Not salesy.`
+    },
+    {
+        id: 6,
+        title: "Weekly Content Planner",
+        description: "Turn one topic into a full week of content across every platform. Posts, captions, and angles planned in minutes.",
+        category: "content",
+        tags: ["content planning", "social media", "calendar"],
+        icon: "📅",
+        whatItDoes: "Plans a full week of platform-specific content from a single topic",
+        bestFor: "Creators, marketers, founders building an audience",
+        inputsNeeded: "Topic, target audience, brand tone",
+        prompt: `You are a content strategist.
+
+Topic: [YOUR TOPIC]
+Audience: [YOUR AUDIENCE]
+Brand tone: [DESCRIBE YOUR TONE]
+
+Create a 7-day content plan with:
+- One LinkedIn post per day (150 words max)
+- One X post per day (under 280 characters)
+- One Instagram caption with 5 hashtags
+- One email subject line for Thursday
+
+Group by day. Make each piece stand alone.
+Keep the core message consistent across platforms.`
     }
 ];
 
 const proPrompts = [
+    {
+        id: 131,
+        title: "Morning Ad Audit",
+        description: "Pull live campaign data every morning, flag fatiguing creatives, surface top performers, and get the one action to take today.",
+        category: "marketing",
+        tags: ["Meta ads", "Facebook ads", "ROAS"],
+        icon: "📣"
+    },
+    {
+        id: 133,
+        title: "Computer Use Task Scoper",
+        description: "Turn a vague computer task into a precise specification before Claude touches anything on your machine.",
+        category: "productivity",
+        tags: ["computer use", "automation", "Dispatch"],
+        icon: "🖥️"
+    },
+    {
+        id: 121,
+        title: "Full Website Builder",
+        description: "Claude interviews you before writing a single line of code, then builds your complete website from scratch.",
+        category: "business",
+        tags: ["website", "HTML", "web design"],
+        icon: "🌐"
+    },
+    {
+        id: 125,
+        title: "Buying Signal Lead Finder",
+        description: "Find warm leads using hiring signals, funding announcements, and competitor complaints about your rivals.",
+        category: "business",
+        tags: ["lead generation", "sales", "prospecting"],
+        icon: "🎯"
+    },
+    {
+        id: 127,
+        title: "Voice Capture",
+        description: "Analyze 3-5 samples of your own writing to generate a detailed voice-profile.md Claude can reference on any task.",
+        category: "content",
+        tags: ["voice", "writing style", "AI writing"],
+        icon: "🎙️"
+    },
+    {
+        id: 130,
+        title: "Presentation Blueprint Generator",
+        description: "Turn a vague presentation idea into a complete strategic plan and slide-by-slide roadmap before writing a word.",
+        category: "productivity",
+        tags: ["presentation", "slides", "pitch deck"],
+        icon: "🎯"
+    },
+    {
+        id: 134,
+        title: "Ad Creative Brief Generator",
+        description: "Turn the winning pattern from your ad audit into 3 structured creative briefs ready to hand off to a designer.",
+        category: "marketing",
+        tags: ["Meta ads", "creative briefs", "copywriting"],
+        icon: "🎬"
+    },
+    {
+        id: 132,
+        title: "Pitch Deck Builder",
+        description: "Build a structured 10-slide pitch deck in Claude. Fill in the context and Claude builds it ready to export.",
+        category: "business",
+        tags: ["pitch deck", "fundraising", "presentations"],
+        icon: "📊"
+    },
     {
         id: 101,
         title: "Market Research Agent",
@@ -699,14 +810,6 @@ const proPrompts = [
         icon: "📅"
     },
     {
-        id: 121,
-        title: "Full Website Builder",
-        description: "Claude interviews you before writing a single line of code, then builds your complete website from scratch.",
-        category: "business",
-        tags: ["website", "HTML", "web design"],
-        icon: "🌐"
-    },
-    {
         id: 122,
         title: "LinkedIn Profile Audit",
         description: "Get an honest score across 5 dimensions with specific fixes before you write a single word of new content.",
@@ -731,28 +834,12 @@ const proPrompts = [
         icon: "📈"
     },
     {
-        id: 125,
-        title: "Buying Signal Lead Finder",
-        description: "Find warm leads using hiring signals, funding announcements, and competitor complaints about your rivals.",
-        category: "business",
-        tags: ["lead generation", "sales", "prospecting"],
-        icon: "🎯"
-    },
-    {
         id: 126,
         title: "Pre-Call Deal Closer",
         description: "60-second sales call prep with email history, company news, competitor intel, and a closing angle ready to go.",
         category: "business",
         tags: ["sales", "deal closing", "prospecting"],
         icon: "🤝"
-    },
-    {
-        id: 127,
-        title: "Voice Capture",
-        description: "Analyze 3-5 samples of your own writing to generate a detailed voice-profile.md Claude can reference on any task.",
-        category: "content",
-        tags: ["voice", "writing style", "AI writing"],
-        icon: "🎙️"
     },
     {
         id: 128,
@@ -769,46 +856,6 @@ const proPrompts = [
         category: "business",
         tags: ["revenue", "business audit", "ROI"],
         icon: "💸"
-    },
-    {
-        id: 130,
-        title: "Presentation Blueprint Generator",
-        description: "Turn a vague presentation idea into a complete strategic plan and slide-by-slide roadmap before writing a word.",
-        category: "productivity",
-        tags: ["presentation", "slides", "pitch deck"],
-        icon: "🎯"
-    },
-    {
-        id: 131,
-        title: "Morning Ad Audit",
-        description: "Pull live campaign data every morning, flag fatiguing creatives, surface top performers, and get the one action to take today.",
-        category: "marketing",
-        tags: ["Meta ads", "Facebook ads", "ROAS"],
-        icon: "📣"
-    },
-    {
-        id: 132,
-        title: "Pitch Deck Builder",
-        description: "Build a structured 10-slide pitch deck in Claude. Fill in the context and Claude builds it ready to export.",
-        category: "business",
-        tags: ["pitch deck", "fundraising", "presentations"],
-        icon: "📊"
-    },
-    {
-        id: 133,
-        title: "Computer Use Task Scoper",
-        description: "Turn a vague computer task into a precise specification before Claude touches anything on your machine.",
-        category: "productivity",
-        tags: ["computer use", "automation", "Dispatch"],
-        icon: "🖥️"
-    },
-    {
-        id: 134,
-        title: "Ad Creative Brief Generator",
-        description: "Turn the winning pattern from your ad audit into 3 structured creative briefs ready to hand off to a designer.",
-        category: "marketing",
-        tags: ["Meta ads", "creative briefs", "copywriting"],
-        icon: "🎬"
     }
 ];
 
