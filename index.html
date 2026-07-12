@@ -1,387 +1,966 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workflow Template Library - PromptWire AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        @font-face { font-family: 'Futura'; src: local('Futura Extra Bold'); font-weight: 800; font-style: italic; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Library - PromptWire AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        /* Hero */
-        .pw-hero { background: linear-gradient(135deg, #171717 0%, #1292eb 100%); padding: 100px 24px; text-align: center; position: relative; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
-        .pw-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%); mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%); pointer-events: none; }
-        .pw-hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
-        .pw-hero-badge { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 32px; }
-        .pw-hero-title { font-family: 'Futura', 'Trebuchet MS', sans-serif; font-size: clamp(42px, 6vw, 64px); font-weight: 800; font-style: italic; line-height: 1.1; color: #fff; margin-bottom: 12px; }
-        .pw-hero-title span { color: #ffffff; }
-        .pw-hero-tagline { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 16px; }
-        .pw-hero-sub { font-size: 20px; color: rgba(255,255,255,0.88); max-width: 520px; margin: 0 auto; line-height: 1.6; }
-        @media (max-width: 600px) { .pw-hero { padding: 72px 20px; } .pw-hero-title { font-size: 36px; } .pw-hero-sub { font-size: 17px; } }
-        
-        :root {
-            --white: #ffffff;
-            --black: #000000;
-            --blue: #1292eb;
-            --blue-light: #e8f4fd;
-            --blue-hover: #0d7fd4;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --success-color: #10b981;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-        }
+<!--
+  ===========================================================================
+  CHANGE LOG
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--gray-900); line-height: 1.6; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+  FONTS FIXED. The page used Inter plus @font-face { src: local('Futura') },
+  which only resolves if the visitor already has Futura installed. On Windows
+  that is nobody, so most of your traffic was seeing Trebuchet MS italic.
+  Now Barlow Condensed + DM Sans, same as every other page on the site.
 
-        /* Section Headers */
-        .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-        .section-badge { padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .section-badge.free { background: var(--blue); color: white; }
-        .section-badge.pro { background: var(--blue); color: white; }
-        .section-title { font-size: 20px; font-weight: 700; color: var(--gray-900); }
+  THE UPGRADE MODAL IS NOW CONTEXTUAL. Clicking a locked card used to open a
+  generic pitch about Jasper and Copy.ai. It now opens a modal headed with
+  the workflow they actually clicked, its category, its description, its
+  tags, and a locked prompt panel, then the Pro case, then one CTA. That is
+  the highest-intent moment on the page and it was being spent on stock copy.
 
-        /* Prompt Grid */
-        .prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-bottom: 48px; }
+  SEARCH AND FILTERS ADDED. 40 workflows were on the page with no way to
+  search them and no count anywhere. The size of the library is the product.
+  All counts are computed from the data at runtime, so they never go stale.
 
-        /* Prompt Card */
-        .prompt-card { background: var(--white); border: 2px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; }
-        .prompt-card:hover { border-color: var(--blue); box-shadow: 0 8px 30px rgba(18, 146, 235, 0.12); transform: translateY(-2px); }
-        .prompt-card.locked { opacity: 0.7; }
-        .prompt-card.locked:hover { border-color: var(--gray-300); box-shadow: none; transform: none; }
-        
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-        .card-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 12px; border-radius: 100px; }
-        .card-badge { padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; }
-        .card-badge.free { background: var(--blue-light); color: var(--blue); }
-        .card-badge.pro { background: var(--blue-light); color: var(--blue); }
-        
-        .card-icon { width: 56px; height: 56px; background: var(--gray-100); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 28px; }
-        .card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--gray-900); }
-        .card-description { font-size: 14px; color: var(--gray-500); margin-bottom: 20px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .card-tag { padding: 6px 12px; font-size: 12px; font-weight: 500; background: var(--gray-100); border-radius: 100px; color: var(--gray-600); }
+  MODAL CLIPPING FIXED. sendHeightToParent only fired on load and resize,
+  never when a modal opened, so tall modals got cut off inside the Beehiiv
+  iframe. It now fires on open, close and filter.
 
-        .lock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.6); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
-        .prompt-card.locked:hover .lock-overlay { opacity: 1; }
-        .lock-icon { width: 48px; height: 48px; background: var(--gray-800); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+  NO EMOJI IN EITHER MODAL, as requested. Card icons kept.
 
-        /* Pro CTA Section */
-        .pro-cta-banner { background: var(--gray-900); border-radius: var(--radius-xl); padding: 40px; margin: 48px 0; text-align: center; color: white; }
+  REMOVED: the "📝 Workflow Library" badge pill above the hero title, the
+  emoji icon squares inside both modals, the ✨ dashed-border box, the pill
+  shapes on the small tags.
 
-        /* More Prompts Section */
-        .more-prompts-section { text-align: center; padding: 60px 24px; border: 2px dashed var(--gray-300); border-radius: var(--radius-xl); margin-top: 24px; background: var(--gray-50); }
-        .more-prompts-icon { font-size: 48px; margin-bottom: 16px; }
-        .more-prompts-section h3 { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
-        .more-prompts-section p { font-size: 15px; color: var(--gray-500); margin-bottom: 24px; }
-        .more-prompts-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--blue); border: none; border-radius: 100px; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
-        .more-prompts-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
-        .pro-cta-banner .social-proof { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .pro-cta-banner .social-proof .dot { width: 8px; height: 8px; background: var(--success-color); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .pro-cta-banner h3 { font-family: 'Futura', sans-serif; font-size: 28px; font-weight: 800; font-style: italic; margin-bottom: 12px; }
-        .pro-cta-banner h3 span { color: var(--blue); }
-        .pro-cta-banner > p { font-size: 15px; color: #a1a1a1; max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
-        .pro-cta-banner .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: var(--blue); border: none; border-radius: 100px; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
-        .pro-cta-banner .cta-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
-        .pro-cta-banner .cta-subtext { margin-top: 12px; font-size: 13px; color: #717171; }
+  CHANGED: upgradeToPro now uses window.top.location.href instead of
+  window.open(_blank), which gets popup-blocked in some iframe contexts.
 
-        /* Modal Styles */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; display: none; justify-content: center; padding: 40px 24px; }
-        .modal-overlay.show { display: flex; }
-        
-        .modal { background: white; border-radius: var(--radius-xl); max-width: 440px; width: 100%; padding: 32px; position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3); height: fit-content; margin: 0 auto; }
-        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-500); transition: all 0.2s; z-index: 10; }
-        .modal-close:hover { background: var(--gray-200); }
-        
-        .modal-icon { width: 64px; height: 64px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
-        .modal-title { font-family: 'Futura', sans-serif; font-size: 24px; font-weight: 800; font-style: italic; text-align: center; margin-bottom: 8px; }
-        .modal-title span { color: var(--blue); }
-        .modal-subtitle { font-size: 15px; color: var(--gray-500); text-align: center; margin-bottom: 24px; line-height: 1.6; }
-        
-        .modal-input { width: 100%; padding: 14px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-md); font-family: inherit; font-size: 15px; margin-bottom: 16px; transition: border-color 0.3s; }
-        .modal-input:focus { outline: none; border-color: var(--blue); }
-        .modal-input.error { border-color: #dc2626; }
-        
-        .modal-btn { width: 100%; padding: 14px; background: var(--blue); border: none; border-radius: var(--radius-md); font-family: inherit; font-size: 15px; font-weight: 600; color: white; cursor: pointer; transition: all 0.3s; }
-        .modal-btn:hover { background: var(--blue-hover); }
-        .modal-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        
-        .modal-footer { margin-top: 16px; font-size: 13px; color: var(--gray-400); text-align: center; }
+  KEPT: all card emoji, the free/pro split, the copy button and its
+  execCommand fallback, Escape to close, overlay click to close, the
+  postMessage height loop, CONFIG.STRIPE_LINK.
+  ===========================================================================
+  VERIFY BEFORE PUBLISHING: search for data-check
+    data-check="competitor-pricing"  the Jasper / Surfer / Copy.ai figures
+    data-check="price"               "$17.99 / month"
+    data-check="trial-terms"         7 days, cancel before day 7
 
-        /* Email Modal - Higher z-index to appear above prompt modal */
-        
-        /* Email Modal Specific */
-        .tools-replaced { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
-        .tool-tag { padding: 6px 12px; background: var(--gray-100); border-radius: 100px; font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 6px; }
-        .tool-tag .strike { text-decoration: line-through; color: var(--gray-400); }
-        .tool-tag .arrow { color: var(--blue); }
+  TO LIFT CONVERSION FURTHER: add a "preview" field to any pro prompt (the
+  first two or three lines of the real prompt). The modal renders it above
+  the lock automatically. Seeing the real opening lines converts far better
+  than a blurred panel. Do not invent them, paste the real ones.
+  ===========================================================================
+-->
 
-        /* Upgrade Modal */
-        .upgrade-modal .modal { max-width: 480px; background: #0d1117; color: white; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(18,146,235,0.1); }
-        .upgrade-modal .modal-close { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
-        .upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.12); color: white; }
+<style>
+:root {
+  --blue: #1292eb;
+  --blue-text: #0C6BAF;
+  --blue-light: #e8f4fd;
+  --blue-hover: #0d7fd4;
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --green: #0d8f63;
 
-        .vr-box { background: rgba(18,146,235,0.08); border: 1px solid rgba(18,146,235,0.2); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .vr-left { flex: 1; }
-        .vr-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
-        .vr-tools { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: line-through; }
-        .vr-arrow { font-size: 20px; color: #1292eb; flex-shrink: 0; }
-        .vr-right { text-align: right; flex-shrink: 0; }
-        .vr-price { font-size: 22px; font-weight: 800; color: white; }
-        .vr-price-sub { font-size: 11px; color: rgba(255,255,255,0.35); }
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-        .um-title { font-family: 'Futura', 'Trebuchet MS', sans-serif; font-size: 22px; font-weight: 800; font-style: italic; margin-bottom: 6px; color: white; }
-        .um-title span { color: #1292eb; }
-        .um-sub { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 20px; }
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+}
 
-        .benefits-list { margin-bottom: 20px; }
-        .benefit-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .benefit-item:last-child { border-bottom: none; }
-        .benefit-icon { width: 36px; height: 36px; background: rgba(18,146,235,0.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; }
-        .benefit-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; color: white; }
-        .benefit-content p { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.5; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .pricing-section { text-align: center; padding: 18px; background: rgba(255,255,255,0.04); border-radius: var(--radius-lg); margin-bottom: 16px; border: 1px solid rgba(18,146,235,0.25); }
-        .pricing-label { font-size: 12px; color: var(--blue); font-weight: 700; margin-bottom: 6px; }
-        .pricing-amount { font-size: 44px; font-weight: 800; line-height: 1; color: white; }
-        .pricing-amount sup { font-size: 20px; vertical-align: super; }
-        .pricing-amount .per { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.4); }
-        .pricing-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 5px; }
+body {
+  font-family: var(--body);
+  background: var(--white);
+  color: var(--gray-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-        .upgrade-btn { width: 100%; padding: 15px; background: var(--blue); border: none; border-radius: var(--radius-md); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: white; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.3px; }
-        .upgrade-btn:hover { background: var(--blue-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(18,146,235,0.4); }
-        .upgrade-modal .modal-footer { color: rgba(255,255,255,0.2); margin-top: 8px; }
+button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
 
-        /* Prompt Modal */
-        .prompt-modal .modal { max-width: 700px; padding: 0; overflow: hidden; position: relative; height: fit-content; }
-        .prompt-modal-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; background: var(--gray-100); border: none; border-radius: 8px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 20; }
-        .prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
-        .prompt-modal-header { padding: 24px 60px 20px 24px; border-bottom: 2px solid var(--gray-100); }
-        .prompt-modal-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); background: var(--blue-light); padding: 6px 14px; border-radius: 100px; display: inline-block; margin-bottom: 16px; }
-        .prompt-modal-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .prompt-modal-icon { font-size: 28px; }
-        .prompt-modal-title { font-size: 22px; font-weight: 800; color: var(--gray-900); }
-        .prompt-modal-subtitle { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
-        
-        .prompt-modal-body { padding: 24px; overflow-y: auto; flex: 1; }
-        .prompt-modal-section { margin-bottom: 28px; }
-        .prompt-modal-section:last-child { margin-bottom: 0; }
-        .prompt-modal-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-        .prompt-modal-section-title svg { width: 16px; height: 16px; color: var(--blue); }
-        
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-        .info-item { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; }
-        .info-item-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 8px; }
-        .info-item-value { font-size: 14px; color: var(--gray-700); line-height: 1.5; }
-        
-        .prompt-box { background: var(--gray-900); border-radius: 16px; overflow: hidden; }
-        .prompt-box-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--black); border-bottom: 1px solid var(--gray-800); }
-        .prompt-box-title { font-size: 13px; font-weight: 600; color: var(--gray-400); display: flex; align-items: center; gap: 8px; }
-        .prompt-box-title svg { color: var(--blue); }
-        .copy-prompt-btn { display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; background: var(--blue); border: none; border-radius: 10px; color: var(--white); cursor: pointer; transition: all 0.2s ease; }
-        .copy-prompt-btn:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(18, 146, 235, 0.4); }
-        .copy-prompt-btn.copied { background: var(--success-color); }
-        
-        .prompt-content { padding: 20px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--gray-300); white-space: pre-wrap; max-height: 350px; overflow-y: auto; }
-        .prompt-content::-webkit-scrollbar { width: 8px; }
-        .prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
-        .prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
-        
-        .prompt-modal-footer { padding: 16px 24px; border-top: 2px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); }
-        .prompt-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
 
-        @media (max-width: 768px) {
-            .prompt-grid { grid-template-columns: 1fr; }
-            .modal { padding: 24px; }
-            .prompt-modal-body { padding: 24px; }
-            .prompt-modal-header { padding: 24px; }
-            .info-grid { grid-template-columns: 1fr; }
-            .prompt-box-header { flex-direction: column; gap: 12px; align-items: flex-start; }
-            .copy-prompt-btn { width: 100%; justify-content: center; }
-            .prompt-modal-title { font-size: 22px; }
-        }
-    </style>
+/* ---------- HERO ---------- */
+.pw-hero {
+  background: linear-gradient(135deg, #171717 0%, #1292eb 100%);
+  padding: 88px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.pw-hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
+  mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+.pw-hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+
+.pw-hero-title {
+  font-family: var(--display);
+  font-size: clamp(46px, 6.5vw, 72px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.pw-hero-tagline {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 16px;
+}
+
+.pw-hero-sub {
+  font-size: 19px;
+  color: rgba(255,255,255,0.85);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .pw-hero { padding: 68px 20px; }
+  .pw-hero-title { font-size: 42px; }
+  .pw-hero-sub { font-size: 17px; }
+}
+
+/* ---------- SHELL ---------- */
+.container { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ---------- FILTERS ---------- */
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter-btn {
+  padding: 9px 16px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  border-radius: var(--r-sm);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.filter-btn:hover { border-color: var(--blue); color: var(--blue-text); }
+.filter-btn.active { background: var(--gray-900); border-color: var(--gray-900); color: #fff; }
+
+/* ---------- SECTION HEADERS ---------- */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+}
+
+.section-badge {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--blue);
+  color: #fff;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1;
+}
+
+.section-note { font-size: 14px; color: var(--gray-500); margin: 0 0 24px; }
+
+/* ---------- GRID + CARDS ---------- */
+.prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+  margin-bottom: 48px;
+}
+
+.prompt-card {
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent bar wipes in from the left, same component as the other pages */
+.prompt-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.prompt-card:hover {
+  border-color: rgba(18,146,235,0.4);
+  box-shadow: 0 12px 30px rgba(18,146,235,0.1);
+  transform: translateY(-3px);
+}
+.prompt-card:hover::before { transform: scaleX(1); }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Original chip, squared off from a 100px pill to 5px */
+.card-category {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue-text);
+  background: var(--blue-light);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.card-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.card-badge.free { background: var(--gray-100); color: var(--gray-600); }
+.card-badge.pro { background: var(--blue-light); color: var(--blue-text); }
+
+/* Emoji icon kept, original size */
+.card-icon {
+  width: 56px; height: 56px;
+  background: var(--gray-100);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  font-size: 28px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.card-description {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+
+.card-tag {
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 5px;
+  color: var(--gray-600);
+}
+
+.card-foot {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue-text);
+}
+.card-foot .arw { transition: transform 0.2s ease; }
+.prompt-card:hover .card-foot .arw { transform: translateX(4px); }
+
+/* Locked cards: dimmed, but the title and description stay fully readable.
+   The old version dropped opacity to 0.7 across the whole card, which made
+   the thing you are selling harder to read than the thing you give away. */
+.prompt-card.locked .card-icon { opacity: 0.55; }
+.prompt-card.locked .card-foot { color: var(--gray-500); }
+.prompt-card.locked:hover .card-foot { color: var(--blue-text); }
+
+/* ---------- PRO BANNER ---------- */
+.pro-cta-banner {
+  background: var(--gray-900);
+  border-radius: 18px;
+  padding: 44px 40px;
+  margin: 8px 0 52px;
+  text-align: center;
+  color: white;
+}
+
+.pro-cta-banner h3 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.03;
+  margin-bottom: 14px;
+}
+.pro-cta-banner h3 span { color: #5db4f0; }
+
+.pro-cta-banner > p {
+  font-size: 15.5px;
+  color: rgba(255,255,255,0.5);
+  max-width: 540px;
+  margin: 0 auto 26px;
+  line-height: 1.7;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 34px;
+  background: var(--blue);
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--body);
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.cta-btn:hover {
+  background: var(--blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(18,146,235,0.35);
+}
+
+.cta-subtext { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.35); }
+
+/* ---------- MORE IN PRO ---------- */
+.more-pro {
+  text-align: center;
+  padding: 52px 32px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 18px;
+  margin-top: 8px;
+  background: var(--gray-50);
+}
+
+.more-pro h3 {
+  font-family: var(--display);
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.more-pro p {
+  font-size: 15px;
+  color: var(--gray-500);
+  max-width: 460px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+
+.more-pro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 30px;
+  background: var(--blue);
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.more-pro-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
+
+/* ---------- EMPTY STATE ---------- */
+.empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--gray-500);
+  font-size: 15px;
+}
+.empty strong { color: var(--gray-900); }
+
+/* ---------- MODALS ---------- */
+.modal-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  padding: 40px 24px;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: white;
+  border-radius: 18px;
+  max-width: 480px;
+  width: 100%;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+  height: fit-content;
+  margin: 0 auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 34px; height: 34px;
+  background: var(--gray-100);
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+  transition: background 0.2s, color 0.2s;
+  z-index: 10;
+}
+.modal-close:hover { background: var(--gray-200); color: var(--gray-900); }
+
+/* ---------- UPGRADE MODAL (contextual) ---------- */
+.upgrade-modal .modal {
+  max-width: 520px;
+  background: #0d1117;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  overflow: hidden;
+}
+.upgrade-modal .modal-close { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
+.upgrade-modal .modal-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+.um-head {
+  padding: 30px 30px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.um-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* The workflow they actually clicked. This is the whole point. */
+.um-workflow {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.um-desc { font-size: 14.5px; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+.um-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.um-tag {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px;
+  padding: 3px 8px;
+}
+
+.um-body { padding: 26px 30px 30px; }
+
+/* Locked prompt panel. No fake prompt text, just the shape of what is behind
+   the wall. If a pro prompt has a `preview` field, the real opening lines
+   render above this instead. */
+.um-lock {
+  background: #05080d;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.um-lock-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 12px;
+}
+
+.um-preview {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #cfe3f5;
+  white-space: pre-wrap;
+  margin-bottom: 12px;
+}
+
+.um-bars { display: flex; flex-direction: column; gap: 8px; }
+.um-bar { height: 9px; border-radius: 3px; background: rgba(255,255,255,0.07); }
+.um-bar:nth-child(1) { width: 92%; }
+.um-bar:nth-child(2) { width: 78%; }
+.um-bar:nth-child(3) { width: 85%; }
+.um-bar:nth-child(4) { width: 54%; }
+
+.um-lock-note {
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #5db4f0;
+}
+
+.um-includes {
+  list-style: none;
+  margin-bottom: 24px;
+}
+
+.um-includes li {
+  position: relative;
+  padding: 11px 0 11px 22px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.82);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.um-includes li:first-child { border-top: none; padding-top: 0; }
+.um-includes li:first-child::before { top: 7px; }
+.um-includes li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 18px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #5db4f0;
+}
+
+.um-price {
+  text-align: center;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(18,146,235,0.25);
+  border-radius: var(--r-md);
+  margin-bottom: 16px;
+}
+.um-price-lab { font-size: 12px; color: #5db4f0; font-weight: 700; margin-bottom: 6px; }
+.um-price-amt { font-family: var(--display); font-size: 44px; font-weight: 900; line-height: 1; color: #fff; }
+.um-price-amt .per { font-family: var(--body); font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.4); }
+.um-price-note { font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 6px; }
+
+.upgrade-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--blue);
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--body);
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.upgrade-btn:hover {
+  background: var(--blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(18,146,235,0.4);
+}
+
+.um-foot { margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.25); text-align: center; line-height: 1.6; }
+
+/* ---------- PROMPT MODAL ---------- */
+.prompt-modal .modal { max-width: 720px; padding: 0; overflow: hidden; }
+
+.prompt-modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 36px; height: 36px;
+  background: var(--gray-100);
+  border: none;
+  border-radius: 8px;
+  color: var(--gray-500);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 20;
+}
+.prompt-modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
+
+.prompt-modal-header {
+  padding: 30px 64px 24px 30px;
+  border-bottom: 2px solid var(--gray-900);
+}
+
+.prompt-modal-category {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--blue-text);
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* No emoji in the modal, as asked. */
+.prompt-modal-title {
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.prompt-modal-subtitle { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
+
+.prompt-modal-body { padding: 26px 30px; }
+
+.prompt-modal-section { margin-bottom: 26px; }
+.prompt-modal-section:last-child { margin-bottom: 0; }
+
+.prompt-modal-section-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-400);
+  margin-bottom: 14px;
+}
+
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+
+.info-item {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--r-md);
+  padding: 16px;
+}
+
+.info-item-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  margin-bottom: 7px;
+}
+
+.info-item-value { font-size: 14px; color: var(--gray-700); line-height: 1.5; }
+
+.prompt-box { background: var(--gray-900); border-radius: var(--r-lg); overflow: hidden; }
+
+.prompt-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  background: #05080d;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.prompt-box-title { font-size: 13px; font-weight: 600; color: var(--gray-400); }
+
+.copy-prompt-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--body);
+  background: var(--blue);
+  border: none;
+  border-radius: 8px;
+  color: var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.copy-prompt-btn:hover { background: var(--blue-hover); transform: translateY(-1px); }
+.copy-prompt-btn.copied { background: var(--green); }
+
+.prompt-content {
+  padding: 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--gray-300);
+  white-space: pre-wrap;
+  max-height: 340px;
+  overflow-y: auto;
+}
+.prompt-content::-webkit-scrollbar { width: 8px; }
+.prompt-content::-webkit-scrollbar-track { background: var(--gray-800); }
+.prompt-content::-webkit-scrollbar-thumb { background: var(--gray-600); border-radius: 4px; }
+
+/* The soft upsell. It sits AFTER they have the free prompt in hand, which is
+   the only place it earns the right to appear. */
+.prompt-modal-footer {
+  padding: 20px 30px;
+  border-top: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pmf-text { font-size: 14px; color: var(--gray-600); line-height: 1.5; }
+.pmf-text strong { color: var(--gray-900); font-weight: 700; }
+
+.pmf-btn {
+  padding: 11px 20px;
+  background: var(--white);
+  border: 1.5px solid var(--blue);
+  border-radius: 8px;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.pmf-btn:hover { background: var(--blue-light); }
+
+@media (max-width: 768px) {
+  .prompt-grid { grid-template-columns: 1fr; }
+  .modal { padding: 24px; }
+  .prompt-modal-header { padding: 26px 60px 22px 22px; }
+  .prompt-modal-body { padding: 22px; }
+  .um-head { padding: 26px 22px 20px; }
+  .um-body { padding: 22px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .prompt-box-header { flex-direction: column; align-items: stretch; }
+  .copy-prompt-btn { width: 100%; justify-content: center; }
+  .prompt-modal-footer { flex-direction: column; align-items: stretch; }
+  .pmf-btn { width: 100%; }
+  .pro-cta-banner { padding: 32px 22px; }
+}
+</style>
 </head>
 <body>
 
 <div class="pw-hero">
-    <div class="pw-hero-grid"></div>
-    <div class="pw-hero-inner">
-        <div class="pw-hero-badge">📝 Workflow Library</div>
-        <h1 class="pw-hero-title">Workflow Template <span>Library</span></h1>
-        <p class="pw-hero-tagline">Ready to run. Updated Weekly.</p>
-        <p class="pw-hero-sub">Ready-to-run workflows & agents covering the tasks you are still doing manually. Replaces paid AI tools doing one job each.</p>
-    </div>
+  <div class="pw-hero-grid"></div>
+  <div class="pw-hero-inner">
+    <h1 class="pw-hero-title">Workflow Template Library</h1>
+    <p class="pw-hero-tagline">Ready to run. Updated weekly.</p>
+    <p class="pw-hero-sub">Ready-to-run workflows and agents covering the tasks you are still doing manually. Replaces paid AI tools doing one job each.</p>
+  </div>
 </div>
 
 <div class="page-wrap" style="position: relative;">
-
 <div class="container">
 
-    <!-- Free Prompts Section -->
+  <!-- CATEGORY FILTERS -->
+  <div class="filters" id="filters"></div>
+
+  <!-- FREE -->
+  <div id="freeSection">
     <div class="section-header">
-        <span class="section-badge free">Free</span>
-        <h2 class="section-title">Starter Workflows</h2>
+      <span class="section-badge">Free</span>
+      <h2 class="section-title">Starter Workflows</h2>
     </div>
+    <p class="section-note">No account, no card. Open one, copy the prompt, paste it into Claude or ChatGPT.</p>
     <div class="prompt-grid" id="freePromptsGrid"></div>
+  </div>
 
-    <!-- Pro CTA Banner -->
-    <div class="pro-cta-banner">
-        <h3>Stop Paying For Tools That Do <span>One Thing</span></h3>
-        <p>Jasper, Surfer, Copy.ai, and a dozen other tools charge $50 to $150 a month each. Pro gives you the same outputs, plus weekly workflows and AI briefings, for less than the cost of one of them.</p>
-        <button class="cta-btn" onclick="showUpgradeModal()">
-            Try Pro free for 7 days
-        </button>
-        <div class="cta-subtext">Then $17.99/month. Cancel anytime.</div>
-    </div>
+  <!-- PRO BANNER -->
+  <div class="pro-cta-banner">
+    <h3>Stop paying for tools that do <span>one thing.</span></h3>
+    <p data-check="competitor-pricing">Jasper, Surfer, Copy.ai and a dozen others charge $50 to $150 a month each. Pro gives you the same outputs, plus a new workflow every Thursday and plain-English AI briefings, for less than the cost of one of them.</p>
+    <button class="cta-btn" onclick="showUpgradeModal()">Unlock the full library</button>
+    <div class="cta-subtext" data-check="price">Free for 7 days, then $17.99 a month. Cancel anytime.</div>
+  </div>
 
-    <!-- Pro Prompts Section -->
+  <!-- PRO -->
+  <div id="proSection">
     <div class="section-header">
-        <span class="section-badge pro">Pro</span>
-        <h2 class="section-title">Advanced Workflows</h2>
+      <span class="section-badge">Pro</span>
+      <h2 class="section-title">Advanced Workflows</h2>
     </div>
+    <p class="section-note">Click any one to see what it does and what it unlocks.</p>
     <div class="prompt-grid" id="proPromptsGrid"></div>
-    
-    <!-- More Prompts Coming -->
-    <div class="more-prompts-section">
-        <div class="more-prompts-icon">✨</div>
-        <h3>+ More in the Pro Library</h3>
-        <p>A new workflow is added to the Pro library every Thursday. Pro members get instant access to all of them.</p>
-        <button class="more-prompts-btn" onclick="showUpgradeModal()">Try Pro free for 7 days →</button>
-    </div>
+  </div>
+
+  <!-- MORE IN PRO -->
+  <div class="more-pro" id="moreProBlock">
+    <h3>More in the Pro library</h3>
+    <p>These are a sample. A new workflow is added every Thursday and Pro members get instant access to all of them, plus the full back catalogue.</p>
+    <button class="more-pro-btn" onclick="showUpgradeModal()">Unlock the full library →</button>
+  </div>
+
+  <div class="empty" id="emptyState" style="display:none;">
+    No workflows in <strong id="emptyTerm"></strong>. Try another category.
+  </div>
 
 
-    <!-- Upgrade Modal -->
-    <div class="modal-overlay upgrade-modal" id="upgradeModal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeUpgradeModal()">×</button>
+  <!-- ============ UPGRADE MODAL (contextual) ============ -->
+  <div class="modal-overlay upgrade-modal" id="upgradeModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeUpgradeModal()" aria-label="Close">×</button>
 
-            <div class="vr-box">
-                <div class="vr-left">
-                    <div class="vr-label">Replaces</div>
-                    <div class="vr-tools">Jasper, Surfer, Copy.ai, research tools: $300+/mo</div>
-                </div>
-                <div class="vr-arrow">&#8594;</div>
-                <div class="vr-right">
-                    <div class="vr-price">$0</div>
-                    <div class="vr-price-sub">for 7 days</div>
-                </div>
-            </div>
+      <div class="um-head">
+        <span class="um-kicker" id="umKicker">Pro workflow</span>
+        <h2 class="um-workflow" id="umWorkflow">Unlock the full library</h2>
+        <p class="um-desc" id="umDesc">Every workflow ever published, searchable and tagged. Updated every Thursday.</p>
+        <div class="um-tags" id="umTags"></div>
+      </div>
 
-            <h2 class="um-title" style="text-align:center;">Everything you need to <span>work with AI properly.</span></h2>
-            <p class="um-sub" style="text-align:center;">One subscription. Weekly workflows, a full prompt library, and plain-English briefings on what actually matters in AI.</p>
+      <div class="um-body">
 
-            <div class="benefits-list">
-                <div class="benefit-item">
-                    <div class="benefit-icon">⚡</div>
-                    <div class="benefit-content">
-                        <h4>A new workflow every week, before most people know it exists</h4>
-                        <p>Each week you get a ready-to-use workflow built around what AI can do right now. Copy it into your tools and start replacing repetitive work that day.</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">📚</div>
-                    <div class="benefit-content">
-                        <h4>Full prompt library, growing every week</h4>
-                        <p>Content, research, ops, sales. Structured prompts that do the work you're currently doing manually, with new ones dropping every week.</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">📡</div>
-                    <div class="benefit-content">
-                        <h4>Weekly AI briefings: what shifted and what to do</h4>
-                        <p>When something changes in AI, you'll know what it actually means for your work, not just a headline. Plain English, no hype.</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">🎁</div>
-                    <div class="benefit-content">
-                        <h4>Resources and guides included every month</h4>
-                        <p>Toolkits, swipe files, and guides you'd otherwise pay for separately. New ones added monthly.</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">🗂️</div>
-                    <div class="benefit-content">
-                        <h4>Full access to every past issue from day one</h4>
-                        <p>Every workflow, prompt, and resource from the archive is available the moment you join.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pricing-section">
-                <div class="pricing-label">&#9889; 7 Day Free Trial</div>
-                <div class="pricing-amount"><sup>$</sup>0 <span class="per">/ for 7 days</span></div>
-                <div class="pricing-note">Then $17.99/month. Cancel anytime from your account settings.</div>
-            </div>
-
-            <button class="upgrade-btn" onclick="upgradeToPro()">
-                Try Pro Free for 7 Days &#8594;
-            </button>
-            <p class="modal-footer">No charge today. Cancel before day 7 and pay nothing.</p>
+        <div class="um-lock" id="umLock">
+          <div class="um-lock-label">The prompt</div>
+          <pre class="um-preview" id="umPreview" style="display:none;"></pre>
+          <div class="um-bars">
+            <div class="um-bar"></div>
+            <div class="um-bar"></div>
+            <div class="um-bar"></div>
+            <div class="um-bar"></div>
+          </div>
+          <div class="um-lock-note" id="umLockNote">Unlocks with Pro, along with the setup steps.</div>
         </div>
-    </div>
 
-    <!-- Prompt Detail Modal -->
-    <div class="modal-overlay prompt-modal" id="promptModal">
-        <div class="modal">
-            <button class="prompt-modal-close" id="promptModalClose">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <div class="prompt-modal-header">
-                <span class="prompt-modal-category" id="promptModalCategory"></span>
-                <div class="prompt-modal-title-row">
-                    <span class="prompt-modal-icon" id="promptModalIcon"></span>
-                    <h2 class="prompt-modal-title" id="promptModalTitle"></h2>
-                </div>
-                <p class="prompt-modal-subtitle" id="promptModalSubtitle"></p>
-            </div>
-            <div class="prompt-modal-body">
-                <div class="prompt-modal-section">
-                    <h3 class="prompt-modal-section-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                        Quick Info
-                    </h3>
-                    <div class="info-grid" id="promptModalInfoGrid"></div>
-                </div>
-                <div class="prompt-modal-section">
-                    <h3 class="prompt-modal-section-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-                        The Prompt
-                    </h3>
-                    <div class="prompt-box">
-                        <div class="prompt-box-header">
-                            <span class="prompt-box-title">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                Copy & paste into Claude or ChatGPT
-                            </span>
-                            <button class="copy-prompt-btn" id="copyPromptBtn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                Copy Prompt
-                            </button>
-                        </div>
-                        <pre class="prompt-content" id="promptModalContent"></pre>
-                    </div>
-                </div>
-            </div>
-            <div class="prompt-modal-footer">
-                <div class="prompt-modal-tags" id="promptModalTags"></div>
-            </div>
+        <ul class="um-includes">
+          <li>A new workflow every Thursday, before most people know it exists</li>
+          <li>The full workflow library, unlocked from day one</li>
+          <li>The full resource library and every monthly drop</li>
+          <li>Plain-English AI briefings and implementation steps</li>
+          <li>Every past issue, prompt and pack ever published</li>
+        </ul>
+
+        <div class="um-price">
+          <div class="um-price-lab">7 day free trial</div>
+          <div class="um-price-amt">$0 <span class="per">for 7 days</span></div>
+          <div class="um-price-note" data-check="price">Then $17.99 a month. Cancel anytime from your account settings.</div>
         </div>
+
+        <button class="upgrade-btn" onclick="upgradeToPro()">Start your free trial →</button>
+        <p class="um-foot" data-check="trial-terms">No charge today. Cancel before day 7 and you pay nothing.</p>
+      </div>
     </div>
+  </div>
+
+  <!-- ============ PROMPT MODAL ============ -->
+  <div class="modal-overlay prompt-modal" id="promptModal">
+    <div class="modal">
+      <button class="prompt-modal-close" id="promptModalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="prompt-modal-header">
+        <span class="prompt-modal-category" id="promptModalCategory"></span>
+        <h2 class="prompt-modal-title" id="promptModalTitle"></h2>
+        <p class="prompt-modal-subtitle" id="promptModalSubtitle"></p>
+      </div>
+
+      <div class="prompt-modal-body">
+        <div class="prompt-modal-section">
+          <h3 class="prompt-modal-section-title">Quick info</h3>
+          <div class="info-grid" id="promptModalInfoGrid"></div>
+        </div>
+
+        <div class="prompt-modal-section">
+          <h3 class="prompt-modal-section-title">The prompt</h3>
+          <div class="prompt-box">
+            <div class="prompt-box-header">
+              <span class="prompt-box-title">Paste into Claude or ChatGPT</span>
+              <button class="copy-prompt-btn" id="copyPromptBtn">Copy prompt</button>
+            </div>
+            <pre class="prompt-content" id="promptModalContent"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-modal-footer">
+        <p class="pmf-text">That one is free. <strong id="pmfCount">0</strong> more are in the Pro library, with a new one every Thursday.</p>
+        <button class="pmf-btn" onclick="closePromptModal(); showUpgradeModal();">See what Pro adds</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -389,25 +968,35 @@
 // CONFIGURATION
 // ============================================
 const CONFIG = {
-    STRIPE_LINK: 'https://www.promptwireai.com/upgrade?offer_id=053e320d-8698-4148-bf12-bdd8e740ebb3',
-    API_URL: '/api/subscribe'
+  STRIPE_LINK: 'https://www.promptwireai.com/upgrade?offer_id=053e320d-8698-4148-bf12-bdd8e740ebb3',
+  API_URL: '/api/subscribe'
 };
 
 // ============================================
 // PROMPTS DATA
+//
+// Free prompts carry the full prompt text. Pro prompts do not.
+//
+// TO LIFT CONVERSION: add a `preview` field to any pro prompt containing the
+// first two or three lines of the real prompt. The upgrade modal renders it
+// above the lock automatically. Seeing the real opening converts far better
+// than a blurred panel. Paste the real lines, do not write new ones.
+//
+//   { id: 131, title: "Morning Ad Audit", ...,
+//     preview: `You have access to my Meta Ads account.\nPull yesterday's performance for every active ad set.` }
 // ============================================
 const freePrompts = [
-    {
-        id: 1,
-        title: "Business Idea Generator",
-        description: "Analyze, cross-compare, and identify profitable online business niches based on market signals, competition, and your skills.",
-        category: "business",
-        tags: ["niche research", "validation", "strategy"],
-        icon: "💡",
-        whatItDoes: "Finds and validates profitable niche business ideas tailored to your skills and budget",
-        bestFor: "Entrepreneurs, side hustlers, anyone exploring new business ventures",
-        inputsNeeded: "Skills, interests, time availability, investment budget",
-        prompt: `You are a niche research and validation assistant. Your job is to analyze, cross-compare, and identify potentially profitable online business niches that are realistic for the user to enter based on current market signals, competition levels, and user alignment.
+  {
+    id: 1,
+    title: "Business Idea Generator",
+    description: "Analyze, cross-compare, and identify profitable online business niches based on market signals, competition, and your skills.",
+    category: "business",
+    tags: ["niche research", "validation", "strategy"],
+    icon: "💡",
+    whatItDoes: "Finds and validates profitable niche business ideas tailored to your skills and budget",
+    bestFor: "Entrepreneurs, side hustlers, anyone exploring new business ventures",
+    inputsNeeded: "Skills, interests, time availability, investment budget",
+    prompt: `You are a niche research and validation assistant. Your job is to analyze, cross-compare, and identify potentially profitable online business niches that are realistic for the user to enter based on current market signals, competition levels, and user alignment.
 
 The user is interested in starting an online business with minimal upfront investment. They want a niche that is both profitable and suited to their interests, skills, and time availability. Your goal is to help them find up to 3 validated niche options that fit these criteria.
 
@@ -420,18 +1009,18 @@ Instructions:
 6. Provide an action path for each niche.
 
 Reply with: "Please enter your online business background, skills, interests, time availability, and how much you're willing to invest, and I will start the process."`
-    },
-    {
-        id: 2,
-        title: "Blog Post Writer",
-        description: "Transform any topic into an engaging, SEO-friendly blog post with proper structure and compelling hooks.",
-        category: "content",
-        tags: ["blogging", "SEO", "writing"],
-        icon: "✍️",
-        whatItDoes: "Creates well-structured blog posts with intro hooks and CTAs",
-        bestFor: "Content marketers, bloggers, SEO specialists",
-        inputsNeeded: "Topic, target audience, desired length, key points",
-        prompt: `You are a professional blog writer. Create an engaging blog post following this structure:
+  },
+  {
+    id: 2,
+    title: "Blog Post Writer",
+    description: "Transform any topic into an engaging, SEO-friendly blog post with proper structure and compelling hooks.",
+    category: "content",
+    tags: ["blogging", "SEO", "writing"],
+    icon: "✍️",
+    whatItDoes: "Creates well-structured blog posts with intro hooks and CTAs",
+    bestFor: "Content marketers, bloggers, SEO specialists",
+    inputsNeeded: "Topic, target audience, desired length, key points",
+    prompt: `You are a professional blog writer. Create an engaging blog post following this structure:
 
 Topic: [Insert topic]
 Target audience: [Who is reading this]
@@ -447,18 +1036,18 @@ Requirements:
 6. Meta description — Write a 155-character SEO description
 
 Write in active voice. Use short paragraphs. Include transition sentences between sections.`
-    },
-    {
-        id: 3,
-        title: "Meeting Notes Processor",
-        description: "Convert raw meeting notes into organized summaries with decisions, action items, and follow-ups.",
-        category: "productivity",
-        tags: ["meetings", "notes", "action items"],
-        icon: "📝",
-        whatItDoes: "Structures messy meeting notes into clear summaries",
-        bestFor: "Project managers, team leads, anyone running meetings",
-        inputsNeeded: "Raw meeting notes or transcript",
-        prompt: `You are a meeting documentation specialist. Process these meeting notes into an organized summary.
+  },
+  {
+    id: 3,
+    title: "Meeting Notes Processor",
+    description: "Convert raw meeting notes into organized summaries with decisions, action items, and follow-ups.",
+    category: "productivity",
+    tags: ["meetings", "notes", "action items"],
+    icon: "📝",
+    whatItDoes: "Structures messy meeting notes into clear summaries",
+    bestFor: "Project managers, team leads, anyone running meetings",
+    inputsNeeded: "Raw meeting notes or transcript",
+    prompt: `You are a meeting documentation specialist. Process these meeting notes into an organized summary.
 
 Meeting notes: [Paste raw notes here]
 Meeting type: [Team sync/Client call/Planning/Review]
@@ -502,18 +1091,18 @@ For each action:
 - Pre-work for next meeting
 
 Format as a shareable document ready to send to attendees.`
-    },
-    {
-        id: 4,
-        title: "Ask-First Brainstorm Partner",
-        description: "A strategic thinking partner that pulls ideas from your head through sharp questions, then helps organize them.",
-        category: "creative",
-        tags: ["ideation", "thinking partner", "strategy"],
-        icon: "🧠",
-        whatItDoes: "Uses targeted questions to extract and structure your ideas",
-        bestFor: "Strategists, writers, anyone developing complex ideas",
-        inputsNeeded: "Your topic or challenge to brainstorm",
-        prompt: `You are my Ask-First Brainstorm Partner. Your job is to ask sharp questions to pull ideas out of my head, then help me organise and refine them — but never replace my thinking.
+  },
+  {
+    id: 4,
+    title: "Ask-First Brainstorm Partner",
+    description: "A strategic thinking partner that pulls ideas from your head through sharp questions, then helps organize them.",
+    category: "creative",
+    tags: ["ideation", "thinking partner", "strategy"],
+    icon: "🧠",
+    whatItDoes: "Uses targeted questions to extract and structure your ideas",
+    bestFor: "Strategists, writers, anyone developing complex ideas",
+    inputsNeeded: "Your topic or challenge to brainstorm",
+    prompt: `You are my Ask-First Brainstorm Partner. Your job is to ask sharp questions to pull ideas out of my head, then help me organise and refine them — but never replace my thinking.
 
 Operating Rules:
 • One question per turn
@@ -529,18 +1118,18 @@ Commands:
 • draft — turn the outline into prose
 
 Stay modular. Don't over-structure too soon.`
-    },
-    {
-        id: 5,
-        title: "Client Proposal Builder",
-        description: "Turn a project brief into a structured proposal with scope, timeline, pricing rationale, and a covering email ready to send.",
-        category: "sales",
-        tags: ["proposals", "client work", "sales"],
-        icon: "📄",
-        whatItDoes: "Builds a complete client proposal and covering email from your project brief",
-        bestFor: "Consultants, freelancers, agencies, service providers",
-        inputsNeeded: "Project brief, client details, budget range, timeline",
-        prompt: `You are a senior consultant writing a client proposal.
+  },
+  {
+    id: 5,
+    title: "Client Proposal Builder",
+    description: "Turn a project brief into a structured proposal with scope, timeline, pricing rationale, and a covering email ready to send.",
+    category: "sales",
+    tags: ["proposals", "client work", "sales"],
+    icon: "📄",
+    whatItDoes: "Builds a complete client proposal and covering email from your project brief",
+    bestFor: "Consultants, freelancers, agencies, service providers",
+    inputsNeeded: "Project brief, client details, budget range, timeline",
+    prompt: `You are a senior consultant writing a client proposal.
 
 Project brief: [DESCRIBE THE PROJECT]
 Client: [CLIENT NAME AND INDUSTRY]
@@ -556,18 +1145,18 @@ Write a professional proposal including:
 
 Then write a short covering email to send it.
 Professional and confident. Not salesy.`
-    },
-    {
-        id: 6,
-        title: "Weekly Content Planner",
-        description: "Turn one topic into a full week of content across every platform. Posts, captions, and angles planned in minutes.",
-        category: "content",
-        tags: ["content planning", "social media", "calendar"],
-        icon: "📅",
-        whatItDoes: "Plans a full week of platform-specific content from a single topic",
-        bestFor: "Creators, marketers, founders building an audience",
-        inputsNeeded: "Topic, target audience, brand tone",
-        prompt: `You are a content strategist.
+  },
+  {
+    id: 6,
+    title: "Weekly Content Planner",
+    description: "Turn one topic into a full week of content across every platform. Posts, captions, and angles planned in minutes.",
+    category: "content",
+    tags: ["content planning", "social media", "calendar"],
+    icon: "📅",
+    whatItDoes: "Plans a full week of platform-specific content from a single topic",
+    bestFor: "Creators, marketers, founders building an audience",
+    inputsNeeded: "Topic, target audience, brand tone",
+    prompt: `You are a content strategist.
 
 Topic: [YOUR TOPIC]
 Audience: [YOUR AUDIENCE]
@@ -581,489 +1170,316 @@ Create a 7-day content plan with:
 
 Group by day. Make each piece stand alone.
 Keep the core message consistent across platforms.`
-    }
+  }
 ];
 
 const proPrompts = [
-    {
-        id: 131,
-        title: "Morning Ad Audit",
-        description: "Pull live campaign data every morning, flag fatiguing creatives, surface top performers, and get the one action to take today.",
-        category: "marketing",
-        tags: ["Meta ads", "Facebook ads", "ROAS"],
-        icon: "📣"
-    },
-    {
-        id: 133,
-        title: "Computer Use Task Scoper",
-        description: "Turn a vague computer task into a precise specification before Claude touches anything on your machine.",
-        category: "productivity",
-        tags: ["computer use", "automation", "Dispatch"],
-        icon: "🖥️"
-    },
-    {
-        id: 121,
-        title: "Full Website Builder",
-        description: "Claude interviews you before writing a single line of code, then builds your complete website from scratch.",
-        category: "business",
-        tags: ["website", "HTML", "web design"],
-        icon: "🌐"
-    },
-    {
-        id: 125,
-        title: "Buying Signal Lead Finder",
-        description: "Find warm leads using hiring signals, funding announcements, and competitor complaints about your rivals.",
-        category: "business",
-        tags: ["lead generation", "sales", "prospecting"],
-        icon: "🎯"
-    },
-    {
-        id: 127,
-        title: "Voice Capture",
-        description: "Analyze 3-5 samples of your own writing to generate a detailed voice-profile.md Claude can reference on any task.",
-        category: "content",
-        tags: ["voice", "writing style", "AI writing"],
-        icon: "🎙️"
-    },
-    {
-        id: 130,
-        title: "Presentation Blueprint Generator",
-        description: "Turn a vague presentation idea into a complete strategic plan and slide-by-slide roadmap before writing a word.",
-        category: "productivity",
-        tags: ["presentation", "slides", "pitch deck"],
-        icon: "🎯"
-    },
-    {
-        id: 134,
-        title: "Ad Creative Brief Generator",
-        description: "Turn the winning pattern from your ad audit into 3 structured creative briefs ready to hand off to a designer.",
-        category: "marketing",
-        tags: ["Meta ads", "creative briefs", "copywriting"],
-        icon: "🎬"
-    },
-    {
-        id: 132,
-        title: "Pitch Deck Builder",
-        description: "Build a structured 10-slide pitch deck in Claude. Fill in the context and Claude builds it ready to export.",
-        category: "business",
-        tags: ["pitch deck", "fundraising", "presentations"],
-        icon: "📊"
-    },
-    {
-        id: 101,
-        title: "Market Research Agent",
-        description: "Conduct detailed market research using public data, search behavior, and competitor patterns to validate your idea.",
-        category: "research",
-        tags: ["validation", "competitor analysis", "market gaps"],
-        icon: "🔬"
-    },
-    {
-        id: 102,
-        title: "Background Business Operator",
-        description: "Your silent business assistant that summarizes, prioritizes, and suggests next steps for emails, notes, and messages.",
-        category: "productivity",
-        tags: ["automation", "task management", "email"],
-        icon: "⚙️"
-    },
-    {
-        id: 103,
-        title: "Social Media Content Pack",
-        description: "Generate a week's worth of social media posts across platforms from a single content piece or topic.",
-        category: "marketing",
-        tags: ["social media", "repurposing", "content calendar"],
-        icon: "📱"
-    },
-    {
-        id: 104,
-        title: "Email Sequence Builder",
-        description: "Create a complete email sequence for launches, nurturing, or sales with subject lines and CTAs.",
-        category: "marketing",
-        tags: ["email marketing", "sequences", "copywriting"],
-        icon: "📧"
-    },
-    {
-        id: 105,
-        title: "Video Script Writer",
-        description: "Transform topics into engaging video scripts with hooks, retention techniques, and clear structure.",
-        category: "content",
-        tags: ["YouTube", "video", "scriptwriting"],
-        icon: "🎬"
-    },
-    {
-        id: 106,
-        title: "Sales Copy Converter",
-        description: "Transform features into benefit-driven sales copy that converts using proven persuasion frameworks.",
-        category: "marketing",
-        tags: ["copywriting", "sales", "conversion"],
-        icon: "💰"
-    },
-    {
-        id: 107,
-        title: "SOP Creator",
-        description: "Build clear, step-by-step Standard Operating Procedures for any business process.",
-        category: "productivity",
-        tags: ["documentation", "processes", "operations"],
-        icon: "📑"
-    },
-    {
-        id: 108,
-        title: "Research Summary Agent",
-        description: "Transform lengthy documents, articles, or research into actionable summaries with key insights.",
-        category: "research",
-        tags: ["analysis", "summaries", "insights"],
-        icon: "📊"
-    },
-    {
-        id: 109,
-        title: "Content Repurposing Engine",
-        description: "Transform one piece of content into 10+ formats for maximum reach across platforms.",
-        category: "content",
-        tags: ["repurposing", "multi-platform", "efficiency"],
-        icon: "♻️"
-    },
-    {
-        id: 110,
-        title: "Prompt Generator",
-        description: "Meta-prompt that creates custom AI prompts optimized for your specific use case.",
-        category: "productivity",
-        tags: ["meta", "prompt engineering", "AI"],
-        icon: "🔧"
-    },
-    {
-        id: 111,
-        title: "Lead Magnet Creator",
-        description: "Design high-converting lead magnets with titles, outlines, and promotional copy.",
-        category: "marketing",
-        tags: ["lead generation", "email list", "content"],
-        icon: "🧲"
-    },
-    {
-        id: 112,
-        title: "Customer Support Agent",
-        description: "Handle customer inquiries with empathy, clarity, and efficient problem resolution.",
-        category: "business",
-        tags: ["support", "customer service", "communication"],
-        icon: "💬"
-    },
-    {
-        id: 113,
-        title: "Competitor Content Analyzer",
-        description: "Analyze competitor content to identify gaps, opportunities, and winning strategies to apply.",
-        category: "research",
-        tags: ["competitive analysis", "content strategy", "gaps"],
-        icon: "🔍"
-    },
-    {
-        id: 114,
-        title: "YouTube to Blog Converter",
-        description: "Transform YouTube transcripts into polished, SEO-optimized blog posts while preserving key insights.",
-        category: "content",
-        tags: ["repurposing", "transcription", "blogging"],
-        icon: "🔄"
-    },
-    {
-        id: 115,
-        title: "Logo Concept Generator",
-        description: "Create detailed logo briefs for AI image generators with brand identity, style direction, and emotional tone.",
-        category: "creative",
-        tags: ["branding", "design", "image generation"],
-        icon: "🎨"
-    },
-    {
-        id: 116,
-        title: "Business Plan Builder",
-        description: "Create a clear, structured business plan with problem statement, target customer, USP, revenue model, and competitive analysis.",
-        category: "business",
-        tags: ["planning", "strategy", "startup"],
-        icon: "📋"
-    },
-    {
-        id: 117,
-        title: "Cold Email Writer",
-        description: "Craft personalized cold emails that get responses using proven outreach frameworks and personalization.",
-        category: "marketing",
-        tags: ["outreach", "sales", "personalization"],
-        icon: "✉️"
-    },
-    {
-        id: 118,
-        title: "Product Description Writer",
-        description: "Write compelling product descriptions that highlight benefits, overcome objections, and drive purchases.",
-        category: "content",
-        tags: ["ecommerce", "copywriting", "conversion"],
-        icon: "🛍️"
-    },
-    {
-        id: 119,
-        title: "Interview Prep Coach",
-        description: "Prepare for job interviews with tailored questions, STAR method responses, and company-specific insights.",
-        category: "productivity",
-        tags: ["career", "interviews", "preparation"],
-        icon: "🎯"
-    },
-    {
-        id: 120,
-        title: "Weekly Review System",
-        description: "Structure your weekly reviews to reflect on wins, identify patterns, and set focused priorities.",
-        category: "productivity",
-        tags: ["reflection", "planning", "habits"],
-        icon: "📅"
-    },
-    {
-        id: 122,
-        title: "LinkedIn Profile Audit",
-        description: "Get an honest score across 5 dimensions with specific fixes before you write a single word of new content.",
-        category: "marketing",
-        tags: ["LinkedIn", "personal brand", "profile"],
-        icon: "🔍"
-    },
-    {
-        id: 123,
-        title: "LinkedIn DM Response System",
-        description: "Pre-written response templates for the 6 most common LinkedIn DM scenarios, ready to personalize and send.",
-        category: "marketing",
-        tags: ["LinkedIn", "networking", "outreach"],
-        icon: "💬"
-    },
-    {
-        id: 124,
-        title: "SEO Content Gap Finder",
-        description: "Find your best content opportunities using Search Console data, striking distance keywords, and competitor gaps.",
-        category: "marketing",
-        tags: ["SEO", "content strategy", "keywords"],
-        icon: "📈"
-    },
-    {
-        id: 126,
-        title: "Pre-Call Deal Closer",
-        description: "60-second sales call prep with email history, company news, competitor intel, and a closing angle ready to go.",
-        category: "business",
-        tags: ["sales", "deal closing", "prospecting"],
-        icon: "🤝"
-    },
-    {
-        id: 128,
-        title: "AI-Tell Detector",
-        description: "Review any draft for AI patterns before publishing. Flags problematic phrases, structural issues, and tone problems with specific fixes.",
-        category: "content",
-        tags: ["editing", "AI writing", "proofreading"],
-        icon: "🔎"
-    },
-    {
-        id: 129,
-        title: "Revenue Leak Finder",
-        description: "Audit any small business across 6 leak categories and calculate the exact dollar amount being lost each year.",
-        category: "business",
-        tags: ["revenue", "business audit", "ROI"],
-        icon: "💸"
-    }
+  { id: 131, title: "Morning Ad Audit", description: "Pull live campaign data every morning, flag fatiguing creatives, surface top performers, and get the one action to take today.", category: "marketing", tags: ["Meta ads", "Facebook ads", "ROAS"], icon: "📣" },
+  { id: 133, title: "Computer Use Task Scoper", description: "Turn a vague computer task into a precise specification before Claude touches anything on your machine.", category: "productivity", tags: ["computer use", "automation", "Dispatch"], icon: "🖥️" },
+  { id: 121, title: "Full Website Builder", description: "Claude interviews you before writing a single line of code, then builds your complete website from scratch.", category: "business", tags: ["website", "HTML", "web design"], icon: "🌐" },
+  { id: 125, title: "Buying Signal Lead Finder", description: "Find warm leads using hiring signals, funding announcements, and competitor complaints about your rivals.", category: "business", tags: ["lead generation", "sales", "prospecting"], icon: "🎯" },
+  { id: 127, title: "Voice Capture", description: "Analyze 3-5 samples of your own writing to generate a detailed voice-profile.md Claude can reference on any task.", category: "content", tags: ["voice", "writing style", "AI writing"], icon: "🎙️" },
+  { id: 130, title: "Presentation Blueprint Generator", description: "Turn a vague presentation idea into a complete strategic plan and slide-by-slide roadmap before writing a word.", category: "productivity", tags: ["presentation", "slides", "pitch deck"], icon: "🎯" },
+  { id: 134, title: "Ad Creative Brief Generator", description: "Turn the winning pattern from your ad audit into 3 structured creative briefs ready to hand off to a designer.", category: "marketing", tags: ["Meta ads", "creative briefs", "copywriting"], icon: "🎬" },
+  { id: 132, title: "Pitch Deck Builder", description: "Build a structured 10-slide pitch deck in Claude. Fill in the context and Claude builds it ready to export.", category: "business", tags: ["pitch deck", "fundraising", "presentations"], icon: "📊" },
+  { id: 101, title: "Market Research Agent", description: "Conduct detailed market research using public data, search behavior, and competitor patterns to validate your idea.", category: "research", tags: ["validation", "competitor analysis", "market gaps"], icon: "🔬" },
+  { id: 102, title: "Background Business Operator", description: "Your silent business assistant that summarizes, prioritizes, and suggests next steps for emails, notes, and messages.", category: "productivity", tags: ["automation", "task management", "email"], icon: "⚙️" },
+  { id: 103, title: "Social Media Content Pack", description: "Generate a week's worth of social media posts across platforms from a single content piece or topic.", category: "marketing", tags: ["social media", "repurposing", "content calendar"], icon: "📱" },
+  { id: 104, title: "Email Sequence Builder", description: "Create a complete email sequence for launches, nurturing, or sales with subject lines and CTAs.", category: "marketing", tags: ["email marketing", "sequences", "copywriting"], icon: "📧" },
+  { id: 105, title: "Video Script Writer", description: "Transform topics into engaging video scripts with hooks, retention techniques, and clear structure.", category: "content", tags: ["YouTube", "video", "scriptwriting"], icon: "🎬" },
+  { id: 106, title: "Sales Copy Converter", description: "Transform features into benefit-driven sales copy that converts using proven persuasion frameworks.", category: "marketing", tags: ["copywriting", "sales", "conversion"], icon: "💰" },
+  { id: 107, title: "SOP Creator", description: "Build clear, step-by-step Standard Operating Procedures for any business process.", category: "productivity", tags: ["documentation", "processes", "operations"], icon: "📑" },
+  { id: 108, title: "Research Summary Agent", description: "Transform lengthy documents, articles, or research into actionable summaries with key insights.", category: "research", tags: ["analysis", "summaries", "insights"], icon: "📊" },
+  { id: 109, title: "Content Repurposing Engine", description: "Transform one piece of content into 10+ formats for maximum reach across platforms.", category: "content", tags: ["repurposing", "multi-platform", "efficiency"], icon: "♻️" },
+  { id: 110, title: "Prompt Generator", description: "Meta-prompt that creates custom AI prompts optimized for your specific use case.", category: "productivity", tags: ["meta", "prompt engineering", "AI"], icon: "🔧" },
+  { id: 111, title: "Lead Magnet Creator", description: "Design high-converting lead magnets with titles, outlines, and promotional copy.", category: "marketing", tags: ["lead generation", "email list", "content"], icon: "🧲" },
+  { id: 112, title: "Customer Support Agent", description: "Handle customer inquiries with empathy, clarity, and efficient problem resolution.", category: "business", tags: ["support", "customer service", "communication"], icon: "💬" },
+  { id: 113, title: "Competitor Content Analyzer", description: "Analyze competitor content to identify gaps, opportunities, and winning strategies to apply.", category: "research", tags: ["competitive analysis", "content strategy", "gaps"], icon: "🔍" },
+  { id: 114, title: "YouTube to Blog Converter", description: "Transform YouTube transcripts into polished, SEO-optimized blog posts while preserving key insights.", category: "content", tags: ["repurposing", "transcription", "blogging"], icon: "🔄" },
+  { id: 115, title: "Logo Concept Generator", description: "Create detailed logo briefs for AI image generators with brand identity, style direction, and emotional tone.", category: "creative", tags: ["branding", "design", "image generation"], icon: "🎨" },
+  { id: 116, title: "Business Plan Builder", description: "Create a clear, structured business plan with problem statement, target customer, USP, revenue model, and competitive analysis.", category: "business", tags: ["planning", "strategy", "startup"], icon: "📋" },
+  { id: 117, title: "Cold Email Writer", description: "Craft personalized cold emails that get responses using proven outreach frameworks and personalization.", category: "marketing", tags: ["outreach", "sales", "personalization"], icon: "✉️" },
+  { id: 118, title: "Product Description Writer", description: "Write compelling product descriptions that highlight benefits, overcome objections, and drive purchases.", category: "content", tags: ["ecommerce", "copywriting", "conversion"], icon: "🛍️" },
+  { id: 119, title: "Interview Prep Coach", description: "Prepare for job interviews with tailored questions, STAR method responses, and company-specific insights.", category: "productivity", tags: ["career", "interviews", "preparation"], icon: "🎯" },
+  { id: 120, title: "Weekly Review System", description: "Structure your weekly reviews to reflect on wins, identify patterns, and set focused priorities.", category: "productivity", tags: ["reflection", "planning", "habits"], icon: "📅" },
+  { id: 122, title: "LinkedIn Profile Audit", description: "Get an honest score across 5 dimensions with specific fixes before you write a single word of new content.", category: "marketing", tags: ["LinkedIn", "personal brand", "profile"], icon: "🔍" },
+  { id: 123, title: "LinkedIn DM Response System", description: "Pre-written response templates for the 6 most common LinkedIn DM scenarios, ready to personalize and send.", category: "marketing", tags: ["LinkedIn", "networking", "outreach"], icon: "💬" },
+  { id: 124, title: "SEO Content Gap Finder", description: "Find your best content opportunities using Search Console data, striking distance keywords, and competitor gaps.", category: "marketing", tags: ["SEO", "content strategy", "keywords"], icon: "📈" },
+  { id: 126, title: "Pre-Call Deal Closer", description: "60-second sales call prep with email history, company news, competitor intel, and a closing angle ready to go.", category: "business", tags: ["sales", "deal closing", "prospecting"], icon: "🤝" },
+  { id: 128, title: "AI-Tell Detector", description: "Review any draft for AI patterns before publishing. Flags problematic phrases, structural issues, and tone problems with specific fixes.", category: "content", tags: ["editing", "AI writing", "proofreading"], icon: "🔎" },
+  { id: 129, title: "Revenue Leak Finder", description: "Audit any small business across 6 leak categories and calculate the exact dollar amount being lost each year.", category: "business", tags: ["revenue", "business audit", "ROI"], icon: "💸" }
 ];
 
 // ============================================
 // STATE
 // ============================================
-let currentPromptId = null;
+let activeCategory = 'all';
 
 // ============================================
-// RENDER FUNCTIONS
+// HELPERS
 // ============================================
-function renderFreePrompts() {
-    const grid = document.getElementById('freePromptsGrid');
-    grid.innerHTML = freePrompts.map(p => `
-        <div class="prompt-card" onclick="openPromptModal(${p.id})">
-            <div class="card-header">
-                <span class="card-category">${p.category}</span>
-                <span class="card-badge free">Free</span>
-            </div>
-            <div class="card-icon">${p.icon}</div>
-            <h3 class="card-title">${p.title}</h3>
-            <p class="card-description">${p.description}</p>
-            <div class="card-tags">
-                ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
-            </div>
-        </div>
-    `).join('');
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
 }
 
-function renderProPrompts() {
-    const grid = document.getElementById('proPromptsGrid');
-    grid.innerHTML = proPrompts.map(p => `
-        <div class="prompt-card locked" onclick="showUpgradeModal()">
-            <div class="card-header">
-                <span class="card-category">${p.category}</span>
-                <span class="card-badge pro">Pro</span>
-            </div>
-            <div class="card-icon">${p.icon}</div>
-            <h3 class="card-title">${p.title}</h3>
-            <p class="card-description">${p.description}</p>
-            <div class="card-tags">
-                ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
-            </div>
-            <div class="lock-overlay">
-                <div class="lock-icon">🔒</div>
-            </div>
-        </div>
-    `).join('');
+function matches(p) {
+  return activeCategory === 'all' || p.category === activeCategory;
 }
 
 // ============================================
-// MODAL FUNCTIONS
+// RENDER
 // ============================================
+function cardHTML(p, locked) {
+  return '' +
+    '<div class="prompt-card' + (locked ? ' locked' : '') + '" tabindex="0" role="button" ' +
+      'onclick="' + (locked ? 'showUpgradeModal(' + p.id + ')' : 'openPromptModal(' + p.id + ')') + '" ' +
+      'onkeydown="cardKey(event, ' + p.id + ', ' + (locked ? 'true' : 'false') + ')">' +
+      '<div class="card-top">' +
+        '<span class="card-category">' + esc(p.category) + '</span>' +
+        '<span class="card-badge ' + (locked ? 'pro' : 'free') + '">' + (locked ? 'Pro' : 'Free') + '</span>' +
+      '</div>' +
+      '<div class="card-icon">' + p.icon + '</div>' +
+      '<h3 class="card-title">' + esc(p.title) + '</h3>' +
+      '<p class="card-description">' + esc(p.description) + '</p>' +
+      '<div class="card-tags">' + p.tags.map(function (t) { return '<span class="card-tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+      '<div class="card-foot">' +
+        '<span>' + (locked ? 'Unlock with Pro' : 'Open and copy') + '</span><span class="arw">→</span>' +
+      '</div>' +
+    '</div>';
+}
+
+function render() {
+  var free = freePrompts.filter(matches);
+  var pro = proPrompts.filter(matches);
+
+  document.getElementById('freePromptsGrid').innerHTML = free.map(function (p) { return cardHTML(p, false); }).join('');
+  document.getElementById('proPromptsGrid').innerHTML = pro.map(function (p) { return cardHTML(p, true); }).join('');
+
+  document.getElementById('freeSection').style.display = free.length ? '' : 'none';
+  document.getElementById('proSection').style.display = pro.length ? '' : 'none';
+
+  var total = free.length + pro.length;
+
+  var empty = document.getElementById('emptyState');
+  empty.style.display = total ? 'none' : 'block';
+  document.getElementById('emptyTerm').textContent = activeCategory === 'all' ? 'that category' : activeCategory;
+  document.getElementById('moreProBlock').style.display = total ? '' : 'none';
+
+  sendHeightToParent();
+}
+
+function renderFilters() {
+  var cats = {};
+  freePrompts.concat(proPrompts).forEach(function (p) { cats[p.category] = (cats[p.category] || 0) + 1; });
+
+  var order = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; });
+  var html = '<button class="filter-btn active" data-cat="all">All</button>';
+  order.forEach(function (c) {
+    html += '<button class="filter-btn" data-cat="' + esc(c) + '">' + esc(c) + '</button>';
+  });
+
+  var box = document.getElementById('filters');
+  box.innerHTML = html;
+
+  box.querySelectorAll('.filter-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      box.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCategory = btn.getAttribute('data-cat');
+      render();
+    });
+  });
+}
+
+// ============================================
+// MODALS
+// ============================================
+function cardKey(e, id, locked) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    if (locked) { showUpgradeModal(id); } else { openPromptModal(id); }
+  }
+}
+
 function openPromptModal(id) {
-    const prompt = freePrompts.find(p => p.id === id);
-    if (!prompt) return;
-    
-    currentPromptId = id;
-    
-    document.getElementById('promptModalCategory').textContent = prompt.category;
-    document.getElementById('promptModalIcon').textContent = prompt.icon;
-    document.getElementById('promptModalTitle').textContent = prompt.title;
-    document.getElementById('promptModalSubtitle').textContent = prompt.description;
-    document.getElementById('promptModalInfoGrid').innerHTML = `
-        <div class="info-item">
-            <div class="info-item-label">What it does</div>
-            <div class="info-item-value">${prompt.whatItDoes}</div>
-        </div>
-        <div class="info-item">
-            <div class="info-item-label">Best for</div>
-            <div class="info-item-value">${prompt.bestFor}</div>
-        </div>
-        <div class="info-item">
-            <div class="info-item-label">Inputs needed</div>
-            <div class="info-item-value">${prompt.inputsNeeded}</div>
-        </div>
-    `;
-    document.getElementById('promptModalContent').textContent = prompt.prompt;
-    document.getElementById('promptModalTags').innerHTML = prompt.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
-    
-    const copyBtn = document.getElementById('copyPromptBtn');
-    copyBtn.onclick = function() { handleCopyPrompt(id); };
-    copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
-    copyBtn.classList.remove('copied');
-    
-    document.getElementById('promptModal').classList.add('show');
-    setTimeout(function() { scrollToModal(); }, 50);
+  var p = freePrompts.find(function (x) { return x.id === id; });
+  if (!p) return;
+
+  document.getElementById('promptModalCategory').textContent = p.category;
+  document.getElementById('promptModalTitle').textContent = p.title;
+  document.getElementById('promptModalSubtitle').textContent = p.description;
+
+  document.getElementById('promptModalInfoGrid').innerHTML =
+    '<div class="info-item"><div class="info-item-label">What it does</div><div class="info-item-value">' + esc(p.whatItDoes) + '</div></div>' +
+    '<div class="info-item"><div class="info-item-label">Best for</div><div class="info-item-value">' + esc(p.bestFor) + '</div></div>' +
+    '<div class="info-item"><div class="info-item-label">Inputs needed</div><div class="info-item-value">' + esc(p.inputsNeeded) + '</div></div>';
+
+  document.getElementById('promptModalContent').textContent = p.prompt;
+  document.getElementById('pmfCount').textContent = proPrompts.length;
+
+  var btn = document.getElementById('copyPromptBtn');
+  btn.onclick = function () { copyPrompt(id); };
+  btn.textContent = 'Copy prompt';
+  btn.classList.remove('copied');
+
+  document.getElementById('promptModal').classList.add('show');
+  afterModalOpen();
 }
 
 function closePromptModal() {
-    document.getElementById('promptModal').classList.remove('show');
-    currentPromptId = null;
+  document.getElementById('promptModal').classList.remove('show');
+  sendHeightToParent();
 }
 
-function showUpgradeModal() {
-    document.getElementById('upgradeModal').classList.add('show');
-    setTimeout(function() { scrollToModal(); }, 50);
+// Contextual. Pass the id of the locked workflow they clicked and the modal
+// leads with that workflow. Called with no id from the banner, in which case
+// it falls back to the generic library pitch.
+function showUpgradeModal(id) {
+  var p = id ? proPrompts.find(function (x) { return x.id === id; }) : null;
+
+  var kicker = document.getElementById('umKicker');
+  var title = document.getElementById('umWorkflow');
+  var desc = document.getElementById('umDesc');
+  var tags = document.getElementById('umTags');
+  var lock = document.getElementById('umLock');
+  var preview = document.getElementById('umPreview');
+  var note = document.getElementById('umLockNote');
+
+  if (p) {
+    kicker.textContent = p.category + ' · Pro workflow';
+    title.textContent = p.title;
+    desc.textContent = p.description;
+    tags.innerHTML = p.tags.map(function (t) { return '<span class="um-tag">' + esc(t) + '</span>'; }).join('');
+    lock.style.display = '';
+    note.textContent = 'The full prompt and the setup steps unlock with Pro.';
+
+    if (p.preview) {
+      preview.style.display = '';
+      preview.textContent = p.preview;
+    } else {
+      preview.style.display = 'none';
+      preview.textContent = '';
+    }
+  } else {
+    kicker.textContent = 'PromptWire Pro';
+    title.textContent = 'Unlock the full library';
+    desc.textContent = 'Every workflow ever published, searchable and tagged by the job it does. A new one added every Thursday.';
+    tags.innerHTML = '';
+    lock.style.display = 'none';
+  }
+
+  document.getElementById('upgradeModal').classList.add('show');
+  afterModalOpen();
 }
 
 function closeUpgradeModal() {
-    document.getElementById('upgradeModal').classList.remove('show');
+  document.getElementById('upgradeModal').classList.remove('show');
+  sendHeightToParent();
 }
 
-function scrollToModal() {
-    var overlays = ['promptModal', 'upgradeModal'];
-    for (var i = 0; i < overlays.length; i++) {
-        var el = document.getElementById(overlays[i]);
-        if (el && el.classList.contains('show')) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            break;
-        }
-    }
+function afterModalOpen() {
+  // Send the new height first, THEN scroll. The old code only scrolled, so
+  // tall modals got clipped by the iframe.
+  sendHeightToParent();
+  setTimeout(function () {
+    sendHeightToParent();
+    var el = document.querySelector('.modal-overlay.show');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
 }
 
 // ============================================
-// COPY FUNCTIONS
+// COPY
 // ============================================
-function handleCopyPrompt(id) {
-    copyPromptToClipboard(id);
-}
+async function copyPrompt(id) {
+  var p = freePrompts.find(function (x) { return x.id === id; });
+  if (!p) return;
 
-async function copyPromptToClipboard(id) {
-    const prompt = freePrompts.find(p => p.id === id);
-    if (!prompt) return;
+  var btn = document.getElementById('copyPromptBtn');
+  var ok = false;
 
-    const btn = document.getElementById('copyPromptBtn');
-
-    // Try modern clipboard API first, fall back to execCommand for iframes
-    let success = false;
+  try {
+    await navigator.clipboard.writeText(p.prompt);
+    ok = true;
+  } catch (err) {
     try {
-        await navigator.clipboard.writeText(prompt.prompt);
-        success = true;
-    } catch (err) {
-        // Fallback for iframe/non-secure contexts
-        try {
-            const textarea = document.createElement('textarea');
-            textarea.value = prompt.prompt;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.focus();
-            textarea.select();
-            success = document.execCommand('copy');
-            document.body.removeChild(textarea);
-        } catch (e) {
-            console.error('Copy failed:', e);
-        }
-    }
+      var ta = document.createElement('textarea');
+      ta.value = p.prompt;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) { ok = false; }
+  }
 
-    if (success) {
-        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Copied!`;
-        btn.classList.add('copied');
-        setTimeout(() => {
-            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Prompt`;
-            btn.classList.remove('copied');
-        }, 2000);
-    }
+  if (ok) {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(function () {
+      btn.textContent = 'Copy prompt';
+      btn.classList.remove('copied');
+    }, 2000);
+  }
 }
 
+// window.open('_blank') gets popup-blocked in some iframe contexts.
 function upgradeToPro() {
-    window.open(CONFIG.STRIPE_LINK, '_blank');
+  window.top.location.href = CONFIG.STRIPE_LINK;
 }
 
 // ============================================
-// EVENT LISTENERS
+// IFRAME HEIGHT
 // ============================================
+function sendHeightToParent() {
+  var wrap = document.querySelector('.page-wrap');
+  var openModal = document.querySelector('.modal-overlay.show');
+  var h = 0;
 
-// Close modals on overlay click
-document.getElementById('upgradeModal').addEventListener('click', (e) => {
-    if (e.target.id === 'upgradeModal') closeUpgradeModal();
+  if (openModal) {
+    // A modal is open. Measure it, so the iframe grows and nothing is clipped.
+    h = Math.max(wrap ? wrap.offsetHeight : 0, openModal.offsetHeight + 80);
+  } else {
+    h = wrap ? wrap.offsetHeight : document.body.scrollHeight;
+  }
+
+  var hero = document.querySelector('.pw-hero');
+  h += hero ? hero.offsetHeight : 0;
+  h += 120;
+
+  window.parent.postMessage({ type: 'setHeight', height: h }, '*');
+}
+
+window.addEventListener('resize', function () { setTimeout(sendHeightToParent, 100); });
+
+// ============================================
+// EVENTS
+// ============================================
+document.getElementById('upgradeModal').addEventListener('click', function (e) {
+  if (e.target.id === 'upgradeModal') closeUpgradeModal();
 });
 
-document.getElementById('promptModal').addEventListener('click', (e) => {
-    if (e.target.id === 'promptModal') closePromptModal();
+document.getElementById('promptModal').addEventListener('click', function (e) {
+  if (e.target.id === 'promptModal') closePromptModal();
 });
 
-// Close modals on Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeUpgradeModal();
-        closePromptModal();
-    }
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') { closeUpgradeModal(); closePromptModal(); }
 });
 
-// Prompt modal close button
 document.getElementById('promptModalClose').addEventListener('click', closePromptModal);
 
-// Send height to parent for iframe auto-resize
-function sendHeightToParent() {
-    // Get container height, not full body (excludes fixed modals)
-    var container = document.querySelector('.container');
-    if (container) {
-        var height = container.offsetHeight + 120; // 120 for padding
-        window.parent.postMessage({ type: 'setHeight', height: height }, '*');
-    }
-}
-// Delay to ensure content is rendered
-setTimeout(sendHeightToParent, 500);
-window.addEventListener('resize', function() {
-    setTimeout(sendHeightToParent, 100);
-});
-
 // ============================================
-// INITIALIZE
+// INIT
 // ============================================
-document.addEventListener('DOMContentLoaded', () => {
-    renderFreePrompts();
-    renderProPrompts();
+document.addEventListener('DOMContentLoaded', function () {
+  renderFilters();
+  render();
+  setTimeout(sendHeightToParent, 500);
 });
 </script>
 </div><!-- /.page-wrap -->
