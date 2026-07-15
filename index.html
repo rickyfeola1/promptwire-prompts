@@ -289,7 +289,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   width: 56px; height: 56px;
   background: var(--gray-100);
   border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center; align-items: flex-start;
   margin-bottom: 16px;
   font-size: 28px;
 }
@@ -1380,14 +1380,10 @@ function closeUpgradeModal() {
 }
 
 function afterModalOpen() {
-  // Send the new height first, THEN scroll. The old code only scrolled, so
-  // tall modals got clipped by the iframe.
   sendHeightToParent();
-  setTimeout(function () {
-    sendHeightToParent();
-    var el = document.querySelector('.modal-overlay.show');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
+  setTimeout(sendHeightToParent, 60);
+  setTimeout(sendHeightToParent, 250);
+  window.parent.postMessage({ type: 'scrollToTop' }, '*');
 }
 
 // ============================================
