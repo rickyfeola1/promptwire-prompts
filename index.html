@@ -451,7 +451,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 /* ---------- MODALS ---------- */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
   width: 100%;
   min-height: 100%;
@@ -1382,8 +1382,6 @@ function closeUpgradeModal() {
 function afterModalOpen() {
   sendHeightToParent();
   setTimeout(sendHeightToParent, 60);
-  setTimeout(sendHeightToParent, 250);
-  window.parent.postMessage({ type: 'scrollToTop' }, '*');
 }
 
 // ============================================
