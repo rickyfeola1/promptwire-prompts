@@ -363,7 +363,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   line-height: 1.03;
   margin-bottom: 14px;
 }
-.pro-cta-banner h3 span { color: #5db4f0; }
+.pro-cta-banner h3 span { color: var(--blue); }
 
 .pro-cta-banner > p {
   font-size: 15.5px;
@@ -955,7 +955,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
       </div>
 
       <div class="prompt-modal-footer">
-        <p class="pmf-text">That one is free. <strong id="pmfCount">0</strong> more are in the Pro library, with a new one every Thursday.</p>
+        <p class="pmf-text" data-check="library-count">That one is free. The Pro library has <strong>80+</strong> more, with a new one every Thursday.</p>
         <button class="pmf-btn" onclick="closePromptModal(); showUpgradeModal();">See what Pro adds</button>
       </div>
     </div>
@@ -1317,7 +1317,6 @@ function openPromptModal(id) {
     '<div class="info-item"><div class="info-item-label">Inputs needed</div><div class="info-item-value">' + esc(p.inputsNeeded) + '</div></div>';
 
   document.getElementById('promptModalContent').textContent = p.prompt;
-  document.getElementById('pmfCount').textContent = proPrompts.length;
 
   var btn = document.getElementById('copyPromptBtn');
   btn.onclick = function () { copyPrompt(id); };
