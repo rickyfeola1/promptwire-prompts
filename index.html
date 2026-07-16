@@ -451,7 +451,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 /* ---------- MODALS ---------- */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0;
   width: 100%;
   min-height: 100%;
@@ -464,6 +464,14 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   padding: 40px 24px;
 }
 .modal-overlay.show { display: flex; }
+.modal-overlay.show {
+  align-items: center;
+  overflow-y: auto;
+}
+.modal-overlay .modal {
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
 .modal {
   background: white;
