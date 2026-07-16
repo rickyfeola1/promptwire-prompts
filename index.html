@@ -1380,14 +1380,13 @@ function closeUpgradeModal() {
 }
 
 function afterModalOpen() {
-  // Send the new height first, THEN scroll. The old code only scrolled, so
-  // tall modals got clipped by the iframe.
-  sendHeightToParent();
+  // Scroll to the modal top. This matches the version that worked: it does
+  // NOT re-report height on open. Re-reporting grew the iframe mid-scroll,
+  // which shifted the overlay's top: 0 anchor and left you halfway up.
   setTimeout(function () {
-    sendHeightToParent();
     var el = document.querySelector('.modal-overlay.show');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
+  }, 50);
 }
 
 // ============================================
@@ -1436,20 +1435,17 @@ function upgradeToPro() {
 // IFRAME HEIGHT
 // ============================================
 function sendHeightToParent() {
-  var wrap = document.querySelector('.page-wrap');
-  var openModal = document.querySelector('.modal-overlay.show');
-  var h = 0;
-
-  if (openModal) {
-    // A modal is open. Measure it, so the iframe grows and nothing is clipped.
-    h = Math.max(wrap ? wrap.offsetHeight : 0, openModal.offsetHeight + 80);
-  } else {
-    h = wrap ? wrap.offsetHeight : document.body.scrollHeight;
-  }
-
+  // Measure the page only. Do NOT grow the iframe to fit an open modal.
+  // Growing it on open was what moved the overlay anchor mid-scroll and
+  // landed you halfway up the modal. The modal is position: absolute inside
+  // this same document, so scrollIntoView reaches it without resizing.
+  // Measure .container, not .page-wrap. The modals live inside .page-wrap
+  // and stretch it when open (absolute + min-height:100%). .container sits
+  // above them and keeps a stable height.
+  var container = document.querySelector('.container');
   var hero = document.querySelector('.pw-hero');
-  h += hero ? hero.offsetHeight : 0;
-  h += 120;
+  var base = container ? container.offsetHeight : document.body.scrollHeight;
+  var h = base + (hero ? hero.offsetHeight : 0) + 120;
 
   window.parent.postMessage({ type: 'setHeight', height: h }, '*');
 }
