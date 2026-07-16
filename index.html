@@ -1459,7 +1459,13 @@ function sendHeightToParent() {
   window.parent.postMessage({ type: 'setHeight', height: h }, '*');
 }
 
-window.addEventListener('resize', function () { setTimeout(sendHeightToParent, 100); });
+window.addEventListener('message', function (e) {
+  var d = e.data;
+  if (typeof d === 'string') { try { d = JSON.parse(d); } catch (err) { return; } }
+  if (d && d.type === 'scrollTo' && typeof d.top === 'number') {
+    window.scrollTo({ top: d.top - 20, behavior: 'smooth' });
+  }
+});
 
 // ============================================
 // EVENTS
