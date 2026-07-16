@@ -451,7 +451,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 /* ---------- MODALS ---------- */
 .modal-overlay {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
   width: 100%;
   min-height: 100%;
@@ -464,14 +464,6 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   padding: 40px 24px;
 }
 .modal-overlay.show { display: flex; }
-.modal-overlay.show {
-  align-items: center;
-  overflow-y: auto;
-}
-.modal-overlay .modal {
-  max-height: 90vh;
-  overflow-y: auto;
-}
 
 .modal {
   background: white;
@@ -1388,8 +1380,14 @@ function closeUpgradeModal() {
 }
 
 function afterModalOpen() {
+  // Send the new height first, THEN scroll. The old code only scrolled, so
+  // tall modals got clipped by the iframe.
   sendHeightToParent();
-  setTimeout(sendHeightToParent, 80);
+  setTimeout(function () {
+    sendHeightToParent();
+    var el = document.querySelector('.modal-overlay.show');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 60);
 }
 
 // ============================================
@@ -1456,13 +1454,7 @@ function sendHeightToParent() {
   window.parent.postMessage({ type: 'setHeight', height: h }, '*');
 }
 
-window.addEventListener('message', function (e) {
-  var d = e.data;
-  if (typeof d === 'string') { try { d = JSON.parse(d); } catch (err) { return; } }
-  if (d && d.type === 'scrollTo' && typeof d.top === 'number') {
-    window.scrollTo({ top: d.top - 20, behavior: 'smooth' });
-  }
-});
+window.addEventListener('resize', function () { setTimeout(sendHeightToParent, 100); });
 
 // ============================================
 // EVENTS
