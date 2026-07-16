@@ -1380,14 +1380,19 @@ function closeUpgradeModal() {
 }
 
 function afterModalOpen() {
-  // Send the new height first, THEN scroll. The old code only scrolled, so
-  // tall modals got clipped by the iframe.
   sendHeightToParent();
   setTimeout(function () {
     sendHeightToParent();
+
+    // Tell the PARENT to scroll. scrollIntoView can't move the Beehiiv page
+    // from inside the iframe, which is why it landed mid-modal.
     var el = document.querySelector('.modal-overlay.show');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
+    if (el) {
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      window.parent.postMessage({ type: 'scrollTo', top: top }, '*');
+      window.parent.postMessage(JSON.stringify({ type: 'scrollTo', top: top }), '*');
+    }
+  }, 80);
 }
 
 // ============================================
