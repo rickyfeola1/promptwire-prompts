@@ -273,17 +273,6 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   border-radius: 5px;
 }
 
-.card-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-.card-badge.free { background: var(--gray-100); color: var(--gray-600); }
-.card-badge.pro { background: var(--blue-light); color: var(--blue-text); }
-
 /* Emoji icon kept, original size */
 .card-icon {
   width: 56px; height: 56px;
@@ -843,7 +832,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
       <span class="section-badge">Free</span>
       <h2 class="section-title">Starter Workflows</h2>
     </div>
-    <p class="section-note">No account, no card. Open one, copy the prompt, paste it into Claude or ChatGPT.</p>
+    <p class="section-note">Open one, copy the prompt, paste it into Claude or ChatGPT.</p>
     <div class="prompt-grid" id="freePromptsGrid"></div>
   </div>
 
@@ -1174,6 +1163,20 @@ Keep the core message consistent across platforms.`
 ];
 
 const proPrompts = [
+  { id: 135, title: "Computer Use Permission Mapper", description: "Map the exact apps, folders, and permissions Claude needs before you let it loose, and define what stays off-limits.", category: "productivity", tags: ["computer use", "permissions", "security"], icon: "🔐" },
+  { id: 136, title: "Dispatch Workflow Builder", description: "Structure your task for reliable phone-to-desktop handoff, with an exact trigger message, duration estimate, checkpoints, and completion signal.", category: "productivity", tags: ["Dispatch", "computer use", "automation"], icon: "📱" },
+  { id: 137, title: "Computer Use Results Validator", description: "Verify what Claude actually did after a computer use task, catch errors fast, and track which workflows are reliable.", category: "productivity", tags: ["computer use", "verification", "quality control"], icon: "✅" },
+  { id: 138, title: "Claude Identity Builder", description: "Creates two files that teach Claude your voice: about-me.md and anti-ai-style.md. Claude reads these before any task and matches your style automatically.", category: "productivity", tags: ["Cowork", "voice", "personalization"], icon: "🪪" },
+  { id: 139, title: "Cowork Workspace Architect", description: "Creates a clean folder structure for Claude Cowork with subfolders for identity files, projects, templates, and outputs, plus a README so you remember what goes where.", category: "productivity", tags: ["Cowork", "file management", "setup"], icon: "🗂️" },
+  { id: 140, title: "Cowork Scheduled Task Builder", description: "Creates your first automated recurring task in Cowork, with the exact task description, schedule settings, templates needed, and what to expect when you check the output.", category: "productivity", tags: ["Cowork", "scheduling", "recurring tasks"], icon: "⏰" },
+  { id: 141, title: "Anti-AI Rules Builder", description: "Interview-style prompt that asks about your AI writing pet peeves then generates an anti-ai-rules.md file Claude can follow on every task.", category: "content", tags: ["voice", "AI writing", "style guide"], icon: "🚫" },
+  { id: 142, title: "Style Card Generator", description: "Condense your voice profile and anti-AI rules into a 150-word style-card.md you can paste at the top of any writing prompt.", category: "content", tags: ["voice", "style guide", "AI writing"], icon: "🃏" },
+  { id: 143, title: "Landing Page Prototype Builder", description: "Build a working HTML landing page prototype you can share, test, and hand off to a developer before paying anyone to build it.", category: "business", tags: ["landing page", "prototype", "web design"], icon: "🖥️" },
+  { id: 144, title: "Live Dashboard Builder", description: "Build a live dashboard in Cowork that connects to your actual apps and refreshes automatically. No manual updates, no extra tools.", category: "productivity", tags: ["dashboard", "Cowork", "analytics"], icon: "📡" },
+  { id: 145, title: "One-Pager Creator", description: "Build a professional one-pager in minutes. Service overview, case study, proposal, or capability statement, ready to email or attach to any pitch.", category: "business", tags: ["one-pager", "proposals", "sales"], icon: "📄" },
+  { id: 146, title: "Brand Voice GPT Instructions", description: "Paste-ready instructions for building a Custom GPT that produces all your content in your exact brand voice, with banned phrases and style rules baked in.", category: "content", tags: ["Custom GPT", "brand voice", "ChatGPT"], icon: "🗣️" },
+  { id: 147, title: "Company Knowledge GPT Instructions", description: "Paste-ready instructions for a Custom GPT that answers internal questions from your actual SOPs and policy documents without inventing anything.", category: "productivity", tags: ["Custom GPT", "SOPs", "knowledge base"], icon: "🏢" },
+  { id: 148, title: "Competitor Intelligence GPT Instructions", description: "Paste-ready instructions for a Custom GPT that analyzes competitor signals, separates facts from inferences, and outputs structured strategic recommendations.", category: "research", tags: ["Custom GPT", "competitive intelligence", "strategy"], icon: "🕵️" },
   { id: 131, title: "Morning Ad Audit", description: "Pull live campaign data every morning, flag fatiguing creatives, surface top performers, and get the one action to take today.", category: "marketing", tags: ["Meta ads", "Facebook ads", "ROAS"], icon: "📣" },
   { id: 133, title: "Computer Use Task Scoper", description: "Turn a vague computer task into a precise specification before Claude touches anything on your machine.", category: "productivity", tags: ["computer use", "automation", "Dispatch"], icon: "🖥️" },
   { id: 121, title: "Full Website Builder", description: "Claude interviews you before writing a single line of code, then builds your complete website from scratch.", category: "business", tags: ["website", "HTML", "web design"], icon: "🌐" },
@@ -1238,7 +1241,6 @@ function cardHTML(p, locked) {
       'onkeydown="cardKey(event, ' + p.id + ', ' + (locked ? 'true' : 'false') + ')">' +
       '<div class="card-top">' +
         '<span class="card-category">' + esc(p.category) + '</span>' +
-        '<span class="card-badge ' + (locked ? 'pro' : 'free') + '">' + (locked ? 'Pro' : 'Free') + '</span>' +
       '</div>' +
       '<div class="card-icon">' + p.icon + '</div>' +
       '<h3 class="card-title">' + esc(p.title) + '</h3>' +
