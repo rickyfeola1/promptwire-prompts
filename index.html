@@ -209,21 +209,20 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 /* ---------- SECTION HEADERS ---------- */
 .section-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   margin: 0 0 10px;
 }
 
-.section-badge {
-  padding: 5px 12px;
-  border-radius: 5px;
+.section-kicker {
+  font-family: var(--mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  background: var(--blue);
-  color: #fff;
+  color: var(--blue-text);
 }
+
 
 .section-title {
   font-family: var(--display);
@@ -849,7 +848,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   <!-- FREE -->
   <div id="freeSection">
     <div class="section-header">
-      <span class="section-badge">Free</span>
+      <span class="section-kicker">Free</span>
       <h2 class="section-title">Starter Workflows</h2>
     </div>
     <p class="section-note">Open one, copy the prompt, paste it into Claude or ChatGPT.</p>
@@ -867,7 +866,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   <!-- PRO -->
   <div id="proSection">
     <div class="section-header">
-      <span class="section-badge">Pro</span>
+      <span class="section-kicker">Pro</span>
       <h2 class="section-title">Advanced Workflows</h2>
     </div>
     <p class="section-note">Click any one to see what it does and what it unlocks.</p>
