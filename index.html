@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Workflow Library - PromptWire AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
 <!--
   ===========================================================================
@@ -14,7 +14,7 @@
   FONTS FIXED. The page used Inter plus @font-face { src: local('Futura') },
   which only resolves if the visitor already has Futura installed. On Windows
   that is nobody, so most of your traffic was seeing Trebuchet MS italic.
-  Now Barlow Condensed + DM Sans, same as every other page on the site.
+  Now Space Grotesk + DM Sans + mono, same as every other page on the site.
 
   THE UPGRADE MODAL IS NOW CONTEXTUAL. Clicking a locked card used to open a
   generic pitch about Jasper and Copy.ai. It now opens a modal headed with
@@ -74,24 +74,43 @@
   --gray-900: #111827;
   --green: #0d8f63;
 
-  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --display: 'Space Grotesk', 'DM Sans', -apple-system, sans-serif;
   --body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 14px;
+
+  --paper: #fbfbfa;
+  --paper-line: rgba(13, 31, 60, 0.045);
+  --ink: #1c2430;
+  --card-border: #1c2430;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: var(--body);
-  background: var(--white);
-  color: var(--gray-900);
+  background-color: var(--paper);
+  color: var(--ink);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.pw-hero, .page-wrap { position: relative; z-index: 1; }
 
 button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   outline: 3px solid var(--blue);
@@ -105,10 +124,11 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 /* ---------- HERO ---------- */
 .pw-hero {
   background: linear-gradient(135deg, #171717 0%, #1292eb 100%);
-  padding: 88px 24px;
+  padding: 96px 24px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  border-bottom: 2px solid var(--ink);
 }
 
 .pw-hero-grid {
@@ -127,7 +147,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .pw-hero-title {
   font-family: var(--display);
   font-size: clamp(46px, 6.5vw, 72px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.01em;
   color: #fff;
@@ -170,20 +190,21 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 .filter-btn {
   padding: 9px 16px;
-  border: 1.5px solid var(--gray-200);
+  border: 1.5px solid var(--ink);
   background: var(--white);
-  border-radius: var(--r-sm);
-  font-family: var(--body);
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--gray-600);
   cursor: pointer;
-  text-transform: capitalize;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.filter-btn:hover { border-color: var(--blue); color: var(--blue-text); }
-.filter-btn.active { background: var(--gray-900); border-color: var(--gray-900); color: #fff; }
+.filter-btn:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink); }
+.filter-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
 
 /* ---------- SECTION HEADERS ---------- */
 .section-header {
@@ -207,7 +228,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .section-title {
   font-family: var(--display);
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--gray-900);
   line-height: 1;
 }
@@ -248,9 +269,8 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 }
 
 .prompt-card:hover {
-  border-color: rgba(18,146,235,0.4);
-  box-shadow: 0 12px 30px rgba(18,146,235,0.1);
-  transform: translateY(-3px);
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--card-border);
 }
 .prompt-card:hover::before { transform: scaleX(1); }
 
@@ -263,14 +283,14 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 /* Original chip, squared off from a 100px pill to 5px */
 .card-category {
+  font-family: var(--mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   color: var(--blue-text);
-  background: var(--blue-light);
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 0;
+  background: none;
 }
 
 /* Emoji icon kept, original size */
@@ -348,7 +368,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .pro-cta-banner h3 {
   font-family: var(--display);
   font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.03;
   margin-bottom: 14px;
 }
@@ -398,7 +418,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .more-pro h3 {
   font-family: var(--display);
   font-size: clamp(26px, 3.4vw, 36px);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--gray-900);
   line-height: 1.05;
   margin-bottom: 10px;
@@ -513,7 +533,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .um-workflow {
   font-family: var(--display);
   font-size: 30px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.05;
   color: #fff;
   margin-bottom: 10px;
@@ -610,7 +630,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   margin-bottom: 16px;
 }
 .um-price-lab { font-size: 12px; color: #5db4f0; font-weight: 700; margin-bottom: 6px; }
-.um-price-amt { font-family: var(--display); font-size: 44px; font-weight: 900; line-height: 1; color: #fff; }
+.um-price-amt { font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; color: #fff; }
 .um-price-amt .per { font-family: var(--body); font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.4); }
 .um-price-note { font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 6px; }
 
@@ -672,7 +692,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .prompt-modal-title {
   font-family: var(--display);
   font-size: 34px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.05;
   color: var(--gray-900);
   margin-bottom: 8px;
