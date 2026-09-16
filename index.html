@@ -994,6 +994,84 @@ const CONFIG = {
 // ============================================
 const freePrompts = [
   {
+    id: 9,
+    title: "The AI Recommendation Diagnosis",
+    description: "Asking an AI who it recommends tells you where you stand. This tells you why, and names exactly what is missing.",
+    category: "marketing",
+    tags: ["reputation", "AI visibility", "discovery"],
+    icon: "\ud83d\udd0e",
+    whatItDoes: "Names the businesses an AI recommends ahead of you, what it actually knows about you, and what would need to exist online for it to recommend you instead",
+    bestFor: "Any business, freelancer, or consultant who wants to know why AI is not putting them forward",
+    inputsNeeded: "Your business name, and a customer-style question about your category asked first in the same chat",
+    prompt: `Answer that exactly as you would for a stranger asking cold. Do not adjust
+it based on what you think I want to hear.
+
+Now, separately from your answer, tell me:
+
+1. The specific businesses you would recommend, in order, and what you know
+   about each one
+2. What you actually know about [YOUR BUSINESS NAME], and where that
+   information came from
+3. If you know nothing about them, say so plainly rather than guessing
+4. What would need to exist online for you to have recommended them
+5. Which of the businesses you named has the strongest information
+   footprint, and what specifically makes it strong
+
+Be blunt. I would rather hear the gap than be reassured.`
+  },
+  {
+    id: 8,
+    title: "Make It Without Learning the Software",
+    description: "Stop asking AI how to use the software. Tell it what you want at the end and have it open the program and build the file itself.",
+    category: "creative",
+    tags: ["computer use", "design", "no-code"],
+    icon: "\ud83d\udda5\ufe0f",
+    whatItDoes: "Has AI operate the software directly and hand back a real editable file, instead of explaining a tutorial you then have to follow",
+    bestFor: "Anyone who needs something made in a program they have never opened and are not going to learn",
+    inputsNeeded: "What you want made, the software, and whatever you already have: a photo, a sketch, a rough description, or nothing",
+    prompt: `I want to make [the thing]. I have never used [the software] and I am not
+going to learn it.
+
+What I have: [a photo, a sketch, a video, a rough description, nothing]
+What I want at the end: [describe the finished thing, not the steps]
+
+Do not give me instructions or a tutorial. Operate the software yourself
+and produce the file.
+
+Before you start, tell me your plan and what you are going to open. If
+something is not possible, say so plainly rather than producing a worse
+version of it and calling it done.`
+  },
+  {
+    id: 7,
+    title: "The Second Opinion",
+    description: "AI agrees with you far too easily. This one argues against your decision properly, then takes a position instead of hedging.",
+    category: "business",
+    tags: ["decision making", "critical thinking", "strategy"],
+    icon: "\u2696\ufe0f",
+    whatItDoes: "Steelmans your decision, then attacks it with the three strongest reasons it fails, names what you are assuming, and gives a verdict",
+    bestFor: "Anyone sitting on a decision they keep turning over, who wants the objection they have been avoiding",
+    inputsNeeded: "The decision you are weighing up, in a few sentences",
+    prompt: `I am about to make a decision. Your job is to argue against it properly,
+not to be agreeable.
+
+My decision: [describe it in a few sentences]
+
+Do this:
+
+1. Steelman it. Make the best case FOR it, better than I just did.
+2. Then attack it. The three strongest reasons this fails, ranked by how
+   likely they are, not how dramatic they sound.
+3. Name what I am assuming without realising it.
+4. Tell me the one piece of information that would change your answer, and
+   how I would go and get it.
+5. Finish with a verdict: proceed, proceed with changes, or do not.
+   Take a position. No hedging.
+
+If my reasoning is sound, say so, but only after you have genuinely tried
+to break it.`
+  },
+  {
     id: 1,
     title: "Business Idea Generator",
     description: "Analyze, cross-compare, and identify profitable online business niches based on market signals, competition, and your skills.",
@@ -1308,7 +1386,7 @@ function cardHTML(p, locked) {
 }
 
 function render() {
-  var free = freePrompts.filter(matches);
+  var free = freePrompts.filter(matches).slice().sort(function (a, b) { return b.id - a.id; });
   // Newest first. Higher ids are the more recently added workflows.
   var pro = proPrompts.filter(matches).slice().sort(function (a, b) { return b.id - a.id; });
 
