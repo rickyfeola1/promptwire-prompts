@@ -11,6 +11,12 @@
   ===========================================================================
   CHANGE LOG
 
+  MOBILE PASS. Newest 9 Pro workflows show on load with a "Show all" button
+  (category filters still show every match). On phones: tighter hero, one
+  swipeable filter row, compact cards without the tag row. Desktop layout
+  unchanged apart from the show-all button and the themed banner and
+  closing block.
+
   FONTS FIXED. The page used Inter plus @font-face { src: local('Futura') },
   which only resolves if the visitor already has Futura installed. On Windows
   that is nobody, so most of your traffic was seeing Trebuchet MS italic.
@@ -154,9 +160,10 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 }
 
 .pw-hero-tagline {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.55);
   margin-bottom: 16px;
@@ -170,11 +177,6 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   line-height: 1.6;
 }
 
-@media (max-width: 600px) {
-  .pw-hero { padding: 68px 20px; }
-  .pw-hero-title { font-size: 42px; }
-  .pw-hero-sub { font-size: 17px; }
-}
 
 /* ---------- SHELL ---------- */
 .container { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -355,8 +357,9 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 /* ---------- PRO BANNER ---------- */
 .pro-cta-banner {
-  background: var(--gray-900);
-  border-radius: 18px;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
   padding: 44px 40px;
   margin: 8px 0 52px;
   text-align: center;
@@ -386,19 +389,18 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   gap: 8px;
   padding: 16px 34px;
   background: var(--blue);
-  border: none;
+  border: 2px solid var(--blue);
   border-radius: var(--r-md);
   font-family: var(--body);
   font-size: 16px;
   font-weight: 700;
   color: white;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .cta-btn:hover {
-  background: var(--blue-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(18,146,235,0.35);
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 #5db4f0;
 }
 
 .cta-subtext { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.35); }
@@ -407,10 +409,10 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 .more-pro {
   text-align: center;
   padding: 52px 32px;
-  border: 1.5px solid var(--gray-200);
-  border-radius: 18px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
   margin-top: 8px;
-  background: var(--gray-50);
+  background: var(--white);
 }
 
 .more-pro h3 {
@@ -436,16 +438,70 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   gap: 8px;
   padding: 15px 30px;
   background: var(--blue);
-  border: none;
+  border: 2px solid var(--ink);
   border-radius: var(--r-md);
   font-family: var(--body);
   font-size: 15px;
   font-weight: 700;
   color: white;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.more-pro-btn:hover { background: var(--blue-hover); transform: translateY(-2px); }
+.more-pro-btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
+
+/* ---------- SHOW ALL PRO ---------- */
+.show-more-wrap { text-align: center; margin: -24px 0 52px; }
+
+.show-more-btn {
+  padding: 14px 28px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-md);
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.show-more-btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
+
+/* ---------- PHONES ONLY. Desktop is unchanged. ---------- */
+@media (max-width: 600px) {
+  /* Hero: tighter, middle sentence of the subline dropped */
+  .pw-hero { padding: 40px 20px 42px; }
+  .pw-hero-title { font-size: 40px; text-wrap: balance; }
+  .pw-hero-tagline { font-size: 11px; margin-bottom: 12px; }
+  .pw-hero-sub { font-size: 16px; line-height: 1.55; }
+  .pw-hero-extra { display: none; }
+
+  /* Filters: one row you swipe sideways */
+  .container { padding-top: 28px; }
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -24px 28px;
+    padding: 4px 24px 8px;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; }
+
+  /* Compact cards: no tag row, smaller icon */
+  .prompt-card { padding: 20px; }
+  .card-top { margin-bottom: 12px; }
+  .card-icon { width: 40px; height: 40px; font-size: 20px; border-radius: 10px; margin-bottom: 12px; }
+  .card-title { font-size: 18px; margin-bottom: 8px; }
+  .card-tags { display: none; }
+  .card-foot { margin-top: 14px; padding-top: 12px; }
+  .prompt-grid { gap: 14px; }
+
+  .show-more-wrap { margin-top: -30px; }
+  .show-more-btn { width: 100%; padding: 15px 20px; }
+  .more-pro { padding: 36px 22px; }
+  .more-pro-btn { width: 100%; justify-content: center; }
+}
 
 /* ---------- EMPTY STATE ---------- */
 .empty {
@@ -834,7 +890,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   <div class="pw-hero-inner">
     <h1 class="pw-hero-title"><i>Workflow Template Library</i></h1>
     <p class="pw-hero-tagline">Ready to run. Updated weekly.</p>
-    <p class="pw-hero-sub">Ready-to-run workflows and agents covering the tasks you are still doing manually. New ways to use AI, found and tested here first. Replaces paid AI tools doing one job each.</p>
+    <p class="pw-hero-sub">Ready-to-run workflows and agents covering the tasks you are still doing manually. <span class="pw-hero-extra">New ways to use AI, found and tested here first. </span>Replaces paid AI tools doing one job each.</p>
   </div>
 </div>
 
@@ -870,6 +926,9 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
     </div>
     <p class="section-note">Click any workflow to see what it does, what it needs, and what it changes about the work.</p>
     <div class="prompt-grid" id="proPromptsGrid"></div>
+    <div class="show-more-wrap" id="showMoreWrap">
+      <button class="show-more-btn" id="showMoreBtn" type="button">Show all Pro workflows</button>
+    </div>
   </div>
 
   <!-- MORE IN PRO -->
@@ -1350,6 +1409,8 @@ const proPrompts = [
 // STATE
 // ============================================
 let activeCategory = 'all';
+let showAllPro = false;
+const PRO_PREVIEW = 9;   // newest Pro workflows shown before "Show all"
 
 // ============================================
 // HELPERS
@@ -1388,7 +1449,13 @@ function cardHTML(p, locked) {
 function render() {
   var free = freePrompts.filter(matches).slice().sort(function (a, b) { return b.id - a.id; });
   // Newest first. Higher ids are the more recently added workflows.
-  var pro = proPrompts.filter(matches).slice().sort(function (a, b) { return b.id - a.id; });
+  var proAll = proPrompts.filter(matches).slice().sort(function (a, b) { return b.id - a.id; });
+  // Show the newest few on load so the page stays browsable on a phone.
+  // Category filters always show every match.
+  var limited = activeCategory === 'all' && !showAllPro && proAll.length > PRO_PREVIEW;
+  var pro = limited ? proAll.slice(0, PRO_PREVIEW) : proAll;
+  document.getElementById('showMoreWrap').style.display = limited ? '' : 'none';
+  document.getElementById('showMoreBtn').textContent = 'Show all ' + proAll.length + ' Pro workflows';
 
   document.getElementById('freePromptsGrid').innerHTML = free.map(function (p) { return cardHTML(p, false); }).join('');
   document.getElementById('proPromptsGrid').innerHTML = pro.map(function (p) { return cardHTML(p, true); }).join('');
@@ -1603,6 +1670,11 @@ document.addEventListener('keydown', function (e) {
 });
 
 document.getElementById('promptModalClose').addEventListener('click', closePromptModal);
+
+document.getElementById('showMoreBtn').addEventListener('click', function () {
+  showAllPro = true;
+  render();
+});
 
 // ============================================
 // INIT
