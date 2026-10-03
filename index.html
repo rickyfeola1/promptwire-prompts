@@ -530,12 +530,13 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 .modal {
   background: white;
-  border-radius: 18px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
   max-width: 480px;
   width: 100%;
   padding: 32px;
   position: relative;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+  box-shadow: 8px 8px 0 var(--blue);
   height: fit-content;
   margin: 0 auto;
 }
@@ -559,9 +560,9 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 /* ---------- UPGRADE MODAL (contextual) ---------- */
 .upgrade-modal .modal {
   max-width: 520px;
-  background: #0d1117;
+  background: var(--ink);
   color: white;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 2px solid var(--ink);
   padding: 0;
   overflow: hidden;
 }
@@ -597,7 +598,9 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 
 .um-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 .um-tag {
-  font-size: 11.5px;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  font-size: 11px;
   color: rgba(255,255,255,0.5);
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
@@ -611,7 +614,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
    the wall. If a pro prompt has a `preview` field, the real opening lines
    render above this instead. */
 .um-lock {
-  background: #05080d;
+  background: #0d1117;
   border: 1px solid rgba(255,255,255,0.08);
   border-left: 3px solid var(--blue);
   border-radius: var(--r-md);
@@ -670,41 +673,51 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   content: '';
   position: absolute;
   left: 0; top: 18px;
-  width: 7px; height: 7px;
-  border-radius: 50%;
+  width: 6px; height: 6px;
+  border-radius: 1px;
   background: #5db4f0;
 }
 
 .um-price {
-  text-align: center;
-  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(18,146,235,0.25);
+  border: 1.5px solid rgba(93,180,240,0.35);
   border-radius: var(--r-md);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
-.um-price-lab { font-size: 12px; color: #5db4f0; font-weight: 700; margin-bottom: 6px; }
-.um-price-amt { font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; color: #fff; }
-.um-price-amt .per { font-family: var(--body); font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.4); }
-.um-price-note { font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 6px; }
+.um-price-lab {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5db4f0;
+  margin-bottom: 4px;
+}
+.um-price-amt { font-family: var(--display); font-size: 34px; font-weight: 700; line-height: 1; color: #fff; letter-spacing: -0.02em; }
+.um-price-amt .per { font-family: var(--body); font-size: 14px; font-weight: 400; letter-spacing: 0; color: rgba(255,255,255,0.45); }
+.um-price-note { font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.5; text-align: right; max-width: 190px; }
 
 .upgrade-btn {
   width: 100%;
   padding: 16px;
   background: var(--blue);
-  border: none;
+  border: 2px solid var(--blue);
   border-radius: var(--r-md);
   font-family: var(--body);
   font-size: 16px;
   font-weight: 700;
   color: white;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .upgrade-btn:hover {
-  background: var(--blue-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(18,146,235,0.4);
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 #5db4f0;
 }
 
 .um-foot { margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.25); text-align: center; line-height: 1.6; }
@@ -733,10 +746,11 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
 }
 
 .prompt-modal-category {
+  font-family: var(--mono);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.12em;
   color: var(--blue-text);
   display: block;
   margin-bottom: 10px;
@@ -881,6 +895,64 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   .pmf-btn { width: 100%; }
   .pro-cta-banner { padding: 32px 22px; }
 }
+/* ---------- POPUPS ON PHONES ---------- */
+@media (max-width: 600px) {
+  .modal-overlay { padding: 14px 12px 40px; }
+  .modal { box-shadow: 6px 6px 0 var(--blue); }
+
+  /* Upsell popup: tighter so the trial button is on the first screen */
+  .um-head { padding: 22px 20px 18px; }
+  .um-kicker { margin-bottom: 8px; }
+  .um-workflow { font-size: 25px; padding-right: 36px; }
+  .um-desc { font-size: 14px; line-height: 1.55; }
+  .um-tags { display: none; }
+  .um-body { padding: 18px 20px 20px; }
+  .um-lock { padding: 14px 16px; margin-bottom: 16px; }
+  .um-lock-label { margin-bottom: 10px; }
+  .um-bar:nth-child(4) { display: none; }
+  .um-lock-note { margin-top: 10px; font-size: 12px; }
+  .um-includes { margin-bottom: 16px; }
+  .um-includes li { padding: 8px 0 8px 18px; font-size: 13.5px; }
+  .um-includes li::before { top: 15px; }
+  .um-includes li:first-child::before { top: 7px; }
+  .um-price { padding: 12px 14px; gap: 12px; }
+  .um-price-amt { font-size: 28px; }
+  .um-price-note { font-size: 12px; max-width: 150px; }
+  .um-foot { margin-top: 10px; }
+
+  /* Free popup: the three info boxes become one compact block */
+  .prompt-modal-close { top: 14px; right: 14px; }
+  .prompt-modal-header { padding: 22px 56px 18px 20px; }
+  .prompt-modal-title { font-size: 27px; }
+  .prompt-modal-subtitle { font-size: 14.5px; }
+  .prompt-modal-body { padding: 18px 20px; }
+  .prompt-modal-section { margin-bottom: 20px; }
+  .prompt-modal-section-title { margin-bottom: 10px; }
+  .info-grid { gap: 0; border: 1px solid var(--gray-200); border-radius: var(--r-md); overflow: hidden; background: var(--gray-50); }
+  .info-item { border: 0; border-radius: 0; background: none; padding: 11px 14px; }
+  .info-item + .info-item { border-top: 1px solid var(--gray-200); }
+  .info-item-label { margin-bottom: 3px; }
+  .info-item-value { font-size: 13.5px; }
+  .prompt-box-header { padding: 12px 14px; }
+  .prompt-content { font-size: 12.5px; padding: 16px; }
+  .prompt-modal-footer { padding: 16px 20px; }
+}
+
+
+/* Narrow phones (most Android): the placeholder bars are decorative, so drop them */
+@media (max-width: 380px) {
+  .um-head { padding: 20px 18px 16px; }
+  .um-workflow { font-size: 23px; }
+  .um-desc { font-size: 13.5px; }
+  .um-body { padding: 16px 18px 18px; }
+  .um-bars { display: none; }
+  .um-lock { padding: 12px 14px; margin-bottom: 14px; }
+  .um-lock-label { margin-bottom: 4px; }
+  .um-lock-note { margin-top: 4px; }
+  .um-includes { margin-bottom: 14px; }
+  .um-includes li { padding: 7px 0 7px 18px; font-size: 13px; }
+  .um-includes li::before { top: 13px; }
+}
 </style>
 </head>
 <body>
@@ -970,16 +1042,18 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
         </div>
 
         <ul class="um-includes">
-          <li>New tested workflows added regularly, before most people know they exist</li>
-          <li>All 90+ workflows, with the full prompt and setup for each</li>
+          <li>New tested workflows every week, before most people know they exist</li>
+          <li>All 90+ workflows, with new ones added weekly</li>
           <li>The full resource library plus monthly drops</li>
           <li>Plain-English AI briefings and implementation steps</li>
           <li>Every past issue, prompt and pack ever published</li>
         </ul>
 
         <div class="um-price">
-          <div class="um-price-lab">7 day free trial</div>
-          <div class="um-price-amt">$0 <span class="per">for 7 days</span></div>
+          <div>
+            <div class="um-price-lab">7 day free trial</div>
+            <div class="um-price-amt">$0 <span class="per">for 7 days</span></div>
+          </div>
           <div class="um-price-note" data-check="price">Then $17.99 a month. Cancel anytime from your account settings.</div>
         </div>
 
@@ -1062,19 +1136,15 @@ const freePrompts = [
     whatItDoes: "Names the businesses an AI recommends ahead of you, what it actually knows about you, and what would need to exist online for it to recommend you instead",
     bestFor: "Any business, freelancer, or consultant who wants to know why AI is not putting them forward",
     inputsNeeded: "Your business name, and a customer-style question about your category asked first in the same chat",
-    prompt: `Answer that exactly as you would for a stranger asking cold. Do not adjust
-it based on what you think I want to hear.
+    prompt: `Answer that exactly as you would for a stranger asking cold. Do not adjust it based on what you think I want to hear.
 
 Now, separately from your answer, tell me:
 
-1. The specific businesses you would recommend, in order, and what you know
-   about each one
-2. What you actually know about [YOUR BUSINESS NAME], and where that
-   information came from
+1. The specific businesses you would recommend, in order, and what you know about each one
+2. What you actually know about [YOUR BUSINESS NAME], and where that information came from
 3. If you know nothing about them, say so plainly rather than guessing
 4. What would need to exist online for you to have recommended them
-5. Which of the businesses you named has the strongest information
-   footprint, and what specifically makes it strong
+5. Which of the businesses you named has the strongest information footprint, and what specifically makes it strong
 
 Be blunt. I would rather hear the gap than be reassured.`
   },
@@ -1088,18 +1158,14 @@ Be blunt. I would rather hear the gap than be reassured.`
     whatItDoes: "Has AI operate the software directly and hand back a real editable file, instead of explaining a tutorial you then have to follow",
     bestFor: "Anyone who needs something made in a program they have never opened and are not going to learn",
     inputsNeeded: "What you want made, the software, and whatever you already have: a photo, a sketch, a rough description, or nothing",
-    prompt: `I want to make [the thing]. I have never used [the software] and I am not
-going to learn it.
+    prompt: `I want to make [the thing]. I have never used [the software] and I am not going to learn it.
 
 What I have: [a photo, a sketch, a video, a rough description, nothing]
 What I want at the end: [describe the finished thing, not the steps]
 
-Do not give me instructions or a tutorial. Operate the software yourself
-and produce the file.
+Do not give me instructions or a tutorial. Operate the software yourself and produce the file.
 
-Before you start, tell me your plan and what you are going to open. If
-something is not possible, say so plainly rather than producing a worse
-version of it and calling it done.`
+Before you start, tell me your plan and what you are going to open. If something is not possible, say so plainly rather than producing a worse version of it and calling it done.`
   },
   {
     id: 7,
@@ -1111,24 +1177,19 @@ version of it and calling it done.`
     whatItDoes: "Steelmans your decision, then attacks it with the three strongest reasons it fails, names what you are assuming, and gives a verdict",
     bestFor: "Anyone sitting on a decision they keep turning over, who wants the objection they have been avoiding",
     inputsNeeded: "The decision you are weighing up, in a few sentences",
-    prompt: `I am about to make a decision. Your job is to argue against it properly,
-not to be agreeable.
+    prompt: `I am about to make a decision. Your job is to argue against it properly, not to be agreeable.
 
 My decision: [describe it in a few sentences]
 
 Do this:
 
 1. Steelman it. Make the best case FOR it, better than I just did.
-2. Then attack it. The three strongest reasons this fails, ranked by how
-   likely they are, not how dramatic they sound.
+2. Then attack it. The three strongest reasons this fails, ranked by how likely they are, not how dramatic they sound.
 3. Name what I am assuming without realising it.
-4. Tell me the one piece of information that would change your answer, and
-   how I would go and get it.
-5. Finish with a verdict: proceed, proceed with changes, or do not.
-   Take a position. No hedging.
+4. Tell me the one piece of information that would change your answer, and how I would go and get it.
+5. Finish with a verdict: proceed, proceed with changes, or do not. Take a position. No hedging.
 
-If my reasoning is sound, say so, but only after you have genuinely tried
-to break it.`
+If my reasoning is sound, say so, but only after you have genuinely tried to break it.`
   },
   {
     id: 1,
