@@ -537,6 +537,7 @@ button:focus-visible, input:focus-visible, .prompt-card:focus-visible {
   padding: 32px;
   position: relative;
   box-shadow: 8px 8px 0 var(--blue);
+  scroll-margin-top: 14px;
   height: fit-content;
   margin: 0 auto;
 }
@@ -1642,14 +1643,53 @@ function closeUpgradeModal() {
   sendHeightToParent();
 }
 
+// Remember what was tapped, so the popup can open right where the reader is.
+var lastAnchor = null;
+var lastModalTop = 0;
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('.prompt-card, .cta-btn, .more-pro-btn, .pmf-btn');
+  if (a) lastAnchor = a;
+}, true);
+document.addEventListener('keydown', function (e) {
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement &&
+      document.activeElement.classList.contains('prompt-card')) {
+    lastAnchor = document.activeElement;
+  }
+}, true);
+
 function afterModalOpen() {
-  // Scroll to the modal top. This matches the version that worked: it does
-  // NOT re-report height on open. Re-reporting grew the iframe mid-scroll,
-  // which shifted the overlay's top: 0 anchor and left you halfway up.
+  // The popup opens level with the card that was tapped instead of at the top
+  // of the library. Inside the Beehiiv iframe on iPhone, Safari does not always
+  // let the page scroll its parent, so a popup parked at the top could be left
+  // off screen. Opening it where the reader already is means it is visible
+  // even if the scroll below never happens.
+  // Height is still NOT re-reported on open (that moved the anchor mid-scroll).
+  var overlay = document.querySelector('.modal-overlay.show');
+  if (!overlay) return;
+  var modal = overlay.querySelector('.modal');
+  var wrap = document.querySelector('.page-wrap');
+
+  var top = lastModalTop;
+  if (lastAnchor) {
+    var r = lastAnchor.getBoundingClientRect();
+    if (r.height > 0) {
+      top = r.top - wrap.getBoundingClientRect().top - 24;
+    }
+  }
+  // Keep the whole popup inside the page so the iframe never clips it.
+  var maxTop = wrap.offsetHeight - modal.offsetHeight - 60;
+  top = Math.max(0, Math.min(top, maxTop));
+  modal.style.marginTop = top + 'px';
+  lastModalTop = top;
+
+  var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   setTimeout(function () {
-    var el = document.querySelector('.modal-overlay.show');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    modal.scrollIntoView({ behavior: touch ? 'auto' : 'smooth', block: 'start' });
   }, 50);
+  if (touch) {
+    // Second nudge in case iOS momentum scrolling swallowed the first.
+    setTimeout(function () { modal.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 400);
+  }
 }
 
 // ============================================
