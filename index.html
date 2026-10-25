@@ -1298,6 +1298,17 @@
   .pb-sort-row .pb-results-count:empty { display: none; }
   @media (max-width: 600px) { .pb-sort-controls { grid-template-columns: 1fr !important; } }
 
+  /* Paper background and grid carry on past the content, whatever height the embed is set to */
+  html, body { background: #fbfbfa; min-height: 100%; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(13, 31, 60, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(13, 31, 60, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .pw-lib-hero, .pw-lib-key-wrap, .prompt-bank-section { position: relative; z-index: 1; }
+
 </style>
 
 <!-- Hero -->
