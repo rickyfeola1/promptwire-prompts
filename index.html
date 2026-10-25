@@ -14,7 +14,7 @@
 <!-- Prompt Library Page - Full Rewrite -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link
-  href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
   rel="stylesheet">
 <style>
   /* ── Hero ── */
@@ -1177,6 +1177,16 @@
   }
 
   .wf-replaces b { color: var(--gray-900); font-weight: 700; }
+
+  /* Title in the logo's style: condensed, heavy, italic, caps, last word blue */
+  .pw-lib-title {
+    font-family: 'Barlow Condensed', 'Space Grotesk', sans-serif !important;
+    font-style: italic !important; font-weight: 600 !important; text-transform: uppercase;
+    font-size: clamp(50px, 6vw, 76px) !important; line-height: .95 !important; letter-spacing: .02em !important;
+  }
+  .pw-lib-title span, .pw-lib-title em { color: #fff; font-style: italic; }
+  .pw-lib-title em { margin-left: .02em; }
+  @media (max-width: 600px) { .pw-lib-title { font-size: 46px !important; } }
   /* ═══════════ FREE LIBRARY ═══════════ */
 
   /* Same hero and key as the Pro library */
@@ -1291,7 +1301,7 @@
 <div class="pw-lib-hero">
   <div class="pw-lib-grid"></div>
   <div class="pw-lib-inner">
-    <h1 class="pw-lib-title">Workflow Library</h1>
+    <h1 class="pw-lib-title">Workflow <span>Library</span><em>.</em></h1>
     <p class="pw-lib-sub">Starter workflows to copy and run. Newest at the top.</p>
   </div>
 </div>
