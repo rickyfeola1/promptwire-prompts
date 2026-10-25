@@ -1187,6 +1187,9 @@
   .pw-lib-title span, .pw-lib-title em { color: #fff; font-style: italic; }
   .pw-lib-title em { margin-left: .02em; }
   @media (max-width: 600px) { .pw-lib-title { font-size: 46px !important; } }
+
+  /* No gap above the hero: browsers add an 8px margin to the page by default */
+  html, body { margin: 0; padding: 0; }
   /* ═══════════ FREE LIBRARY ═══════════ */
 
   /* Same hero and key as the Pro library */
@@ -1360,7 +1363,6 @@
         <p class="pf-note">Open any of these to see what it replaces and how it works. The setup and prompts unlock with Pro.</p>
       </div>
       <div class="pb-prompt-grid" id="pfProGrid"></div>
-      <div class="pf-more" id="pfMoreWrap"><button type="button" id="pfMoreBtn">Show all Pro workflows</button></div>
     </div>
 
     <div class="pb-no-results" id="pbNoResults" style="display:none;">
@@ -3090,7 +3092,7 @@
     const free = list.filter(w => w.free).sort(byNewest);
     const proAll = list.filter(w => !w.free).sort(byNewest);
     const browsing = currentType === 'all' && currentArea === 'all' && !searchQuery;
-    const limited = browsing && !showAllPro && proAll.length > PRO_PREVIEW;
+    const limited = false; // every Pro workflow shows from the start
     const pro = limited ? proAll.slice(0, PRO_PREVIEW) : proAll;
 
     document.getElementById('pfFreeGrid').innerHTML = free.map(card).join('');
@@ -3098,7 +3100,6 @@
     document.getElementById('pfFreeSection').style.display = free.length ? '' : 'none';
     document.getElementById('pfProSection').style.display = pro.length ? '' : 'none';
     document.getElementById('pfBanner').style.display = browsing ? '' : 'none';
-    document.getElementById('pfMoreWrap').style.display = limited ? '' : 'none';
         document.getElementById('pbNoResults').style.display = list.length ? 'none' : 'block';
     sendHeightToParent();
   }
@@ -3274,7 +3275,6 @@
   });
   document.getElementById('pbModalOverlay').addEventListener('click', e => { if (e.target.id === 'pbModalOverlay') closeOverlay(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
-  document.getElementById('pfMoreBtn').addEventListener('click', () => { showAllPro = true; render(); });
   document.getElementById('pbSearchInput').addEventListener('input', e => { searchQuery = e.target.value.trim(); render(); });
   buildFilters(workflows, document.getElementById('pbTagFilter'), document.getElementById('pbAreaSelect'), f => {
     if (f.type) currentType = f.type;
