@@ -1514,6 +1514,192 @@
 ];
   const workflows = [
  {
+  "id": 48,
+  "title": "Run your Monday admin with Gemini's AI agent",
+  "type": "Agent",
+  "tools": "Gemini · ChatGPT · Claude",
+  "category": "operations",
+  "icon": "📋",
+  "tags": [
+   "Gemini",
+   "Task mode",
+   "ChatGPT",
+   "Claude",
+   "scheduled task",
+   "admin"
+  ],
+  "job": "Sitting on hold to chase quotes, orders and bills",
+  "problem": "The calls and bill checks sit on your list for weeks because nobody wants to sit on hold.",
+  "replaces": "A virtual assistant's admin hours, and the calls and bill checks that sit on your list for weeks",
+  "setup": "20 minutes",
+  "need": "The Gemini app (Task mode), plus ChatGPT Plus or Claude Pro with Gmail and Google Calendar connected",
+  "worksFor": "Stores, service businesses, freelancers",
+  "whatsNew": "Google expanded Gemini's Task mode on 17 and 18 November. It can call businesses for you, book around your Google Calendar and read your bills, at no cost in the US, Canada, Australia, Japan, Korea and India.",
+  "flow": "Your AI writes the week's admin list from your inbox and calendar → Gemini makes the calls and bookings → you approve the rest in 15 minutes",
+  "flowNote": "20 minutes to set up once, then 15 minutes every Monday. Trust the call transcript over the summary if they ever disagree.",
+  "stepCount": 8,
+  "limitCount": 5,
+  "prompts": [
+   {
+    "id": 133,
+    "name": "The Monday Admin List"
+   },
+   {
+    "id": 136,
+    "name": "The Task Template"
+   },
+   {
+    "id": 134,
+    "name": "The Quote Comparison"
+   },
+   {
+    "id": 137,
+    "name": "Chase Anything That's Late"
+   },
+   {
+    "id": 135,
+    "name": "The Monthly Bill Check"
+   }
+  ]
+ },
+ {
+  "id": 47,
+  "title": "Send an AI agent to shop your business like a real customer",
+  "type": "Agent",
+  "tools": "Comet · ChatGPT · Claude in Chrome",
+  "category": "operations",
+  "icon": "🕵️",
+  "tags": [
+   "Perplexity Comet",
+   "ChatGPT",
+   "Claude in Chrome",
+   "browser agent",
+   "mystery shopper"
+  ],
+  "job": "Guessing where customers give up",
+  "problem": "You can't see your own site the way a stranger does, so you never find the step where customers give up.",
+  "replaces": "A mystery shopper or paid usability test, plus an afternoon checking competitor prices and your listings by hand",
+  "setup": "10 minutes",
+  "need": "Perplexity Comet (free), the ChatGPT Chrome extension or Claude in Chrome",
+  "worksFor": "Local businesses, online stores, trades, salons, consultants",
+  "whatsNew": "AI agents can now open your website in a real browser, click through it like a customer and report back. The ChatGPT Chrome extension can now control your tabs too, joining Perplexity Comet and Claude in Chrome.",
+  "flow": "One prompt → the agent clicks through your site as a stranger → a score out of 10, with the exact page and button where people get stuck",
+  "flowNote": "The agent never submits a form, books, pays or creates an account. It stops at the final step.",
+  "stepCount": 6,
+  "limitCount": 3,
+  "prompts": [
+   {
+    "id": 130,
+    "name": "The Mystery Shopper"
+   },
+   {
+    "id": 131,
+    "name": "The Competitor Check"
+   },
+   {
+    "id": 132,
+    "name": "The Listing Check"
+   }
+  ]
+ },
+ {
+  "id": 46,
+  "title": "Turn photos you already have into a 15‑second video ad",
+  "type": "Prompt",
+  "tools": "Google Vids",
+  "category": "marketing",
+  "icon": "📹",
+  "tags": [
+   "Google Vids",
+   "Gemini",
+   "video",
+   "ads",
+   "Reels",
+   "TikTok"
+  ],
+  "job": "Paying a creator for every video ad",
+  "problem": "A video ad usually means filming you don't have time for, or a creator who charges for every single clip.",
+  "replaces": "A UGC creator ($150 to $400 a video for a beginner), or a monthly AI video app",
+  "setup": "10 minutes",
+  "need": "A Google account, a computer and 3 to 7 photos of your product, space or work",
+  "worksFor": "Cafes, restaurants, trades, salons, online stores, real estate, coaches and consultants",
+  "whatsNew": "Google Vids now turns your own photos into AI video on a personal Google account at no cost, with 60 seconds a month. Clips can now run to 15 seconds, so one prompt makes a whole ad.",
+  "flow": "Your photos → the prompt for your type of business → a 15-second vertical ad, ready to post",
+  "flowNote": "Show only what you actually sell, as it actually looks. If the clip adds something that isn't real, fix it or regenerate.",
+  "stepCount": 9,
+  "limitCount": 5,
+  "prompts": [
+   {
+    "id": 124,
+    "name": "Cafe and Restaurant Video Ad"
+   },
+   {
+    "id": 125,
+    "name": "Trades Before-and-After Video Ad"
+   },
+   {
+    "id": 126,
+    "name": "Salon and Studio Reveal Video Ad"
+   },
+   {
+    "id": 127,
+    "name": "Online Store Product Video Ad"
+   },
+   {
+    "id": 128,
+    "name": "Real Estate and Rental Walk-Through Video Ad"
+   },
+   {
+    "id": 129,
+    "name": "Service Business Video Ad"
+   }
+  ]
+ },
+ {
+  "id": 45,
+  "title": "Find and score local clients on Google Maps with Claude",
+  "type": "Connector",
+  "tools": "Claude · Apify",
+  "category": "sales",
+  "icon": "📍",
+  "tags": [
+   "Claude",
+   "Apify",
+   "Google Maps",
+   "leads",
+   "skills"
+  ],
+  "job": "Building lead lists by hand",
+  "problem": "Finding businesses that need what you sell means an afternoon of tabs and copy-paste, or paying monthly for a lead database.",
+  "replaces": "Apollo's Basic plan ($49 a month per person), or the afternoon you'd spend building the list yourself",
+  "setup": "10 minutes",
+  "need": "Claude and a free Apify account (Claude Pro for the skill and the Monday run)",
+  "worksFor": "Web designers, agencies, bookkeepers, B2B trades, photographers, wholesalers",
+  "whatsNew": "Claude can now plug into outside tools by pasting a single address, on every plan including the no-cost one. Apify built an official connector, so Claude can run Apify's Google Maps scraper itself, read the results and score every business for you.",
+  "flow": "Describe your ideal customer → Claude runs a Google Maps search through Apify → a scored shortlist with verified emails and openers lands in your chat",
+  "flowNote": "You pick who to contact and you send. Claude never emails anyone.",
+  "stepCount": 11,
+  "limitCount": 5,
+  "prompts": [
+   {
+    "id": 123,
+    "name": "Starter Search"
+   },
+   {
+    "id": 120,
+    "name": "The Lead Agent"
+   },
+   {
+    "id": 121,
+    "name": "The Opener Writer"
+   },
+   {
+    "id": 122,
+    "name": "The Monday Lead Run"
+   }
+  ]
+ },
+ {
   "id": 44,
   "title": "Draft a reply to every new enquiry automatically",
   "type": "Trigger",
